@@ -19,7 +19,7 @@ def SignUpDone(response):
     return render(response, 'Agile/SignupDone.html')
 def LoginStatus(response):
     if response.method=='POST':
-        findUser=db.accountant.find_one({"ID": response.POST.get('ID') , "PASSWORD": response.POST.get("PASSWORD")})
+        findUser=db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
     result=render(response,'Agile/loginstatus.html')
     result.set_cookie('UserID',response.POST.get('ID'))
     return result
