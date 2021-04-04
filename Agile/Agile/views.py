@@ -23,3 +23,5 @@ def LoginStatus(response):
     result=render(response,'Agile/loginstatus.html')
     result.set_cookie('UserID',response.POST.get('ID'))
     return result
+def NewProjectPage(request):
+    return render(request,'Agile/NewProjectPage.html')
