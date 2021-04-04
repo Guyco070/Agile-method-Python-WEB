@@ -25,3 +25,12 @@ def LoginStatus(response):
     return result
 def NewProjectPage(request):
     return render(request,'Agile/NewProjectPage.html')
+def CreateProjDone(response):
+    if response.method == 'POST':
+        SV = db.projects
+        projects = {
+            "ProjectName" : response.POST.get('ProjectName'),
+        }
+        SV.insert_one(projects)
+        client.close()
+    return render(response,'Agile/CreateProjDone.html')
