@@ -27,7 +27,7 @@ urlpatterns = [
     path('AdminHomePage',views.AdminHomePage,name='AdminHomePage'),
     path('ProgrammerHomePage',views.ProgrammerHomePage,name='ProgrammerHomePage'),
     path('ClientHomePage',views.ClientHomePage,name='ClientHomePage'),
-  #  path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
-   # path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
+    path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
+    path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
 
 ]

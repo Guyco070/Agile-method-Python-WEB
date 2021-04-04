@@ -8,6 +8,18 @@ def SIGNUP(request):
     return render(request,'Agile/SignUp.html')
 def LOGIN(request):
     return render(request,'Agile/LogIn.html');
+def NewProjectPage(request):
+    return render(request,'Agile/NewProjectPage.html')
+def CreateProjDone(response):
+    if response.method == 'POST':
+        SV = db.projects
+        projects = {
+            "ProjectName" : response.POST.get('ProjectName'),
+            "Description": response.POST.get('projectDescription'),
+        }
+        SV.insert_one(projects)
+        client.close()
+    return render(response,'Agile/CreateProjDone.html')
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
