@@ -20,6 +20,7 @@ def SignUpDone(response):
 def LoginStatus(response):
     if response.method=='POST':
         findUser=db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
-    result=render(response,'Agile/loginstatus.html')
-    result.set_cookie('UserID',response.POST.get('ID'))
+        print(findUser)
+    result=render(response,'Agile/AdminHomePage.html')
+    result.set_cookie('Email',response.POST.get('EMAIL'))
     return result
