@@ -23,4 +23,7 @@ urlpatterns = [
     path('SIGNUP',views.SIGNUP, name='SIGNUP'),
     path('SignUpDone',views.SignUpDone,name='SignUpDone'),
     path('LoginStatus',views.LoginStatus,name='LoginStatus'),
+    path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
+    path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
+
 ]

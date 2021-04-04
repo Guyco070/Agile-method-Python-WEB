@@ -20,7 +20,17 @@ def SignUpDone(response):
 def LoginStatus(response):
     if response.method=='POST':
         findUser=db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
-        print(findUser)
-    result=render(response,'Agile/AdminHomePage.html')
-    result.set_cookie('Email',response.POST.get('EMAIL'))
+    result=render(response,'Agile/loginstatus.html')
+    result.set_cookie('UserID',response.POST.get('ID'))
     return result
+def NewProjectPage(request):
+    return render(request,'Agile/NewProjectPage.html')
+def CreateProjDone(response):
+    if response.method == 'POST':
+        SV = db.projects
+        projects = {
+            "ProjectName" : response.POST.get('ProjectName'),
+        }
+        SV.insert_one(projects)
+        client.close()
+    return render(response,'Agile/CreateProjDone.html')
