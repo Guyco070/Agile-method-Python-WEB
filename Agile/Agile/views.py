@@ -6,6 +6,8 @@ def HomePage(request):
     return render(request,'Agile/HomePage.html')
 def SIGNUP(request):
     return render(request,'Agile/SignUp.html')
+def LOGIN(request):
+    return render(request,'Agile/LogIn.html');
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
@@ -13,24 +15,35 @@ def SignUpDone(response):
             "ID":response.POST.get('ID'),
             "PASSWORD":response.POST.get('PASSWORD'),
             "EMAIL": response.POST.get('EMAIL'),
+            "TYPE" : response.POST.get('TYPE'),
         }
         SV.insert_one(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def LoginStatus(response):
     if response.method=='POST':
-        findUser=db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
-    result=render(response,'Agile/loginstatus.html')
-    result.set_cookie('UserID',response.POST.get('ID'))
+        findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
+        print(findUser)
+        if(findUser!= None):
+            if(findUser['TYPE']=="Admin"):
+                result = render(response, 'Agile/AdminHomePage.html')
+                result.set_cookie('TYPE', response.POST.get('Admin'))
+                result.set_cookie('Email', response.POST.get('EMAIL'))
+            if (findUser['TYPE'] == "Dev"):
+                result = render(response, 'Agile/ProgrammerHomePage.html')
+                result.set_cookie('TYPE', response.POST.get('DEV'))
+                result.set_cookie('Email', response.POST.get('EMAIL'))
+            if (findUser['TYPE'] == "CUSTOMER"):
+                result = render(response, 'Agile/ClientHomePage.html')
+                result.set_cookie('TYPE', response.POST.get('CUS'))
+                result.set_cookie('Email',response.POST.get('EMAIL'))
+        else:
+            result = render(response, 'Agile/HomePage.html')
+            result.set_cookie('Email',response.POST.get('None'))
     return result
-def NewProjectPage(request):
-    return render(request,'Agile/NewProjectPage.html')
-def CreateProjDone(response):
-    if response.method == 'POST':
-        SV = db.projects
-        projects = {
-            "ProjectName" : response.POST.get('ProjectName'),
-        }
-        SV.insert_one(projects)
-        client.close()
-    return render(response,'Agile/CreateProjDone.html')
+def AdminHomePage(request):
+    return render(request,"Agile/AdminHomePage.html")
+def ProgrammerHomePage(request):
+    return render(request,"Agile/ProgrammerHomePage.html")
+def ClientHomePage(request):
+    return render(request,"Agile/CUSTOMER.html")

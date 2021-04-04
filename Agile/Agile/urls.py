@@ -21,9 +21,13 @@ from . import views
 urlpatterns = [
     path('',views.HomePage, name='homepage'),
     path('SIGNUP',views.SIGNUP, name='SIGNUP'),
+    path('LOGIN',views.LOGIN,name='LOGIN'),
     path('SignUpDone',views.SignUpDone,name='SignUpDone'),
     path('LoginStatus',views.LoginStatus,name='LoginStatus'),
-    path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
-    path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
+    path('AdminHomePage',views.AdminHomePage,name='AdminHomePage'),
+    path('ProgrammerHomePage',views.ProgrammerHomePage,name='ProgrammerHomePage'),
+    path('ClientHomePage',views.ClientHomePage,name='ClientHomePage'),
+  #  path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
+   # path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
 
 ]
