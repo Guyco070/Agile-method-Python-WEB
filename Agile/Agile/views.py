@@ -18,6 +18,7 @@ def CreateProjDone(response):
             "Description": response.POST.get('projectDescription'),
         }
         SV.insert_one(projects)
+        createprojecttest(projects)
         client.close()
     return render(response,'Agile/CreateProjDone.html')
 def SignUpDone(response):
@@ -30,12 +31,12 @@ def SignUpDone(response):
             "TYPE" : response.POST.get('TYPE'),
         }
         SV.insert_one(user)
+        signuptest(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def LoginStatus(response):
     if response.method=='POST':
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
-        print(findUser)
         if(findUser!= None):
             if(findUser['TYPE']=="Admin"):
                 result = render(response, 'Agile/AdminHomePage.html')
@@ -52,6 +53,7 @@ def LoginStatus(response):
         else:
             result = render(response, 'Agile/HomePage.html')
             result.set_cookie('Email',response.POST.get('None'))
+    logintest(findUser)
     return result
 def AdminHomePage(request):
     return render(request,"Agile/AdminHomePage.html")
@@ -59,3 +61,9 @@ def ProgrammerHomePage(request):
     return render(request,"Agile/ProgrammerHomePage.html")
 def ClientHomePage(request):
     return render(request,"Agile/CUSTOMER.html")
+def signuptest(user):
+    print(user)
+def logintest(user):
+    print(user)
+def createprojecttest(proj):
+    print(proj)
