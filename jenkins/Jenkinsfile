@@ -1,43 +1,32 @@
 pipeline {
-    agent none
+    agent { 
+        docker{
+            image 'python:3.9.1' 
+        } 
+    }
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'python:2-alpine'
+        stage('build') 
+        {
+            steps 
+            {
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'python -m pip install --upgrade pip --user'
+                    sh 'python -m pip install -r requirements.txt'
+
+                    // sh 'python manage.py makemigrations'
+                    // sh 'python manage.py migrate'
+                    //pipeline build command to check later
                 }
-            }
-            steps {
-                sh 'python -m py_compile *****'
             }
         }
-        stage('Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
+        stage('Test') 
+        {
+            steps 
+            {
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'python -m manage.py test'
                 }
             }
-            steps {
-                sh 'py.test --verbose --junit-xml test-reports/results.xml ****'
-            }
-           post {
-            always {
-                echo 'This will always run'
-            }
-            success {
-                echo 'This will run only if successful'
-            }
-            failure {
-                echo 'This will run only if failed'
-            }
-            unstable {
-                echo 'This will run only if the run was marked as unstable'
-            }
-            changed {
-                echo 'This will run only if the state of the Pipeline has changed'
-                echo 'For example, if the Pipeline was previously failing but is now successful'
-            }
-    }
         }
     }
 }
