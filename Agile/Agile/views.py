@@ -59,3 +59,5 @@ def ProgrammerHomePage(request):
     return render(request,"Agile/ProgrammerHomePage.html")
 def ClientHomePage(request):
     return render(request,"Agile/CUSTOMER.html")
+def NewProjectPage(request):
+    return render(request,'Agile/NewProjectPage.html')
