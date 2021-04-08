@@ -38,23 +38,23 @@ def SignUpDone(response):
 def LoginStatus(response):
     if response.method=='POST':
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
+        print(findUser)
         if(findUser!= None):
             if(findUser['TYPE']=="Admin"):
                 result = render(response, 'Agile/AdminHomePage.html')
-                result.set_cookie('TYPE', response.POST.get('Admin'))
-                result.set_cookie('Email', response.POST.get('EMAIL'))
+                result.set_cookie('TYPE', response.POST.get('Admin'),max_age=1800)
+                result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
             if (findUser['TYPE'] == "Dev"):
                 result = render(response, 'Agile/ProgrammerHomePage.html')
-                result.set_cookie('TYPE', response.POST.get('DEV'))
-                result.set_cookie('Email', response.POST.get('EMAIL'))
+                result.set_cookie('TYPE', response.POST.get('DEV'),max_age=1800)
+                result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
             if (findUser['TYPE'] == "CUSTOMER"):
                 result = render(response, 'Agile/ClientHomePage.html')
-                result.set_cookie('TYPE', response.POST.get('CUS'))
-                result.set_cookie('Email',response.POST.get('EMAIL'))
+                result.set_cookie('TYPE', response.POST.get('CUS'),max_age=1800)
+                result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
         else:
             result = render(response, 'Agile/HomePage.html')
-            result.set_cookie('Email',response.POST.get('None'))
-    logintest(findUser)
+            result.set_cookie('Email',response.POST.get('None'),max_age=1800)
     return result
 def AdminHomePage(request):
     return render(request,"Agile/AdminHomePage.html")
