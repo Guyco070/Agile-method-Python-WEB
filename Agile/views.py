@@ -45,11 +45,11 @@ def LoginStatus(response):
                 result = AdminHomePage(response)
                 result.set_cookie('TYPE', response.POST.get('Admin'),max_age=1800)
                 result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
-            if (findUser['TYPE'] == "Dev"):
+            if (findUser['TYPE'] == "Programmer"):
                 result = render(response, 'Agile/ProgrammerHomePage.html')
                 result.set_cookie('TYPE', response.POST.get('DEV'),max_age=1800)
                 result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
-            if (findUser['TYPE'] == "CUSTOMER"):
+            if (findUser['TYPE'] == "Client"):
                 result = render(response, 'Agile/ClientHomePage.html')
                 result.set_cookie('TYPE', response.POST.get('CUS'),max_age=1800)
                 result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
