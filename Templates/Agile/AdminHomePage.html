@@ -5,17 +5,12 @@
     <title>AdminHomePage</title>
 </head>
 <body>
-<form action="SignUpDone" method="POST">{% csrf_token %}
+<form  method="POST">{% csrf_token %}
   <label for="Hello">Hello admin user</label>
     </br>
-
-
-
     <h1>Projects:</h1>
     {% for obj in projects %}
-    <button style="border: none;">{{obj}}</button>
-
-
+    <label style="border: none;">{{obj}}</label>
     </br>
     {% endfor %}
 
