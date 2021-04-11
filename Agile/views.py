@@ -59,10 +59,10 @@ def LoginStatus(response):
     return result
 def AdminHomePage(response):
     if response.method == 'POST':
-        projects = {'projects':[]}
+        projects = {'projects':[],'description':[]}
         tempPs = list(db.projects.find({"PManager": response.COOKIES['Email']}))
         for pr in tempPs:
-            p = pr['ProjectName']
+            p = "Project Name: " +pr['ProjectName'], " Description: " + pr['Description']
             if(p != None):
                 projects['projects'].append(p)
     return render(response,"Agile/AdminHomePage.html",projects)
