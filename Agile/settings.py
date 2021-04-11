@@ -54,7 +54,7 @@ ROOT_URLCONF = 'Agile.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\גיא החתיך\Django_Projects\Agile\Agile\Templates'],
+        'DIRS': [r'C:\Users\user\Desktop\הנדסת תוכנה\Projects\AgileProject\Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
