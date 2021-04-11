@@ -8,6 +8,11 @@
 <form action="SignUpDone" method="POST">{% csrf_token %}
   <label for="Hello">Hello admin user</label>
     </br>
+    <h2>Projects:</h1>
+    {% for obj in projects %}
+    <button style="border: none;">{{obj}}</button>
+    </br>
+    {% endfor %}
     <button onclick="location.href ='NewProjectPage'">Open New Project </button>
 </form>
 </body>
