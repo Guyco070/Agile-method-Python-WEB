@@ -9,6 +9,14 @@
   <label for="Hello">Hello admin user</label>
     </br>
 
+
+
+    <h1>Projects:</h1>
+    {% for obj in projects %}
+    <button style="border: none;">{{obj}}</button>
+    </br>
+    {% endfor %}
+
 </form>
 <button onclick="location.href ='NewProjectPage'">Open New Project </button>
 </body>
