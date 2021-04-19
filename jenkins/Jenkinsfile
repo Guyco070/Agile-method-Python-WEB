@@ -10,7 +10,7 @@ pipeline {
             steps 
             {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    //sh 'python -m pip install -r requirements.txt'
+                    sh 'python -m pip install -r requirements.txt'
                     sh 'python manage.py runserver'
 
                     // sh 'python manage.py makemigrations'
