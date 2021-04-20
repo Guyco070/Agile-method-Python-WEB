@@ -17,6 +17,8 @@ def CreateProjDone(response):
             "ProjectName" : response.POST.get('ProjectName'),
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
+            "Customers": None ,
+            "Programmer":None
         }
         SV.insert_one(projects)
         createprojecttest(projects)
@@ -36,22 +38,30 @@ def SignUpDone(response):
         signuptest(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
+def showMyProjects(response):
+    print("hello")
+    if(response.COOKIES['TYPE']=='Admin'):
+        return AdminHomePage(response)
+    if(response.COOKIES['TYPE']=='Programmer'):
+        return ProgrammerHomePage(response)
+    if(response.COOKIES['TYPE'=='Client']):
+        return ClientHomePage(response)
 def LoginStatus(response):
     if response.method=='POST':
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
         print(findUser)
         if(findUser!= None):
             if(findUser['TYPE']=="Admin"):
-                result = AdminHomePage(response)
-                result.set_cookie('TYPE', response.POST.get('Admin'),max_age=1800)
-                result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
+                result=render(response,"Agile/AdminHomePage.html")
+                result.set_cookie('TYPE', findUser['TYPE'], max_age=1800)
+                result.set_cookie('Email', response.POST.get('EMAIL'), max_age=1800)
             if (findUser['TYPE'] == "Programmer"):
-                result = render(response, 'Agile/ProgrammerHomePage.html')
-                result.set_cookie('TYPE', response.POST.get('DEV'),max_age=1800)
+                result=render(response, "Agile/ProgrammerHomePage.html")
+                result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
                 result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
             if (findUser['TYPE'] == "Client"):
-                result = render(response, 'Agile/ClientHomePage.html')
-                result.set_cookie('TYPE', response.POST.get('CUS'),max_age=1800)
+                result =render(response, "Agile/ClientHomePage.html")
+                result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
                 result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
         else:
             result = render(response, 'Agile/HomePage.html')
@@ -66,10 +76,27 @@ def AdminHomePage(response):
             if(p != None):
                 projects['projects'].append(p)
     return render(response,"Agile/AdminHomePage.html",projects)
-def ProgrammerHomePage(request):
-    return render(request,"Agile/ProgrammerHomePage.html")
-def ClientHomePage(request):
-    return render(request,"Agile/CUSTOMER.html")
+def ProjectPage(response):
+    print(response.POST.get('Project'))
+    print(1)
+def ProgrammerHomePage(response):
+    if response.method == 'POST':
+        projects = {'projects': []}
+        tempPs = list(db.projects.find({"Programmer": response.COOKIES['Email']}))
+        for pr in tempPs:
+            p = pr['ProjectName']
+            if (p != None):
+                projects['projects'].append(p)
+    return render(response, "Agile/ProgrammerHomePage.html", projects)
+def ClientHomePage(response):
+    if response.method == 'POST':
+        projects = {'projects': []}
+        tempPs = list(db.projects.find({"PManager": response.COOKIES['Email']}))
+        for pr in tempPs:
+            p = pr['ProjectName']
+            if (p != None):
+                projects['projects'].append(p)
+    return render(response, "Agile/ClientHomePage.html", projects)
 def signuptest(user):
     print(user)
 def logintest(user):

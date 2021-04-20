@@ -29,5 +29,6 @@ urlpatterns = [
     path('ClientHomePage',views.ClientHomePage,name='ClientHomePage'),
     path('NewProjectPage', views.NewProjectPage, name='NewProjectPage'),
     path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
-
+    path('showMyProjects',views.showMyProjects,name='showMyProjects'),
+    path('ProjectPage',views.ProjectPage,name='ProjectPage')
 ]
