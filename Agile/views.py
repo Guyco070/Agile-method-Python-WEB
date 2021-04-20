@@ -78,7 +78,18 @@ def AdminHomePage(response):
     return render(response,"Agile/AdminHomePage.html",projects)
 def ProjectPage(response):
     print(response.POST.get('Project'))
-    print(1)
+    PDetails = {'PDetails': []}
+    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    print("tempPs   ")
+    print(tempPs)
+    if(tempPs != None):
+        name = tempPs['ProjectName']
+        des = tempPs['Description']
+        if (name != None):
+            PDetails['PDetails'].append(['Project name',name])
+        if (des != None):    
+            PDetails['PDetails'].append(['Description',des])
+    return render(response, "Agile/ProjectPage.html", PDetails)
 def ProgrammerHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -97,9 +108,29 @@ def ClientHomePage(response):
             if (p != None):
                 projects['projects'].append(p)
     return render(response, "Agile/ClientHomePage.html", projects)
+
+def ChangeDetailsPage(response):
+    print(response.POST.get('Project'))
+    PDetails = {'PDetails': []}
+    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    print("tempPs   ")
+    print(tempPs)
+    if(tempPs != None):
+        name = tempPs['ProjectName']
+        des = tempPs['Description']
+        if (name != None):
+            PDetails['PDetails'].append(['Project name',name])
+        if (des != None):    
+            PDetails['PDetails'].append(['Description',des])
+    return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 def signuptest(user):
     print(user)
 def logintest(user):
     print(user)
 def createprojecttest(proj):
     print(proj)
+
+def get_item_DL(dictionary, key, number):
+    return dictionary.get(key)[number]
+def get_item(dictionary, key):
+    return dictionary.get(key)
