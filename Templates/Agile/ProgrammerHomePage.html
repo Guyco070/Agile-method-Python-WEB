@@ -5,8 +5,15 @@
     <title>ProgrammerHomePage</title>
 </head>
 <body>
-<form action="SignUpDone" method="POST">{% csrf_token %}
-  <label for="Hello">Hello programmer user</label>
+<form action="showMyProjects" method="POST">{% csrf_token %}
+    <h1>Hello Programmer user</h1>
+    </br>
+    <button>Show My Projects</button>
 </form>
+<h1>Projects:</h1>
+    {% for obj in projects %}
+    <button style="border: none;">{{obj}}</button>
+    </br>
+    {% endfor %}
 </body>
 </html>
