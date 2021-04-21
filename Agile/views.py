@@ -87,7 +87,11 @@ def ProjectPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
+<<<<<<< HEAD
         if (des != None):
+=======
+        if (des != None):    
+>>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
     return render(response, "Agile/ProjectPage.html", PDetails)
 def ProgrammerHomePage(response):
@@ -120,7 +124,11 @@ def ChangeDetailsPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
+<<<<<<< HEAD
         if (des != None):
+=======
+        if (des != None):    
+>>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 def signuptest(user):

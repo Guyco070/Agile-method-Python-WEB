@@ -1,2 +1,0 @@
-# Agile method WEB - Python
-
