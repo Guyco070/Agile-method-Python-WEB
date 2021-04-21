@@ -12,7 +12,7 @@ pipeline {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pip install --upgrade pip setuptools wheel'
                     sh 'python -m pip install -r requirements.txt'
-                    sh 'python manage.py runserver'
+                    // sh 'python manage.py runserver'
 
                     // sh 'python manage.py makemigrations'
                     // sh 'python manage.py migrate'
