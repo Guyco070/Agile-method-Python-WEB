@@ -77,11 +77,8 @@ def AdminHomePage(response):
                 projects['projects'].append(p)
     return render(response,"Agile/AdminHomePage.html",projects)
 def ProjectPage(response):
-    print(response.POST.get('Project'))
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
-    print("tempPs   ")
-    print(tempPs)
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -89,7 +86,9 @@ def ProjectPage(response):
             PDetails['PDetails'].append(['Project name',name])
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
-    return render(response, "Agile/ProjectPage.html", PDetails)
+        result=render(response, "Agile/ProjectPage.html", PDetails)
+        result.set_cookie('Project',response.POST.get('Project'),120)
+    return result
 def ProgrammerHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -110,11 +109,8 @@ def ClientHomePage(response):
     return render(response, "Agile/ClientHomePage.html", projects)
 
 def ChangeDetailsPage(response):
-    print(response.POST.get('Project'))
     PDetails = {'PDetails': []}
-    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
-    print("tempPs   ")
-    print(tempPs)
+    tempPs = db.projects.find_one({"ProjectName":response.COOKIES['Project']})
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -122,6 +118,18 @@ def ChangeDetailsPage(response):
             PDetails['PDetails'].append(['Project name',name])
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
+    result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
+    return result
+def updateProjectDetails(response):
+    PDetails = {'PDetails': []}
+    tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+    if (tempPs != None):
+        name = response.POST.get('ProjectName')
+        des = response.POST.get('projectDescription')
+        if (name != None):
+            PDetails['PDetails'].append(['Project name', name])
+        if (des != None):
+            PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 def signuptest(user):
     print(user)

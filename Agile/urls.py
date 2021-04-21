@@ -31,5 +31,6 @@ urlpatterns = [
     path('CreateProjDone', views.CreateProjDone, name='CreateProjDone'),
     path('showMyProjects',views.showMyProjects,name='showMyProjects'),
     path('ProjectPage',views.ProjectPage,name='ProjectPage'),
-    path('ChangeDetailsPage',views.ChangeDetailsPage,name='ChangeDetailsPage')
+    path('ChangeDetailsPage',views.ChangeDetailsPage,name='ChangeDetailsPage'),
+    path('updateProjectDetails',views.updateProjectDetails,name='updateProjectDetails')
 ]
