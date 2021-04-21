@@ -124,7 +124,8 @@
     <lable> {{value}}</lable>
     </li></br>
     {% endfor %}
-    <form action="CreateProjDone" method="POST">{% csrf_token %}
+</form>
+<form action="updateProjectDetails" method="POST">{% csrf_token %}
       <div class="container">
           <label>Project Name : </label>
           <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" required >
@@ -136,6 +137,5 @@
           <button type="button" class="cancelbtn"> Cancel</button>
       </div>
     </form>
-</form>
 </body>
 </html>
