@@ -1,5 +1,9 @@
+from idlelib import query
+
 from django.shortcuts import render
 from pymongo import MongoClient
+from pymongo.message import update
+
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 def HomePage(request):
@@ -123,6 +127,9 @@ def ChangeDetailsPage(response):
 def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+    myquery={"ProjectName": response.COOKIES['Project']};
+    newvalues = {"$set": {"ProjectName": response.POST.get('ProjectName'),"Description": response.POST.get('projectDescription')}}
+    db.projects.update_one(myquery,newvalues)
     if (tempPs != None):
         name = response.POST.get('ProjectName')
         des = response.POST.get('projectDescription')
