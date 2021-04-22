@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGNUP</title>
+</head>
+<body>
+<form action="SignUpDone" method="POST">{% csrf_token %}
+  <label for="ID">ID:</label>
+  <input type="text" id="ID" name="ID"><br><br>
+  <label for="PASSWORD">Password:</label>
+  <input type="password" id="PASSWORD" name="PASSWORD"><br><br>
+  <label for="EMAIL">Email:</label>
+  <input type="email" id="EMAIL" name="EMAIL"><br><br>
+  <label for="TYPE">Type:</label>
+  <select id="TYPE" name="TYPE" property="true">
+    <option value="Admin">Project Manager</option>
+    <option value="Programmer">Programmer</option>
+    <option value="Client">Client</option>
+  </select></br></br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>
