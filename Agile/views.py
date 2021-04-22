@@ -12,17 +12,24 @@ def SIGNUP(request):
     return render(request,'Agile/SignUp.html')
 def LOGIN(request):
     return render(request,'Agile/LogIn.html')
-def NewProjectPage(request):
-    return render(request,'Agile/NewProjectPage.html')
+def NewProjectPage(response):
+    Programmers = {'programmers': []}
+    tempPro = list(db.users.find({"TYPE": "Programmer"}))
+    for pr in tempPro:
+        p = pr['ID']
+        if (p != None):
+            Programmers['programmers'].append(p)
+    return render(response, "Agile/NewProjectPage.html", Programmers)
 def CreateProjDone(response):
     if response.method == 'POST':
         SV = db.projects
+        Programmer_list = response.POST.getlist('programmer')
         projects = {
             "ProjectName" : response.POST.get('ProjectName'),
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
-            "Customers": None ,
-            "Programmer":None
+            "Cilents":None,
+            "Programmer":Programmer_list,
         }
         SV.insert_one(projects)
         createprojecttest(projects)
@@ -88,11 +95,7 @@ def ProjectPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-<<<<<<< HEAD
-        if (des != None):
-=======
         if (des != None):    
->>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
         result=render(response, "Agile/ProjectPage.html", PDetails)
         result.set_cookie('Project',response.POST.get('Project'),120)
@@ -124,11 +127,7 @@ def ChangeDetailsPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-<<<<<<< HEAD
-        if (des != None):
-=======
         if (des != None):    
->>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
