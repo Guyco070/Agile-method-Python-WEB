@@ -1,5 +1,9 @@
+from idlelib import query
+
 from django.shortcuts import render
 from pymongo import MongoClient
+from pymongo.message import update
+
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 def HomePage(request):
@@ -77,11 +81,8 @@ def AdminHomePage(response):
                 projects['projects'].append(p)
     return render(response,"Agile/AdminHomePage.html",projects)
 def ProjectPage(response):
-    print(response.POST.get('Project'))
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
-    print("tempPs   ")
-    print(tempPs)
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -93,7 +94,9 @@ def ProjectPage(response):
         if (des != None):    
 >>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
-    return render(response, "Agile/ProjectPage.html", PDetails)
+        result=render(response, "Agile/ProjectPage.html", PDetails)
+        result.set_cookie('Project',response.POST.get('Project'),120)
+    return result
 def ProgrammerHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -114,11 +117,8 @@ def ClientHomePage(response):
     return render(response, "Agile/ClientHomePage.html", projects)
 
 def ChangeDetailsPage(response):
-    print(response.POST.get('Project'))
     PDetails = {'PDetails': []}
-    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
-    print("tempPs   ")
-    print(tempPs)
+    tempPs = db.projects.find_one({"ProjectName":response.COOKIES['Project']})
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -130,6 +130,21 @@ def ChangeDetailsPage(response):
         if (des != None):    
 >>>>>>> origin/main
             PDetails['PDetails'].append(['Description',des])
+    result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
+    return result
+def updateProjectDetails(response):
+    PDetails = {'PDetails': []}
+    tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+    myquery={"ProjectName": response.COOKIES['Project']};
+    newvalues = {"$set": {"ProjectName": response.POST.get('ProjectName'),"Description": response.POST.get('projectDescription')}}
+    db.projects.update_one(myquery,newvalues)
+    if (tempPs != None):
+        name = response.POST.get('ProjectName')
+        des = response.POST.get('projectDescription')
+        if (name != None):
+            PDetails['PDetails'].append(['Project name', name])
+        if (des != None):
+            PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 def signuptest(user):
     print(user)
