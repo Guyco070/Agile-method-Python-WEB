@@ -5,6 +5,6 @@ from Agile.views import *
 class Test(SimpleTestCase):
 
     def test_homepage_url(self):
-        url = reverse('homepage')
-        self.assertEquals(resolve(url),func,HomePage)
+        response = self.client.get('')
+        self.assertEquals(response.status_code, 200)
 
