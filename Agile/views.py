@@ -1,9 +1,7 @@
 from idlelib import query
-
 from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
-
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 def HomePage(request):
@@ -50,7 +48,6 @@ def SignUpDone(response):
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def showMyProjects(response):
-    print("hello")
     if(response.COOKIES['TYPE']=='Admin'):
         return AdminHomePage(response)
     if(response.COOKIES['TYPE']=='Programmer'):
@@ -60,7 +57,6 @@ def showMyProjects(response):
 def LoginStatus(response):
     if response.method=='POST':
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
-        print(findUser)
         if(findUser!= None):
             if(findUser['TYPE']=="Admin"):
                 result=render(response,"Agile/AdminHomePage.html")
@@ -98,7 +94,7 @@ def ProjectPage(response):
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
         result=render(response, "Agile/ProjectPage.html", PDetails)
-        result.set_cookie('Project',response.POST.get('Project'),120)
+        result.set_cookie('Project',response.POST.get('Project'),1800)
     return result
 def ProgrammerHomePage(response):
     if response.method == 'POST':
@@ -145,6 +141,48 @@ def updateProjectDetails(response):
         if (des != None):
             PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
+def AddTasks(request):
+    return render(request,"Agile/AddTasks.html")
+def ADDTASKS(response):
+    if response.method == 'POST':
+        SV = db.tasks
+        task = {
+            "ProjectName":response.COOKIES['Project'],
+            "USERSTORY":response.POST.get('USERSTORY'),
+            "Tasks": response.POST.get('TASKS'),
+            "Programmer" : None,
+            "status":"TODO"
+        }
+        SV.insert_one(task)
+        client.close()
+    return render(response,"Agile/TASKSADDED.html")
+def KanbanPage(response):
+    if response.method == 'POST':
+        tasks = {'tasks':[]}
+        tasks1={'tasks':[]}
+        tasks2 ={'tasks': []}
+        tasks3 = {'tasks': []}
+        todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
+        inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
+        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
+        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
+        for pr in todo:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks['tasks'].append(p)
+        for pr in inprogress:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks1['tasks'].append(p)
+        for pr in intest:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks2['tasks'].append(p)
+        for pr in done:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks3['tasks'].append(p)
+    return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 def signuptest(user):
     print(user)
 def logintest(user):
