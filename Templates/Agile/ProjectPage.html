@@ -15,5 +15,11 @@
     {% endfor %}
     <button type="submit" name='Project' value="">Change project details</button>
 </form>
+<form action="KanbanPage" method="POST">{% csrf_token %}
+    <button type="submit" name='Project' value="">KANBAN BOARD</button>
+</form>
+<form action="AddTasks" method="POST">{% csrf_token %}
+    <button type="submit" name='Project' value="">Add Tasks</button>
+</form>
 </body>
 </html>
