@@ -16,6 +16,39 @@ class Test(SimpleTestCase):
         client.close()
         is_user_inserted = SV.find_one(user) != None
         self.assertTrue(is_user_inserted)
+    
+    def test_LOGIN_DBFind_true(self):
+        is_user_Exist = db.users.find_one({
+            "ID": "Guyco070",
+            "PASSWORD": 123456,
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Admin",
+        }) != None
+        self.assertTrue(is_user_Exist)
+
+    def test_LOGIN_DBFind_false(self):
+        is_user_Exist = db.users.find_one({
+            "ID": "abcdefg123456789",
+            "PASSWORD": 112344342,
+            "EMAIL": "ppp@gmail.com",
+            "TYPE" : "friend",
+        }) != None
+        self.assertFalse(is_user_Exist)
+
+    def test_CreateProjDone_DBInsert(self):
+        SV = db.projects
+        Programmer_list = ["Guyco070"]
+        project = {
+            "ProjectName" : "Test_project",
+            "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
+            "PManager": "Guyco070",
+            "Cilents":None ,
+            "Programmer": Programmer_list
+        }
+        SV.insert_one(project)
+        client.close()
+        is_project_inserted = SV.find_one(project) != None
+        self.assertTrue(is_project_inserted)
 
     '''
     def test_homepage_url(self):
