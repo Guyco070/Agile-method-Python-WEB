@@ -44,7 +44,6 @@ def SignUpDone(response):
             "TYPE" : response.POST.get('TYPE'),
         }
         SV.insert_one(user)
-        signuptest(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def showMyProjects(response):
@@ -183,8 +182,7 @@ def KanbanPage(response):
             if(p != None):
                 tasks3['tasks'].append(p)
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
-def signuptest(user):
-    print(user)
+    
 def logintest(user):
     print(user)
 def createprojecttest(proj):

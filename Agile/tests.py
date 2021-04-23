@@ -3,17 +3,19 @@ from django.urls import reverse, resolve
 from Agile.views import *
 
 class Test(SimpleTestCase):
-    def SignUpDone(self):
+    
+    def test_SignUp_DBInsert(self):
         SV = db.users
         user = {
-            "ID": "Guy",
+            "ID": "Guyco070",
             "PASSWORD": 123456,
             "EMAIL": "gaico070@gmail.com",
-            "TYPE" : response.POST.get('TYPE'),
+            "TYPE" : "Admin",
         }
         SV.insert_one(user)
         client.close()
-        self.assertTrue(1==1)
+        is_user_inserted = SV.find_one(user) != None
+        self.assertTrue(is_user_inserted)
 
     '''
     def test_homepage_url(self):
