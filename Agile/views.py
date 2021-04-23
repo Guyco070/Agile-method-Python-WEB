@@ -44,6 +44,7 @@ def SignUpDone(response):
             "TYPE" : response.POST.get('TYPE'),
         }
         SV.insert_one(user)
+        signuptest(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def showMyProjects(response):
@@ -126,6 +127,29 @@ def ChangeDetailsPage(response):
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
+def taskpage(response):
+    result=render(response, "Agile/TaskPageEdit.html")
+    result.set_cookie('Task',response.POST.get('TASKNAME'), 1800)
+    return result
+def taskpage1(response):
+    result=render(response, "Agile/TaskPageEdit.html")
+    result.set_cookie('Task',response.POST.get('TASKNAME1'), 1800)
+    return result
+def taskpage2(response):
+    result=render(response, "Agile/TaskPageEdit.html")
+    result.set_cookie('Task',response.POST.get('TASKNAME2'), 1800)
+    return result
+def taskpage3(response):
+    result=render(response, "Agile/TaskPageEdit.html")
+    result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
+    return result
+def EditTasks(response):
+    PDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']};
+    newvalues = {"$set": {"ProjectName":  response.COOKIES['Project'],"USERSTORY": response.POST.get('USERSTORY'),"Tasks": response.POST.get('Tasks'),"status": response.POST.get('status')}}
+    db.tasks.update_one(myquery,newvalues)
+    return render(response, "Agile/TaskPageEdit.html", PDetails)
 def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -182,7 +206,10 @@ def KanbanPage(response):
             if(p != None):
                 tasks3['tasks'].append(p)
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
-
+def signuptest(user):
+    print(user)
+def logintest(user):
+    print(user)
 def createprojecttest(proj):
     print(proj)
 
