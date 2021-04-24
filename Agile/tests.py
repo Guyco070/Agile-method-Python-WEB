@@ -6,6 +6,8 @@ class Test(SimpleTestCase):
     
     def test_SignUp_DBInsert(self):
         SV = db.users
+        SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID" : "", "EMAIL": ""})
         user = {
             "ID": "Guyco070",
             "PASSWORD": 123456,
