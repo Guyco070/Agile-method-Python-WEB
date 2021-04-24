@@ -38,11 +38,13 @@ class Test(SimpleTestCase):
     def test_CreateProjDone_DBInsert(self):
         SV = db.projects
         Programmer_list = ["Guyco070"]
+        Clients_list = ["Guyco070"]
+        SV.delete_one({"ProjectName" : "Test_project"})
         project = {
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
             "PManager": "Guyco070",
-            "Cilents":None ,
+            "Cilents":Clients_list ,
             "Programmer": Programmer_list
         }
         SV.insert_one(project)
