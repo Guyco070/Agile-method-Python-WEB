@@ -11,22 +11,28 @@ def SIGNUP(request):
 def LOGIN(request):
     return render(request,'Agile/LogIn.html')
 def NewProjectPage(response):
-    Programmers = {'programmers': []}
+    Users = {'programmers': [],'clients':[]}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
     for pr in tempPro:
         p = pr['ID']
         if (p != None):
-            Programmers['programmers'].append(p)
-    return render(response, "Agile/NewProjectPage.html", Programmers)
+            Users['programmers'].append(p)
+    tempCli = list(db.users.find({"TYPE": "Client"}))
+    for cl in tempCli:
+        c = cl['ID']
+        if (cl != None):
+            Users['clients'].append(c)
+    return render(response, "Agile/NewProjectPage.html", Users)
 def CreateProjDone(response):
     if response.method == 'POST':
         SV = db.projects
         Programmer_list = response.POST.getlist('programmer')
+        client_list = response.POST.getlist('client')
         projects = {
             "ProjectName" : response.POST.get('ProjectName'),
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
-            "Cilents":None,
+            "Cilents":client_list,
             "Programmer":Programmer_list,
         }
         SV.insert_one(projects)

@@ -143,11 +143,11 @@ span.psw {
             </div>
 
             <div class="ChooseClient">
-             <label>Choose Project's Programmers : </label>
+             <label>Choose Project's Clients : </label>
             </br>
 
-                {% for obj in programmers %}
-                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}">
+                {% for obj in clients %}
+                    <input type="checkbox" id="{{obj}}" name="client" value="{{obj}}">
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
