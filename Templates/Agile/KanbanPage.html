@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-<table style="width:100%">
+<table style="width:100%;text-align:center;" >
   <tr>
     <th>To Do : </th>
     <th>In Progress : </th>
@@ -21,7 +21,7 @@
     <td>
         <form action="taskpage" method='POST'>{% csrf_token %}
         {% for obj in todo %}
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}
         </form>
@@ -29,7 +29,7 @@
     <td>
         <form action="taskpage1" method='POST'>{% csrf_token %}
         {% for obj in inprogress %}
-        <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}
         </form>
@@ -37,7 +37,7 @@
     <td>
          <form action="taskpage2" method='POST'>{% csrf_token %}
         {% for obj in intest %}
-        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}
         </form>
@@ -45,7 +45,7 @@
     <td>
         <form action="taskpage3" method='POST'>{% csrf_token %}
         {% for obj in done %}
-        <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}
         </form>
