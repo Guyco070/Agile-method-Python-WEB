@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectPage</title>
+</head>
+<body>
+
+<h1>Project view</h1>
+{% for key,value in PDetails %}
+<li><b>{{key}}: </b>
+<lable> {{value}}</lable>
+</li></br>
+{% endfor %}
+<form action="KanbanPage" method="POST">{% csrf_token %}
+    <button type="submit" name='Project' value="">KANBAN BOARD</button>
+</form>
+</body>
+</html>

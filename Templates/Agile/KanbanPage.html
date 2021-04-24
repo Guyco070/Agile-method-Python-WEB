@@ -19,7 +19,7 @@
   </tr>
   <tr>
     <td>
-        <form action="EditTasks" method='POST'>{% csrf_token %}
+        <form action="taskpage" method='POST'>{% csrf_token %}
         {% for obj in todo %}
         <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;">
         </br>
@@ -27,7 +27,7 @@
         </form>
     </td>
     <td>
-        <form action="EditTasks" method='POST'>{% csrf_token %}
+        <form action="taskpage1" method='POST'>{% csrf_token %}
         {% for obj in inprogress %}
         <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;">
         </br>
@@ -35,17 +35,17 @@
         </form>
     </td>
     <td>
-         <form action="EditTasks" method='POST'>{% csrf_token %}
+         <form action="taskpage2" method='POST'>{% csrf_token %}
         {% for obj in intest %}
-        <input type="submit" id="TASKNAME2" name="TASKNAME1" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;">
         </br>
         {% endfor %}
         </form>
     </td>
     <td>
-        <form action="EditTasks" method='POST'>{% csrf_token %}
+        <form action="taskpage3" method='POST'>{% csrf_token %}
         {% for obj in done %}
-        <input type="submit" id="TASKNAME3" name="TASKNAME1" value={{obj}} style="border: none;">
+        <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;">
         </br>
         {% endfor %}
         </form>

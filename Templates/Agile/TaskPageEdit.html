@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit task</title>
+</head>
+<body>
+<form action="EditTasks" method="POST">{% csrf_token %}
+  <label for="USERSTORY">userstory:</label>
+  <input type="text" id="USERSTORY" name="USERSTORY"><br><br>
+  <label for="Tasks">Tasks:</label>
+  <input type="text" id="Tasks" name="Tasks"><br><br>
+  <label for="status">Type:</label>
+  <select id="status" name="status" property="true">
+    <option value="TODO">TODO</option>
+    <option value="INPROGRESS">INPROGRESS</option>
+    <option value="INTEST">INTEST</option>
+    <option value="DONE">DONE</option>
+  </select></br></br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>

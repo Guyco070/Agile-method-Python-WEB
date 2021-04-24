@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectPage</title>
+</head>
+<body>
+
+<h1>Project view</h1>
+<form action="ChangeDetailsPage" method="POST">{% csrf_token %}
+    {% for key,value in PDetails %}
+    <li><b>{{key}}: </b>
+    <lable> {{value}}</lable>
+    </li></br>
+    {% endfor %}
+    <button type="submit" name='Project' value="">Change project details</button>
+</form>
+<form action="KanbanPage" method="POST">{% csrf_token %}
+    <button type="submit" name='Project' value="">KANBAN BOARD</button>
+</form>
+<form action="AddTasks" method="POST">{% csrf_token %}
+    <button type="submit" name='Project' value="">Add Tasks</button>
+</form>
+</body>
+</html>
