@@ -52,7 +52,7 @@ def showMyProjects(response):
         return AdminHomePage(response)
     if(response.COOKIES['TYPE']=='Programmer'):
         return ProgrammerHomePage(response)
-    if(response.COOKIES['TYPE'=='Client']):
+    if(response.COOKIES['TYPE']=='Client'):
         return ClientHomePage(response)
 def LoginStatus(response):
     if response.method=='POST':
@@ -93,7 +93,12 @@ def ProjectPage(response):
             PDetails['PDetails'].append(['Project name',name])
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
-        result=render(response, "Agile/ProjectPage.html", PDetails)
+        if (response.COOKIES['TYPE'] == 'Admin'):
+            result = render(response, "Agile/ProjectPageManager.html", PDetails)
+        if (response.COOKIES['TYPE'] == 'Programmer'):
+            result = render(response, "Agile/ProjectPageProgrammer.html", PDetails)
+        if (response.COOKIES['TYPE'] == 'Client'):
+            result = render(response, "Agile/ProjectPageClient.html", PDetails)
         result.set_cookie('Project',response.POST.get('Project'),1800)
     return result
 def ProgrammerHomePage(response):
@@ -128,24 +133,93 @@ def ChangeDetailsPage(response):
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
 def taskpage(response):
-    result=render(response, "Agile/TaskPageEdit.html")
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer=tempPs['Programmer']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer :', Programmer])
+    if(response.COOKIES['TYPE']=='Admin'):
+        result=render(response, "Agile/TaskPageManager.html",TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html",TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html",TDetails)
     result.set_cookie('Task',response.POST.get('TASKNAME'), 1800)
     return result
 def taskpage1(response):
-    result=render(response, "Agile/TaskPageEdit.html")
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer = tempPs['Programmer']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer :', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
     result.set_cookie('Task',response.POST.get('TASKNAME1'), 1800)
     return result
 def taskpage2(response):
-    result=render(response, "Agile/TaskPageEdit.html")
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer = tempPs['Programmer']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer :', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
     result.set_cookie('Task',response.POST.get('TASKNAME2'), 1800)
     return result
 def taskpage3(response):
-    result=render(response, "Agile/TaskPageEdit.html")
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer = tempPs['Programmer']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer :', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
     result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
     return result
+def TaskPageEdit(response):
+    return render(response, "Agile/TaskPageEdit.html")
 def EditTasks(response):
     PDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
     myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']};
     newvalues = {"$set": {"ProjectName":  response.COOKIES['Project'],"USERSTORY": response.POST.get('USERSTORY'),"Tasks": response.POST.get('Tasks'),"status": response.POST.get('status')}}
     db.tasks.update_one(myquery,newvalues)
