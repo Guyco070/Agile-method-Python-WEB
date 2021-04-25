@@ -2,8 +2,11 @@ from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
+
+flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
+
 def HomePage(request):
     return render(request,'Agile/HomePage.html')
 def SIGNUP(request):
@@ -140,7 +143,7 @@ def ChangeDetailsPage(response):
     return result
 def taskpage(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.POST.get('TASKNAME')})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
@@ -161,7 +164,7 @@ def taskpage(response):
     return result
 def taskpage1(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME1')})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
@@ -182,7 +185,7 @@ def taskpage1(response):
     return result
 def taskpage2(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME2')})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
@@ -203,7 +206,7 @@ def taskpage2(response):
     return result
 def taskpage3(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME3')})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
@@ -265,6 +268,14 @@ def KanbanPage(response):
         tasks1={'tasks':[]}
         tasks2 ={'tasks': []}
         tasks3 = {'tasks': []}
+        #if(response.COOKIES['TYPE'] == 'Programmer'):
+        '''
+        todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
+        inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
+        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
+        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
+        #else :
+        '''
         todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
         inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
         intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
@@ -288,33 +299,38 @@ def KanbanPage(response):
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def TaskPageProgrammer(response):
-    if 'TASKNAME' in response.POST:
-        return taskpage(response)
-    elif 'TASKNAME1' in response.POST:
-        return taskpage1(response)
-    elif 'TASKNAME2' in response.POST:
-        return taskpage2(response)
-    elif 'TASKNAME3' in response.POST:
-        return taskpage3(response)
-    elif 'passNext' in response.POST:
-        tempT = db.tasks.find_one({"USERSTORY": response.POST.get('passNext')})
-        status = tempT['status']
-        if(status == "TODO"):
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INPROGRESS"}})
-        elif(status == "INPROGRESS"):
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INTEST"}})
-        elif(status == "INTEST"):
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "DONE"}})
-    elif 'returnStage' in response.POST:
-        tempT = db.tasks.find_one({"USERSTORY": response.POST.get('returnStage')})
-        status = tempT['status']
-        if status == "INPROGRESS":
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "TODO"}})
-        elif status == "INTEST":
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INPROGRESS"}})
-        elif status == "DONE":
-            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST"}})
-
+    global flag
+    if(flag):
+        if 'TASKNAME' in response.POST:
+            return taskpage(response)
+        elif 'TASKNAME1' in response.POST:
+            return taskpage1(response)
+        elif 'TASKNAME2' in response.POST:
+            return taskpage2(response)
+        elif 'TASKNAME3' in response.POST:
+            return taskpage3(response)
+        elif 'passNext' in response.POST:
+            tempT = db.tasks.find_one({"USERSTORY": response.POST.get('passNext')})
+            status = tempT['status']
+            if(status == "TODO"):
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INPROGRESS"}})
+            elif(status == "INPROGRESS"):
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INTEST"}})
+            elif(status == "INTEST"):
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "DONE"}})
+        elif 'returnStage' in response.POST:
+            tempT = db.tasks.find_one({"USERSTORY": response.POST.get('returnStage')})
+            status = tempT['status']
+            if status == "INPROGRESS":
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "TODO"}})
+            elif status == "INTEST":
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INPROGRESS"}})
+            elif status == "DONE":
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST"}})
+        client.close()
+        flag = False
+        return KanbanPage(response)
+    flag = True
     return KanbanPage(response)
 
 def get_item_DL(dictionary, key, number):

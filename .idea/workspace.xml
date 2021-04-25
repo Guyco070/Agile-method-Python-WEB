@@ -2,39 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f73aaa07-4232-411a-9383-0b9b3d8c5f62" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Agile/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Agile/asgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Agile/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Agile/wsgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/AddTasks.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/ClientHomePage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/CreateProjDone.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/HomePage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/KanbanPage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/LogIn.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/LoginStatus.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/ProgrammerHomePage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/ProjectPageClient.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/ProjectPageManager.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/ProjectPageProgrammer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/SignUp.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/SignupDone.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/TASKSADDED.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/TaskPageClient.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/TaskPageEdit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/TaskPageManager.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Templates/Agile/TaskPageProgrammer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Agile/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Agile/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Agile/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Agile/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Agile/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Agile/AdminHomePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/AdminHomePage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Agile/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KanbanPage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TaskPageEdit.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Templates/Agile/ChangeDetailsPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/ChangeDetailsPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Agile/NewProjectPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/NewProjectPage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Templates/Agile/ProjectPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/ProjectPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jenkins/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/jenkins/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Agile/ProjectPageManager.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/ProjectPageManager.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
