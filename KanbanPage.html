@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        }
+</style>
+</head>
+<body>
+<table style="width:100%">
+  <tr>
+    <th>To Do : </th>
+    <th>In Progress : </th>
+    <th>In Test : </th>
+    <th>Done : </th>
+  </tr>
+  <tr>
+    <td>
+        <form action="taskpage" method='POST'>{% csrf_token %}
+        {% for obj in todo %}
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;">
+        </br>
+        {% endfor %}
+        </form>
+    </td>
+    <td>
+        <form action="taskpage1" method='POST'>{% csrf_token %}
+        {% for obj in inprogress %}
+        <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;">
+        </br>
+        {% endfor %}
+        </form>
+    </td>
+    <td>
+         <form action="taskpage2" method='POST'>{% csrf_token %}
+        {% for obj in intest %}
+        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;">
+        </br>
+        {% endfor %}
+        </form>
+    </td>
+    <td>
+        <form action="taskpage3" method='POST'>{% csrf_token %}
+        {% for obj in done %}
+        <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;">
+        </br>
+        {% endfor %}
+        </form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

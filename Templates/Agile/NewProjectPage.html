@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -113,6 +113,10 @@ span.psw {
   .cancelbtn {
      width: 100%;
   }
+  .ChooseClient {
+    position: absolute;
+    left: 1222px;
+  }
 }
 </style>
 </head>
@@ -121,11 +125,34 @@ span.psw {
 <form action="CreateProjDone" method="POST">{% csrf_token %}
         <div class="container">
             <label>Project Name : </label>
+            </br>
             <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" required>
             </br>
             <label for="projectDescription">Description:</label> </br>
-            <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50"> </textarea>
+            <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
             </br>
+            <div>
+             <label>Choose Project's Programmers : </label>
+            </br>
+
+                {% for obj in programmers %}
+                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}">
+                    <label for="{{obj}}"> {{obj}}</label>
+                    <br>
+                {% endfor %}
+            </div>
+
+            <div class="ChooseClient">
+             <label>Choose Project's Clients : </label>
+            </br>
+
+                {% for obj in clients %}
+                    <input type="checkbox" id="{{obj}}" name="client" value="{{obj}}">
+                    <label for="{{obj}}"> {{obj}}</label>
+                    <br>
+                {% endfor %}
+            </div>
+
             <button type="submit" >Creat Project</button>
             <button type="button" class="cancelbtn"> Cancel</button>
         </div>

@@ -32,5 +32,16 @@ urlpatterns = [
     path('showMyProjects',views.showMyProjects,name='showMyProjects'),
     path('ProjectPage',views.ProjectPage,name='ProjectPage'),
     path('ChangeDetailsPage',views.ChangeDetailsPage,name='ChangeDetailsPage'),
-    path('updateProjectDetails',views.updateProjectDetails,name='updateProjectDetails')
+    path('updateProjectDetails',views.updateProjectDetails,name='updateProjectDetails'),
+    path('KanbanPage',views.KanbanPage,name='KanbanPage'),
+    path('AddTasks',views.AddTasks,name='AddTasks'),
+    path('ADDTASKS',views.ADDTASKS,name='ADDTASKS'),
+    path('taskpage', views.taskpage, name='taskpage'),
+    path('taskpage1', views.taskpage1, name='taskpage1'),
+    path('taskpage2', views.taskpage2, name='taskpage2'),
+    path('taskpage3', views.taskpage3, name='taskpage3'),
+    path('EditTasks', views.EditTasks, name='EditTasks'),
+    path('TaskPageEdit', views.TaskPageEdit, name='TaskPageEdit'),
+    path('TaskPageProgrammer', views.TaskPageProgrammer, name='TaskPageProgrammer'),
+
 ]

@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AdminHomePage</title>
+    <title>Programmer HomePage</title>
 </head>
 <body>
 <form action="showMyProjects" method="POST">{% csrf_token %}
-    <h1>Hello admin user</h1>
+    <h1>Hello Programmer user</h1>
     </br>
     <h1>Projects:</h1>
     <button>Show My Projects</button>
@@ -18,6 +18,5 @@
     </br>
     {% endfor %}
 </form>
-<button onclick="location.href ='NewProjectPage'">Open New Project </button>
 </body>
 </html>

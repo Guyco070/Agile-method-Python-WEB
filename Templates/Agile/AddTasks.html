@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="ADDTASKS" method="POST">{% csrf_token %}
+  <br><br>
+  <label for="USERSTORY">USER STORY</label>
+  <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50">
+  </textarea>
+  <label for="TASKS">Tasks:</label>
+  <textarea id="TASKS" name="TASKS" rows="4" cols="50">
+  </textarea>
+  <br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>
