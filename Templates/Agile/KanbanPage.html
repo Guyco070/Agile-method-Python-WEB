@@ -19,32 +19,38 @@
   </tr>
   <tr>
     <td>
-        <form action="taskpage" method='POST'>{% csrf_token %}
         {% for obj in todo %}
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
+        <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
+          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+        </form>
         </br>
         {% endfor %}
-        </form>
     </td>
     <td>
-        <form action="taskpage1" method='POST'>{% csrf_token %}
+        <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in inprogress %}
+        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
         <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;margin:10px;">
-        </br>
+        <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+      </br>
         {% endfor %}
         </form>
     </td>
     <td>
-         <form action="taskpage2" method='POST'>{% csrf_token %}
+         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in intest %}
+        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
         <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;margin:10px;">
+        <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
         </br>
         {% endfor %}
         </form>
     </td>
     <td>
-        <form action="taskpage3" method='POST'>{% csrf_token %}
+        <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in done %}
+        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
         <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}

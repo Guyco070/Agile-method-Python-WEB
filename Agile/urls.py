@@ -42,5 +42,6 @@ urlpatterns = [
     path('taskpage3', views.taskpage3, name='taskpage3'),
     path('EditTasks', views.EditTasks, name='EditTasks'),
     path('TaskPageEdit', views.TaskPageEdit, name='TaskPageEdit'),
+    path('TaskPageProgrammer', views.TaskPageProgrammer, name='TaskPageProgrammer'),
 
 ]

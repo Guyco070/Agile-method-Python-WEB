@@ -226,14 +226,14 @@ def TaskPageEdit(response):
     return render(response, "Agile/TaskPageEdit.html")
 def EditTasks(response):
     PDetails = {'PDetails': []}
-    myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']};
+    myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']}
     newvalues = {"$set": {"ProjectName":  response.COOKIES['Project'],"USERSTORY": response.POST.get('USERSTORY'),"Tasks": response.POST.get('Tasks'),"status": response.POST.get('status')}}
     db.tasks.update_one(myquery,newvalues)
     return render(response, "Agile/TaskPageEdit.html", PDetails)
 def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
-    myquery={"ProjectName": response.COOKIES['Project']};
+    myquery={"ProjectName": response.COOKIES['Project']}
     newvalues = {"$set": {"ProjectName": response.POST.get('ProjectName'),"Description": response.POST.get('projectDescription')}}
     db.projects.update_one(myquery,newvalues)
     if (tempPs != None):
@@ -286,12 +286,36 @@ def KanbanPage(response):
             if(p != None):
                 tasks3['tasks'].append(p)
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
-def signuptest(user):
-    print(user)
-def logintest(user):
-    print(user)
-def createprojecttest(proj):
-    print(proj)
+
+def TaskPageProgrammer(response):
+    if 'TASKNAME' in response.POST:
+        return taskpage(response)
+    elif 'TASKNAME1' in response.POST:
+        return taskpage1(response)
+    elif 'TASKNAME2' in response.POST:
+        return taskpage2(response)
+    elif 'TASKNAME3' in response.POST:
+        return taskpage3(response)
+    elif 'passNext' in response.POST:
+        tempT = db.tasks.find_one({"USERSTORY": response.POST.get('passNext')})
+        status = tempT['status']
+        if(status == "TODO"):
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INPROGRESS"}})
+        elif(status == "INPROGRESS"):
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INTEST"}})
+        elif(status == "INTEST"):
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "DONE"}})
+    elif 'returnStage' in response.POST:
+        tempT = db.tasks.find_one({"USERSTORY": response.POST.get('returnStage')})
+        status = tempT['status']
+        if status == "INPROGRESS":
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "TODO"}})
+        elif status == "INTEST":
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INPROGRESS"}})
+        elif status == "DONE":
+            db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST"}})
+
+    return KanbanPage(response)
 
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
