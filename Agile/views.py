@@ -40,7 +40,12 @@ def CreateProjDone(response):
         }
         SV.insert_one(projects)
         client.close()
-    return render(response,'Agile/showMyProjects.html')
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        return AdminHomePage(response)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        return ProgrammerHomePage(response)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        return ClientHomePage(response)
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
