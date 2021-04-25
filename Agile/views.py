@@ -27,7 +27,6 @@ def NewProjectPage(response):
             Users['clients'].append(c)
     return render(response, "Agile/NewProjectPage.html", Users)
 def CreateProjDone(response):
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     if response.method == 'POST':
         SV = db.projects
         Programmer_list = response.POST.getlist('programmer')
