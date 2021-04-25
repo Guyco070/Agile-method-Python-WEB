@@ -40,12 +40,7 @@ def CreateProjDone(response):
         }
         SV.insert_one(projects)
         client.close()
-    if (response.COOKIES['TYPE'] == 'Admin'):
-        return AdminHomePage(response)
-    if (response.COOKIES['TYPE'] == 'Programmer'):
-        return ProgrammerHomePage(response)
-    if (response.COOKIES['TYPE'] == 'Client'):
-        return ClientHomePage(response)
+    return showMyProjects(response)
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
@@ -103,7 +98,7 @@ def ProjectPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-        if (des != None):    
+        if (des != None):
             PDetails['PDetails'].append(['Description',des])
         if (response.COOKIES['TYPE'] == 'Admin'):
             result = render(response, "Agile/ProjectPageManager.html", PDetails)
@@ -140,7 +135,7 @@ def ChangeDetailsPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-        if (des != None):    
+        if (des != None):
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
