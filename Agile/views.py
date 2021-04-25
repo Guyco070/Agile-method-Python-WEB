@@ -3,7 +3,7 @@ from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
 
-flag = True
+TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 
@@ -39,7 +39,6 @@ def CreateProjDone(response):
             "Programmer":Programmer_list,
         }
         SV.insert_one(projects)
-        createprojecttest(projects)
         client.close()
     return render(response,'Agile/CreateProjDone.html')
 def SignUpDone(response):
@@ -53,7 +52,6 @@ def SignUpDone(response):
             "TYPE" : response.POST.get('TYPE'),
         }
         SV.insert_one(user)
-        signuptest(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
 def showMyProjects(response):
@@ -299,8 +297,8 @@ def KanbanPage(response):
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def TaskPageProgrammer(response):
-    global flag
-    if(flag):
+    global TaskPageProgrammer_flag
+    if(TaskPageProgrammer_flag):
         if 'TASKNAME' in response.POST:
             return taskpage(response)
         elif 'TASKNAME1' in response.POST:
@@ -328,9 +326,9 @@ def TaskPageProgrammer(response):
             elif status == "DONE":
                 db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST"}})
         client.close()
-        flag = False
+        TaskPageProgrammer_flag = False
         return KanbanPage(response)
-    flag = True
+    TaskPageProgrammer_flag = True
     return KanbanPage(response)
 
 def get_item_DL(dictionary, key, number):
