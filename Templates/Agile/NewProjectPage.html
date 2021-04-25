@@ -122,7 +122,7 @@ span.psw {
 </head>
 <body>
 
-<form action="CreateProjDone" method="POST">{% csrf_token %}
+<form action="showMyProjects" method="POST">{% csrf_token %}
         <div class="container">
             <label>Project Name : </label>
             </br>
@@ -153,8 +153,13 @@ span.psw {
                 {% endfor %}
             </div>
 
-            <button type="submit" >Creat Project</button>
-            <button type="button" class="cancelbtn"> Cancel</button>
+            <button type="submit" onclick="myFunction()">Creat Project</button>
+            <script>
+                function myFunction() {
+                    alert("Project successfully created");
+                }
+</script>
+            <button type="button" class="cancelbtn" > Cancel</button>
         </div>
 </form>
 

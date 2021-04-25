@@ -40,7 +40,7 @@ def CreateProjDone(response):
         }
         SV.insert_one(projects)
         client.close()
-    return render(response,'Agile/CreateProjDone.html')
+    return render(response,'Agile/showMyProjects.html')
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
