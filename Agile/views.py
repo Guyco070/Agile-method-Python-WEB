@@ -77,6 +77,7 @@ def LoginStatus(response):
                 result =render(response, "Agile/ClientHomePage.html")
                 result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
                 result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
+                result.set_cookie('ID', findUser['ID'],max_age=1800)
         else:
             result = render(response, 'Agile/HomePage.html')
             result.set_cookie('Email',response.POST.get('None'),max_age=1800)
@@ -120,7 +121,9 @@ def ProgrammerHomePage(response):
 def ClientHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
-        tempPs = list(db.projects.find({"PManager": response.COOKIES['Email']}))
+        print(response.COOKIES['ID'])
+        tempPs = list(db.projects.find({"Cilents": response.COOKIES['Email']}))
+        print(tempPs)
         for pr in tempPs:
             p = pr['ProjectName']
             if (p != None):
@@ -267,6 +270,7 @@ def ADDTASKS(response):
         SV.insert_one(task)
         client.close()
     return render(response,"Agile/TASKSADDED.html")
+    
 def KanbanPage(response):
     if response.method == 'POST':
         tasks = {'tasks':[]}
@@ -302,6 +306,50 @@ def KanbanPage(response):
             if(p != None):
                 tasks3['tasks'].append(p)
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
+
+def ClientKanbanPage(response):
+    if response.method == 'POST':
+        tasks = {'tasks':[]}
+        tasks1={'tasks':[]}
+        tasks2 ={'tasks': []}
+        tasks3 = {'tasks': []}
+        #if(response.COOKIES['TYPE'] == 'Programmer'):
+        '''
+        todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
+        inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
+        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
+        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
+        #else :
+        '''
+        todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
+        inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
+        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
+        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
+        for pr in todo:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks['tasks'].append(p)
+        for pr in inprogress:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks1['tasks'].append(p)
+        for pr in intest:
+            p = pr['USERSTORY']
+            if(p != None):
+                tasks2['tasks'].append(p)
+        for pr in done:
+            p = pr['USERSTORY']
+            if(p != None):
+                if('RATE' in pr):
+                    r = pr['RATE']
+                else: r = 0
+                tasks3['tasks'].append([p,r])
+    return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
+
+def updateRate(response):
+    if "rate" in response.POST:
+        db.tasks.find_one_and_update({"USERSTORY" : response.POST["rateBut"]},{"$set": {"RATE":response.POST['rate']}},upsert=True)
+    return ClientKanbanPage(response)
 
 def TaskPageProgrammer(response):
     global TaskPageProgrammer_flag
