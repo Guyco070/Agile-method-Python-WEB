@@ -144,6 +144,7 @@ def ChangeDetailsPage(response):
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
+
 def taskpage(response):
     TDetails = {'PDetails': []}
     tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.POST.get('TASKNAME')})
@@ -240,7 +241,13 @@ def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     myquery={"ProjectName": response.COOKIES['Project']}
-    newvalues = {"$set": {"ProjectName": response.POST.get('ProjectName'),"Description": response.POST.get('projectDescription')}}
+    ProjectName = response.POST.get('ProjectName')
+    projectDescription = response.POST.get('projectDescription')
+    newvalues = {"$set": {}}
+    if ProjectName:
+        newvalues["$set"]["ProjectName"] = ProjectName
+    if projectDescription:
+        newvalues["$set"]["Description"] = projectDescription
     db.projects.update_one(myquery,newvalues)
     if (tempPs != None):
         name = response.POST.get('ProjectName')

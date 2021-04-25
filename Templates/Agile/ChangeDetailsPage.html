@@ -127,8 +127,9 @@
 </form>
 <form action="updateProjectDetails" method="POST">{% csrf_token %}
       <div class="container">
+          <h2>Fill in the fields you want to change:</h2>
           <label>Project Name : </label>
-          <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" required >
+          <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" >
           </br>
           <label for="projectDescription">Description:</label> </br>
           <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50"> </textarea>
