@@ -339,7 +339,13 @@ def ClientKanbanPage(response):
     return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def updateRate(response):
-    if "TASKNAME3" in response.POST:
+    if 'TASKNAME' in response.POST:
+            return taskpage(response)
+    elif 'TASKNAME1' in response.POST:
+        return taskpage1(response)
+    elif 'TASKNAME2' in response.POST:
+        return taskpage2(response)
+    elif 'TASKNAME3' in response.POST:
         return taskpage3(response)
     elif "rate" in response.POST:
         db.tasks.find_one_and_update({"USERSTORY" : response.POST["rateBut"]},{"$set": {"RATE":response.POST['rate']}},upsert=True)
