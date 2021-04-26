@@ -60,14 +60,14 @@
   <tr>
     <td>
         {% for obj in todo %}
-        <form action="Client‏‏KanbanPage" method='POST'>{% csrf_token %}
+        <form action="updateRate" method='POST'>{% csrf_token %}
           <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         </form>
         </br>
         {% endfor %}
     </td>
     <td>
-        <form action="Client‏‏KanbanPage" method='POST'>{% csrf_token %}
+        <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj in inprogress %}
         <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;margin:10px;">
       </br>
@@ -75,7 +75,7 @@
         </form>
     </td>
     <td>
-         <form action="Client‏‏KanbanPage" method='POST'>{% csrf_token %}
+         <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj in intest %}
         <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;margin:10px;">
         </br>
