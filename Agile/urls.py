@@ -43,5 +43,7 @@ urlpatterns = [
     path('EditTasks', views.EditTasks, name='EditTasks'),
     path('TaskPageEdit', views.TaskPageEdit, name='TaskPageEdit'),
     path('TaskPageProgrammer', views.TaskPageProgrammer, name='TaskPageProgrammer'),
+    path('ClientKanbanPage', views.ClientKanbanPage, name='ClientKanbanPage'),
+    path('updateRate', views.updateRate, name='updateRate'),
 
 ]
