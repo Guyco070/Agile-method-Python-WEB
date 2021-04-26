@@ -313,14 +313,6 @@ def ClientKanbanPage(response):
         tasks1={'tasks':[]}
         tasks2 ={'tasks': []}
         tasks3 = {'tasks': []}
-        #if(response.COOKIES['TYPE'] == 'Programmer'):
-        '''
-        todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
-        inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
-        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
-        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
-        #else :
-        '''
         todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
         inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
         intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
@@ -347,9 +339,11 @@ def ClientKanbanPage(response):
     return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def updateRate(response):
-    if "rate" in response.POST:
+    if "TASKNAME3" in response.POST:
+        return taskpage3(response)
+    elif "rate" in response.POST:
         db.tasks.find_one_and_update({"USERSTORY" : response.POST["rateBut"]},{"$set": {"RATE":response.POST['rate']}},upsert=True)
-    return ClientKanbanPage(response)
+        return ClientKanbanPage(response)
 
 def TaskPageProgrammer(response):
     global TaskPageProgrammer_flag
