@@ -2,6 +2,7 @@ from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
+from datetime import datetime
 
 TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
@@ -266,24 +267,28 @@ def ADDTASKS(response):
         a = response.POST.get('USERSTORY')
         b = response.POST.get('TASKS')
         c = response.POST.get('startDate')
-        d = response.POST.get('startTime')
-        e = response.POST.get('endDate')
-        f = response.POST.get('endTime')
-        if a != null & a != "" & b != null & b != "" & c != null & c != "" & d != null & d != "" & e != null & e != "" & f != null & f != "":
-            SV = db.tasks
-            task = {
-                "ProjectName":response.COOKIES['Project'],
-                "USERSTORY":response.POST.get('USERSTORY'),
-                "Tasks": response.POST.get('TASKS'),
-                "SDate": response.POST.get('startDate'),
-                "STime": response.POST.get('startTime'),
-                "EDate": response.POST.get('endDate'),
-                "ETime": response.POST.get('endTime'),
-                "Programmer" : None,
-                "status":"TODO"
-            }
-            SV.insert_one(task)
-            client.close()
+        d = response.POST.get('endDate')
+        SV = db.tasks
+        
+        sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        c = sDate.strftime('%d-%m-%y %H:%M')
+        d = eDate.strftime('%d-%m-%y %H:%M')
+        if sDate >= eDate:
+            t = c
+            c = d
+            d = t
+        task = {
+            "ProjectName":response.COOKIES['Project'],
+            "USERSTORY":a,
+            "Tasks": b,
+            "SDate": c,
+            "EDate": d,
+            "Programmer" : None,
+            "status":"TODO"
+        }
+        SV.insert_one(task)
+        client.close()
     return AddTasks(response)
     
 def KanbanPage(response):

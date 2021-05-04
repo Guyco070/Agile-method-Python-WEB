@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<lable style="color: red;">Please note that if the start date is smaller than the end date, they will be replaced and if the start date is before today, it will be replaced by the date of the day.</lable>
 <form action="ADDTASKS" method="POST" name="newtask" id="newtask">{% csrf_token %}
   <table style="text-align:center;" >
     <br><br>
@@ -15,12 +16,8 @@
        </br></br>
       </td>
       <td>
-        <label for="startDate" style="padding: 50px;" required>Estimated start:</label></br>
-        <input type="date" id="startDate" name="startDate"><br><br>
-      </td>
-      <td>
-        </br>
-        <input type="time" id="startTime" name="startTime" required><br><br>
+        <label for="startDate" style="padding: 80px;" required>Estimated start:</label></br>
+        <input type="datetime-local" id="startDate" name="startDate"><br><br>
       </td>
     </tr>
     <tr>
@@ -31,11 +28,7 @@
       </td>
       <td>
         <label for="endDate">Estimated end:</label></br>
-        <input type="date" id="endDate" name="endDate" required><br><br>
-      </td>
-      <td>
-        </br>
-        <input type="time" id="endTime" name="endTime" required><br><br>
+        <input type="datetime-local" id="endDate" name="endDate" required><br><br>
       </td>
     </tr>
   <tr>
@@ -47,11 +40,22 @@
             var a = document.forms["newtask"]["USERSTORY"].value;
             var b = document.forms["newtask"]["TASKS"].value;
             var c = document.forms["newtask"]["startDate"].value;
-            var d = document.forms["newtask"]["startTime"].value;
-            var e = document.forms["newtask"]["endDate"].value;
-            var f = document.forms["newtask"]["endDate"].value;
-            if(a != null && a != "", b != null && b != "", c != null && c != "", d != null && d != "", e != null && e != "", f != null && f != "")
-              alert("Task successfully added to the project !");
+            var d = document.forms["newtask"]["endDate"].value;
+            var cond = a != null && a != "" && b != null && b != "" && c != null && c != "" && d != null && d != "";
+            if(cond){
+              /*var eDate = new Date(e); //dd-mm-YYYY
+              var today = new Date();
+              today.setHours(0,0,0,0);
+              var sDate = new Date(c);
+              var dateCond = eDate >= today && eDate >= sDate;
+
+              if(cond && dateCond) {*/
+                alert("Task successfully added to the project !");
+              /*}if(cond && !(dateCond)){ 
+                alert("Task successfully added to the project !\nThere seemed to be confusion at times, do not worry we fixed it.");
+                
+              }*/
+            }
         }
       </script>
     </td>
