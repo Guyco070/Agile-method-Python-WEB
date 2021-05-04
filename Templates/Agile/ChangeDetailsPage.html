@@ -85,6 +85,9 @@
         border: 1px solid #888;
         width: 80%; /* Could be more or less, depending on screen size */
       }
+      #GoBackbutton {
+            background-color: grey;
+        }
       
       
       /* Add Zoom Animation */
@@ -112,6 +115,7 @@
         .cancelbtn {
            width: 100%;
         }
+
       }
       </style>
 </head>
@@ -136,7 +140,11 @@
           </br>
           <button type="submit" >Update Project</button>
           <button type="button" class="cancelbtn"> Cancel</button>
+
       </div>
+    </form>
+    <form action="showMyProjects" method="POST">{% csrf_token %}
+        <button type="submit" id="GoBackbutton">go back </button>
     </form>
 </body>
 </html>

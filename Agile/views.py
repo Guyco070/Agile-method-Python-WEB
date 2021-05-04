@@ -97,12 +97,13 @@ def ProjectPage(response):
     if 'Project' in response.POST:
         tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
     else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+    print(tempPs)
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-        if (des != None):
+        if (des != None):    
             PDetails['PDetails'].append(['Description',des])
         if (response.COOKIES['TYPE'] == 'Admin'):
             result = render(response, "Agile/ProjectPageManager.html", PDetails)
@@ -141,7 +142,7 @@ def ChangeDetailsPage(response):
         des = tempPs['Description']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
-        if (des != None):
+        if (des != None):    
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
