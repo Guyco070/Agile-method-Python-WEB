@@ -2,6 +2,7 @@ from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
+from datetime import datetime
 
 TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
@@ -93,7 +94,9 @@ def AdminHomePage(response):
     return render(response,"Agile/AdminHomePage.html",projects)
 def ProjectPage(response):
     PDetails = {'PDetails': []}
-    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    if 'Project' in response.POST:
+        tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -107,7 +110,7 @@ def ProjectPage(response):
             result = render(response, "Agile/ProjectPageProgrammer.html", PDetails)
         if (response.COOKIES['TYPE'] == 'Client'):
             result = render(response, "Agile/ProjectPageClient.html", PDetails)
-        result.set_cookie('Project',response.POST.get('Project'),1800)
+        result.set_cookie('Project',response.POST.get('Project'),3000)
     return result
 def ProgrammerHomePage(response):
     if response.method == 'POST':
@@ -150,12 +153,18 @@ def taskpage(response):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
         Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if(response.COOKIES['TYPE']=='Admin'):
         result=render(response, "Agile/TaskPageManager.html",TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -170,13 +179,19 @@ def taskpage1(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -191,13 +206,19 @@ def taskpage2(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['sDate']
+        eDate=tempPs['eDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -212,13 +233,19 @@ def taskpage3(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -259,17 +286,30 @@ def AddTasks(request):
     return render(request,"Agile/AddTasks.html")
 def ADDTASKS(response):
     if response.method == 'POST':
+        if 'beckToP' in response.POST:
+            return ProjectPage(response)
+        a = response.POST.get('USERSTORY')
+        b = response.POST.get('TASKS')
+        c = response.POST.get('startDate')
+        d = response.POST.get('endDate')
         SV = db.tasks
+        
+        sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        c = sDate.strftime('%d.%m.%y %H:%M') #format change
+        d = eDate.strftime('%d.%m.%y %H:%M') #format change
         task = {
             "ProjectName":response.COOKIES['Project'],
-            "USERSTORY":response.POST.get('USERSTORY'),
-            "Tasks": response.POST.get('TASKS'),
+            "USERSTORY":a,
+            "Tasks": b,
+            "SDate": c,
+            "EDate": d,
             "Programmer" : None,
             "status":"TODO"
         }
         SV.insert_one(task)
         client.close()
-    return render(response,"Agile/TASKSADDED.html")
+    return AddTasks(response)
     
 def KanbanPage(response):
     if response.method == 'POST':

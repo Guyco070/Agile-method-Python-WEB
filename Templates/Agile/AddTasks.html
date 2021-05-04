@@ -5,16 +5,78 @@
     <title>Title</title>
 </head>
 <body>
+<form action="ADDTASKS" method="POST" name="newtask" id="newtask">{% csrf_token %}
+  <table style="text-align:center;" >
+    <br><br>
+    <tr>
+      <td>
+       <label for="USERSTORY">USER STORY:</label></br>
+       <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" required></textarea>
+       </br></br>
+      </td>
+      <td>
+        <label for="startDate" style="padding: 80px;" required>Estimated start:</label></br>
+        <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="TASKS">Tasks:</label></br>
+        <textarea id="TASKS" name="TASKS" rows="4" cols="50" required></textarea>
+        <br></br>
+      </td>
+      <td>
+        <label for="endDate">Estimated end:</label></br>
+        <input type="datetime-local" id="endDate" name="endDate" required><br><br>
+      </td>
+    </tr>
+  <tr>
+    <td>
+    </br>
+      <input type="submit" value="Submit" onclick="myFunction()">
+      <script>
+        function myFunction() {
+            var a = document.forms["newtask"]["USERSTORY"].value;
+            var b = document.forms["newtask"]["TASKS"].value;
+            var c = document.forms["newtask"]["startDate"].value;
+            var d = document.forms["newtask"]["endDate"].value;
+            var cond = a != null && a != "" && b != null && b != "" && c != null && c != "" && d != null && d != "";
+            if(cond){
+                alert("Task successfully added to the project !");
+            }
+        }
+
+        function setMinDate(){
+          document.forms["newtask"]["endDate"].setAttribute("min", document.forms["newtask"]["startDate"].value);
+          document.forms["newtask"]["endDate"].value = document.forms["newtask"]["startDate"].value;
+        }
+        function padZero(numericValue){
+            if (numericValue < 10)
+                return '0' + numericValue.toString();;
+              
+            return numericValue.toString();;
+          }
+          function createDateString() {     
+            //  Take a Date value, and turn it into a "2005-05-26T11:37:42" string
+            var date = new Date();
+            
+            var dateStr = date.getFullYear() + '-' + 
+              this.padZero(date.getMonth()+1) + '-' +
+              this.padZero(date.getDate()) + 'T' +
+              this.padZero(date.getHours()) + ':' + 
+              this.padZero(date.getMinutes());
+            return dateStr;
+          }
+          document.forms["newtask"]["startDate"].setAttribute("min", createDateString());
+      </script>
+    </td>
+  </tr>
+</form>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
-  <br><br>
-  <label for="USERSTORY">USER STORY</label>
-  <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50">
-  </textarea>
-  <label for="TASKS">Tasks:</label>
-  <textarea id="TASKS" name="TASKS" rows="4" cols="50">
-  </textarea>
-  <br>
-  <input type="submit" value="Submit">
+  <td>
+    </br>
+    <input type="submit" value="beck To project" id="beckToP" name="beckToP">
+  </td>
 </form>
 </body>
 </html>
