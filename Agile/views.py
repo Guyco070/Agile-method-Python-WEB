@@ -298,9 +298,6 @@ def ADDTASKS(response):
         eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
         c = sDate.strftime('%d.%m.%y %H:%M') #format change
         d = eDate.strftime('%d.%m.%y %H:%M') #format change
-        today = datetime.now()
-
-        c = today.strftime('%d.%m.%y %H:%M') #format change
         task = {
             "ProjectName":response.COOKIES['Project'],
             "USERSTORY":a,
