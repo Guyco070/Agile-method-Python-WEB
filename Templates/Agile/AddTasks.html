@@ -5,7 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<lable style="color: red;">Please note that if the start date is smaller than the end date, they will be replaced and if the start date is before today, it will be replaced by the date of the day.</lable>
 <form action="ADDTASKS" method="POST" name="newtask" id="newtask">{% csrf_token %}
   <table style="text-align:center;" >
     <br><br>
@@ -17,7 +16,7 @@
       </td>
       <td>
         <label for="startDate" style="padding: 80px;" required>Estimated start:</label></br>
-        <input type="datetime-local" id="startDate" name="startDate"><br><br>
+        <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
       </td>
     </tr>
     <tr>
@@ -43,20 +42,45 @@
             var d = document.forms["newtask"]["endDate"].value;
             var cond = a != null && a != "" && b != null && b != "" && c != null && c != "" && d != null && d != "";
             if(cond){
-              /*var eDate = new Date(e); //dd-mm-YYYY
-              var today = new Date();
-              today.setHours(0,0,0,0);
-              var sDate = new Date(c);
-              var dateCond = eDate >= today && eDate >= sDate;
-
-              if(cond && dateCond) {*/
                 alert("Task successfully added to the project !");
-              /*}if(cond && !(dateCond)){ 
-                alert("Task successfully added to the project !\nThere seemed to be confusion at times, do not worry we fixed it.");
-                
-              }*/
             }
         }
+
+        function setMinDate(){
+          document.forms["newtask"]["endDate"].setAttribute("min", document.forms["newtask"]["startDate"].value);
+          document.forms["newtask"]["endDate"].value = document.forms["newtask"]["startDate"].value;
+        }
+        function createDateString() {     
+          //  Take a Date value, and turn it into a "2005-05-26T11:37:42" string
+          var date = new Date();
+          alert(date.getMonth())
+          var dateStr = date.getFullYear() + '-' + 
+            this.padZero(date.getMonth()+1) + '-' +
+            this.padZero(date.getDate()) + 'T' +
+            this.padZero(date.getHours()) + ':' + 
+            this.padZero(date.getMinutes()) + ':' + 
+            this.padZero(date.getSeconds());
+
+          return dateStr;
+        }
+        function padZero(numericValue){
+            if (numericValue < 10)
+                return '0' + numericValue.toString();;
+              
+            return numericValue.toString();;
+          }
+          function createDateString() {     
+            //  Take a Date value, and turn it into a "2005-05-26T11:37:42" string
+            var date = new Date();
+            
+            var dateStr = date.getFullYear() + '-' + 
+              this.padZero(date.getMonth()+1) + '-' +
+              this.padZero(date.getDate()) + 'T' +
+              this.padZero(date.getHours()) + ':' + 
+              this.padZero(date.getMinutes());
+            return dateStr;
+          }
+          document.forms["newtask"]["startDate"].setAttribute("min", createDateString());
       </script>
     </td>
   </tr>
