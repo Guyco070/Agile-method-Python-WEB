@@ -50,19 +50,6 @@
           document.forms["newtask"]["endDate"].setAttribute("min", document.forms["newtask"]["startDate"].value);
           document.forms["newtask"]["endDate"].value = document.forms["newtask"]["startDate"].value;
         }
-        function createDateString() {     
-          //  Take a Date value, and turn it into a "2005-05-26T11:37:42" string
-          var date = new Date();
-          alert(date.getMonth())
-          var dateStr = date.getFullYear() + '-' + 
-            this.padZero(date.getMonth()+1) + '-' +
-            this.padZero(date.getDate()) + 'T' +
-            this.padZero(date.getHours()) + ':' + 
-            this.padZero(date.getMinutes()) + ':' + 
-            this.padZero(date.getSeconds());
-
-          return dateStr;
-        }
         function padZero(numericValue){
             if (numericValue < 10)
                 return '0' + numericValue.toString();;

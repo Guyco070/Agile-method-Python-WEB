@@ -110,7 +110,7 @@ def ProjectPage(response):
             result = render(response, "Agile/ProjectPageProgrammer.html", PDetails)
         if (response.COOKIES['TYPE'] == 'Client'):
             result = render(response, "Agile/ProjectPageClient.html", PDetails)
-        result.set_cookie('Project',response.POST.get('Project'),1800)
+        result.set_cookie('Project',response.POST.get('Project'),3000)
     return result
 def ProgrammerHomePage(response):
     if response.method == 'POST':
@@ -153,12 +153,18 @@ def taskpage(response):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
         Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if(response.COOKIES['TYPE']=='Admin'):
         result=render(response, "Agile/TaskPageManager.html",TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -173,13 +179,19 @@ def taskpage1(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -194,13 +206,19 @@ def taskpage2(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['sDate']
+        eDate=tempPs['eDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -215,13 +233,19 @@ def taskpage3(response):
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
-        Programmer = tempPs['Programmer']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
         if (USERSTORY != None):
-            TDetails['PDetails'].append(['USERSTORY :', USERSTORY])
+            TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer :', Programmer])
+            TDetails['PDetails'].append(['Programmer', Programmer])
     if (response.COOKIES['TYPE'] == 'Admin'):
         result = render(response, "Agile/TaskPageManager.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Programmer'):
