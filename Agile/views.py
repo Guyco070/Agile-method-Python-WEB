@@ -93,7 +93,9 @@ def AdminHomePage(response):
     return render(response,"Agile/AdminHomePage.html",projects)
 def ProjectPage(response):
     PDetails = {'PDetails': []}
-    tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    if 'Project' in response.POST:
+        tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
+    else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -259,17 +261,30 @@ def AddTasks(request):
     return render(request,"Agile/AddTasks.html")
 def ADDTASKS(response):
     if response.method == 'POST':
-        SV = db.tasks
-        task = {
-            "ProjectName":response.COOKIES['Project'],
-            "USERSTORY":response.POST.get('USERSTORY'),
-            "Tasks": response.POST.get('TASKS'),
-            "Programmer" : None,
-            "status":"TODO"
-        }
-        SV.insert_one(task)
-        client.close()
-    return render(response,"Agile/TASKSADDED.html")
+        if 'beckToP' in response.POST:
+            return ProjectPage(response)
+        a = response.POST.get('USERSTORY')
+        b = response.POST.get('TASKS')
+        c = response.POST.get('startDate')
+        d = response.POST.get('startTime')
+        e = response.POST.get('endDate')
+        f = response.POST.get('endTime')
+        if a != null & a != "" & b != null & b != "" & c != null & c != "" & d != null & d != "" & e != null & e != "" & f != null & f != "":
+            SV = db.tasks
+            task = {
+                "ProjectName":response.COOKIES['Project'],
+                "USERSTORY":response.POST.get('USERSTORY'),
+                "Tasks": response.POST.get('TASKS'),
+                "SDate": response.POST.get('startDate'),
+                "STime": response.POST.get('startTime'),
+                "EDate": response.POST.get('endDate'),
+                "ETime": response.POST.get('endTime'),
+                "Programmer" : None,
+                "status":"TODO"
+            }
+            SV.insert_one(task)
+            client.close()
+    return AddTasks(response)
     
 def KanbanPage(response):
     if response.method == 'POST':

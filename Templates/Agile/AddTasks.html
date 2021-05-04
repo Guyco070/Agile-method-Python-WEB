@@ -5,16 +5,63 @@
     <title>Title</title>
 </head>
 <body>
+<form action="ADDTASKS" method="POST" name="newtask" id="newtask">{% csrf_token %}
+  <table style="text-align:center;" >
+    <br><br>
+    <tr>
+      <td>
+       <label for="USERSTORY">USER STORY:</label></br>
+       <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" required></textarea>
+       </br></br>
+      </td>
+      <td>
+        <label for="startDate" style="padding: 50px;" required>Estimated start:</label></br>
+        <input type="date" id="startDate" name="startDate"><br><br>
+      </td>
+      <td>
+        </br>
+        <input type="time" id="startTime" name="startTime" required><br><br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="TASKS">Tasks:</label></br>
+        <textarea id="TASKS" name="TASKS" rows="4" cols="50" required></textarea>
+        <br></br>
+      </td>
+      <td>
+        <label for="endDate">Estimated end:</label></br>
+        <input type="date" id="endDate" name="endDate" required><br><br>
+      </td>
+      <td>
+        </br>
+        <input type="time" id="endTime" name="endTime" required><br><br>
+      </td>
+    </tr>
+  <tr>
+    <td>
+    </br>
+      <input type="submit" value="Submit" onclick="myFunction()">
+      <script>
+        function myFunction() {
+            var a = document.forms["newtask"]["USERSTORY"].value;
+            var b = document.forms["newtask"]["TASKS"].value;
+            var c = document.forms["newtask"]["startDate"].value;
+            var d = document.forms["newtask"]["startTime"].value;
+            var e = document.forms["newtask"]["endDate"].value;
+            var f = document.forms["newtask"]["endDate"].value;
+            if(a != null && a != "", b != null && b != "", c != null && c != "", d != null && d != "", e != null && e != "", f != null && f != "")
+              alert("Task successfully added to the project !");
+        }
+      </script>
+    </td>
+  </tr>
+</form>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
-  <br><br>
-  <label for="USERSTORY">USER STORY</label>
-  <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50">
-  </textarea>
-  <label for="TASKS">Tasks:</label>
-  <textarea id="TASKS" name="TASKS" rows="4" cols="50">
-  </textarea>
-  <br>
-  <input type="submit" value="Submit">
+  <td>
+    </br>
+    <input type="submit" value="beck To project" id="beckToP" name="beckToP">
+  </td>
 </form>
 </body>
 </html>
