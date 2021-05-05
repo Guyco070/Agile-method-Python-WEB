@@ -257,10 +257,38 @@ def taskpage3(response):
     return result
 def TaskPageEdit(response):
     return render(response, "Agile/TaskPageEdit.html")
+
 def EditTasks(response):
     PDetails = {'PDetails': []}
-    myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']}
-    newvalues = {"$set": {"ProjectName":  response.COOKIES['Project'],"USERSTORY": response.POST.get('USERSTORY'),"Tasks": response.POST.get('Tasks'),"status": response.POST.get('status')}}
+    uStory = response.POST.get('USERSTORY')
+    tasks = response.POST.get('TASKS')
+    s = response.POST.get('startDate')
+    e = response.POST.get('endDate')
+    myquery = db.tasks.find_one ({"ProjectName":response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    print(myquery)
+    newvalues = {"$set": {"ProjectName":  response.COOKIES['Project']}}
+    if uStory:
+        newvalues["$set"]["USERSTORY"] = uStory
+    if tasks:
+        newvalues["$set"]["Tasks"] = tasks
+    if uStory:
+        newvalues["$set"]["USERSTORY"] = uStory
+    if s :
+        sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        s = sDate.strftime('%d.%m.%y %H:%M') #format change
+        if not e:
+            eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+        else: 
+            eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+            e = eDate.strftime('%d.%m.%y %H:%M') #format change
+        if sDate < eDate:
+            newvalues["$set"]["EDate"] = e
+    elif e:
+        eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        e = eDate.strftime('%d.%m.%y %H:%M') #format change
+        sDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+        if eDate > sDate:
+            newvalues["$set"]["EDate"] = e
     db.tasks.update_one(myquery,newvalues)
     return render(response, "Agile/TaskPageEdit.html", PDetails)
 def updateProjectDetails(response):
@@ -426,6 +454,7 @@ def TaskPageProgrammer(response):
         return KanbanPage(response)
     TaskPageProgrammer_flag = True
     return KanbanPage(response)
+
 
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]

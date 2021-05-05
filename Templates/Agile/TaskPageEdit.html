@@ -6,18 +6,77 @@
 </head>
 <body>
 <form action="EditTasks" method="POST">{% csrf_token %}
-  <label for="USERSTORY">userstory:</label>
-  <input type="text" id="USERSTORY" name="USERSTORY"><br><br>
-  <label for="Tasks">Tasks:</label>
-  <input type="text" id="Tasks" name="Tasks"><br><br>
-  <label for="status">Type:</label>
-  <select id="status" name="status" property="true">
-    <option value="TODO">TODO</option>
-    <option value="INPROGRESS">INPROGRESS</option>
-    <option value="INTEST">INTEST</option>
-    <option value="DONE">DONE</option>
-  </select></br></br>
-  <input type="submit" value="Submit">
-</form>
-</body>
+  <h2>Fill in the fields you want to change:</h2>
+    <table style="text-align:center;" >
+      <br><br>
+      <tr>
+        <td>
+         <label for="USERSTORY">USER STORY:</label></br>
+         <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" ></textarea>
+         </br></br>
+        </td>
+        <td>
+          <label for="startDate" style="padding: 80px;" >Estimated start:</label></br>
+          <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="TASKS">Tasks:</label></br>
+          <textarea id="TASKS" name="TASKS" rows="4" cols="50" ></textarea>
+          <br></br>
+        </td>
+        <td>
+          <label for="endDate">Estimated end:</label></br>
+          <input type="datetime-local" id="endDate" name="endDate" ><br><br>
+        </td>
+      </tr>
+    <tr>
+      <td>
+      </br>
+        <input type="submit" value="Submit" onclick="myFunction()">
+        <script>
+          function myFunction() {
+              var a = document.forms["newtask"]["USERSTORY"].value;
+              var b = document.forms["newtask"]["TASKS"].value;
+              var c = document.forms["newtask"]["startDate"].value;
+              var d = document.forms["newtask"]["endDate"].value;
+              var cond = a != null && a != "" && b != null && b != "" && c != null && c != "" && d != null && d != "";
+              if(cond){
+                  alert("Task successfully added to the project !");
+              }
+          }
+  
+          function setMinDate(){
+            document.forms["newtask"]["endDate"].setAttribute("min", document.forms["newtask"]["startDate"].value);
+            document.forms["newtask"]["endDate"].value = document.forms["newtask"]["startDate"].value;
+          }
+          function padZero(numericValue){
+              if (numericValue < 10)
+                  return '0' + numericValue.toString();;
+                
+              return numericValue.toString();;
+            }
+            function createDateString() {     
+              //  Take a Date value, and turn it into a "2005-05-26T11:37:42" string
+              var date = new Date();
+              
+              var dateStr = date.getFullYear() + '-' + 
+                this.padZero(date.getMonth()+1) + '-' +
+                this.padZero(date.getDate()) + 'T' +
+                this.padZero(date.getHours()) + ':' + 
+                this.padZero(date.getMinutes());
+              return dateStr;
+            }
+            document.forms["newtask"]["startDate"].setAttribute("min", createDateString());
+        </script>
+      </td>
+    </tr>
+  </form>
+  <form action="ADDTASKS" method="POST">{% csrf_token %}
+    <td>
+      </br>
+      <input type="submit" value="beck To project" id="beckToP" name="beckToP">
+    </td>
+  </form>
 </html>
