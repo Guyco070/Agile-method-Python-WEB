@@ -97,7 +97,6 @@ def ProjectPage(response):
     if 'Project' in response.POST:
         tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
     else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
-    print(tempPs)
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
@@ -256,13 +255,46 @@ def taskpage3(response):
     result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
     return result
 def TaskPageEdit(response):
-    return render(response, "Agile/TaskPageEdit.html")
+    PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+    return render(response, "Agile/TaskPageEdit.html",PQuery)
+
 def EditTasks(response):
-    PDetails = {'PDetails': []}
-    myquery={"ProjectName": response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']}
-    newvalues = {"$set": {"ProjectName":  response.COOKIES['Project'],"USERSTORY": response.POST.get('USERSTORY'),"Tasks": response.POST.get('Tasks'),"status": response.POST.get('status')}}
+    uStory = response.POST.get('USERSTORY')
+    tasks = response.POST.get('TASKS')
+    s = response.POST.get('startDate')
+    e = response.POST.get('endDate')
+    p = response.POST.get('programmer')
+    projectName = response.COOKIES['Project']
+    myquery = db.tasks.find_one ({"ProjectName":response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    newvalues = {"$set": {"ProjectName": projectName }}
+    if uStory:
+        newvalues["$set"]["USERSTORY"] = uStory
+    if tasks:
+        newvalues["$set"]["Tasks"] = tasks
+    if uStory:
+        newvalues["$set"]["USERSTORY"] = uStory
+    if s :
+        sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        s = sDate.strftime('%d.%m.%y %H:%M') #format change
+        if not e:
+            eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+        else: 
+            eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+            e = eDate.strftime('%d.%m.%y %H:%M') #format change
+        if sDate < eDate:
+            newvalues["$set"]["EDate"] = e
+    elif e:
+        eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+        e = eDate.strftime('%d.%m.%y %H:%M') #format change
+        sDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+        if eDate > sDate:
+            newvalues["$set"]["EDate"] = e
+    if p != 'programmer' :
+        newvalues["$set"]["Programmer"] = p
     db.tasks.update_one(myquery,newvalues)
-    return render(response, "Agile/TaskPageEdit.html", PDetails)
+    result = ProjectPage(response)
+    result.set_cookie('Project',projectName,3000)
+    return result
 def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -284,34 +316,39 @@ def updateProjectDetails(response):
             PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 def AddTasks(request):
-    return render(request,"Agile/AddTasks.html")
+    PQuery = db.projects.find_one({"ProjectName": request.COOKIES['Project']})
+    return render(request,"Agile/AddTasks.html",PQuery)
 def ADDTASKS(response):
     if response.method == 'POST':
+        projectName = response.COOKIES['Project']
         if 'beckToP' in response.POST:
-            return ProjectPage(response)
-        a = response.POST.get('USERSTORY')
-        b = response.POST.get('TASKS')
-        c = response.POST.get('startDate')
-        d = response.POST.get('endDate')
-        SV = db.tasks
-        
-        sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
-        eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
-        c = sDate.strftime('%d.%m.%y %H:%M') #format change
-        d = eDate.strftime('%d.%m.%y %H:%M') #format change
-        task = {
-            "ProjectName":response.COOKIES['Project'],
-            "USERSTORY":a,
-            "Tasks": b,
-            "SDate": c,
-            "EDate": d,
-            "Programmer" : None,
-            "status":"TODO"
-        }
-        SV.insert_one(task)
-        client.close()
-    return AddTasks(response)
-    
+            result = ProjectPage(response)
+        else:
+            a = response.POST.get('USERSTORY')
+            b = response.POST.get('TASKS')
+            c = response.POST.get('startDate')
+            d = response.POST.get('endDate')
+            e = response.POST.get('programmer')
+            
+            sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+            eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+            c = sDate.strftime('%d.%m.%y %H:%M') #format change
+            d = eDate.strftime('%d.%m.%y %H:%M') #format change
+            task = {
+                "ProjectName":projectName,
+                "USERSTORY":a,
+                "Tasks": b,
+                "SDate": c,
+                "EDate": d,
+                "Programmer" : e,
+                "status":"TODO"
+            }
+            SV = db.tasks
+            SV.insert_one(task)
+            client.close()
+            result = AddTasks(response)
+    result.set_cookie('Project',projectName,3000)
+    return result
 def KanbanPage(response):
     if response.method == 'POST':
         tasks = {'tasks':[]}
@@ -426,6 +463,7 @@ def TaskPageProgrammer(response):
         return KanbanPage(response)
     TaskPageProgrammer_flag = True
     return KanbanPage(response)
+
 
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
