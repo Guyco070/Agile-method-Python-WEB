@@ -133,8 +133,20 @@ def ClientHomePage(response):
                 projects['projects'].append(p)
     return render(response, "Agile/ClientHomePage.html", projects)
 
+
 def ChangeDetailsPage(response):
-    PDetails = {'PDetails': []}
+    PDetails = {'PDetails': [],'programmers': [], 'clients': []}
+    tempPro = list(db.users.find({"TYPE": "Programmer"}))
+    for pr in tempPro:
+        p = pr['ID']
+        if (p != None):
+            PDetails['programmers'].append(p)
+    tempCli = list(db.users.find({"TYPE": "Client"}))
+    for cl in tempCli:
+        c = cl['ID']
+        if (cl != None):
+            PDetails['clients'].append(c)
+
     tempPs = db.projects.find_one({"ProjectName":response.COOKIES['Project']})
     if(tempPs != None):
         name = tempPs['ProjectName']
