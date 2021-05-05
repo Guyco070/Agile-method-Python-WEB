@@ -18,6 +18,14 @@
         <label for="startDate" style="padding: 80px;" required>Estimated start:</label></br>
         <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
       </td>
+      <td>
+        <label for="programmer" style="padding: 50px;">Programmer:</label>      </br>
+        <select id="programmer" name="programmer" property="true">
+          {% for obj in Programmer %}
+            <option value="{{obj}}">{{obj}}</option>
+          {% endfor %}
+        </select></br></br>
+      </td>
     </tr>
     <tr>
       <td>

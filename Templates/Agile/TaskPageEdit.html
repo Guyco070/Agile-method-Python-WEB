@@ -19,6 +19,15 @@
           <label for="startDate" style="padding: 80px;" >Estimated start:</label></br>
           <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
         </td>
+        <td>
+          </br>
+          <select id="programmer" name="programmer" property="true">
+            <option value="programmer" aria-placeholder="true">Choose programmer</option>
+            {% for obj in Programmer %}
+              <option value="{{obj}}">{{obj}}</option>
+            {% endfor %}
+          </select></br></br>
+        </td>
       </tr>
       <tr>
         <td>
@@ -41,10 +50,10 @@
               var b = document.forms["newtask"]["TASKS"].value;
               var c = document.forms["newtask"]["startDate"].value;
               var d = document.forms["newtask"]["endDate"].value;
-              var cond = a != null && a != "" && b != null && b != "" && c != null && c != "" && d != null && d != "";
+              var cond = a != null || a != "" || b != null || b != "" || c != null || c != "" || d != null || d != "";
               if(cond){
-                  alert("Task successfully added to the project !");
-              }
+                  alert("Task details successfully changed ! \nlets go to project page...");
+              }else alert("There is nothing to change ! \nlets go to project page...");
           }
   
           function setMinDate(){
