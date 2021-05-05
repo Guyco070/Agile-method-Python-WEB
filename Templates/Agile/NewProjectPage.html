@@ -7,6 +7,11 @@
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
+table, th, td {
+  border: 1px solid black;
+  margin:-185px 0 0 1px;
+}
+
 /* Full-width input fields */
 input[type=text] {
   width: 30%;
@@ -131,28 +136,44 @@ span.psw {
             <label for="projectDescription">Description:</label> </br>
             <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
             </br>
-            <div>
-             <label>Choose Project's Programmers : </label>
-            </br>
 
+            <div>
+                <label><b>Choose Team </b> : </label>
+                <table style="width:50%;text-align:left;" >
+                <tr>
+                <th>Programmers : </th>
+                <th>clients : </th>
+            </tr>
+            <tr>
+                <td>
                 {% for obj in programmers %}
-                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}">
+                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}" >
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
+                </td>
+
             </div>
 
+
             <div class="ChooseClient">
-             <label>Choose Project's Clients : </label>
             </br>
 
+                    <td>
                 {% for obj in clients %}
                     <input type="checkbox" id="{{obj}}" name="client" value="{{obj}}">
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
-            </div>
 
+                </td>
+            </tr>
+                </br>
+                </br>
+                </br>
+                </br>
+
+            </div>
             <button type="submit" onclick="myFunction()">Creat Project</button>
             <script>
                 function myFunction() {
