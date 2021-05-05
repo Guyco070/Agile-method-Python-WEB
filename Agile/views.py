@@ -32,8 +32,12 @@ def CreateProjDone(response):
         SV = db.projects
         Programmer_list = response.POST.getlist('programmer')
         client_list = response.POST.getlist('client')
+
+        ProjectName = response.POST.get('ProjectName')
+        ProjectName = ProjectName.lstrip()
+        ProjectName = ProjectName.rstrip()
         projects = {
-            "ProjectName" : response.POST.get('ProjectName'),
+            "ProjectName" : ProjectName,
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
             "Cilents":client_list,
@@ -276,6 +280,12 @@ def EditTasks(response):
     s = response.POST.get('startDate')
     e = response.POST.get('endDate')
     p = response.POST.get('programmer')
+
+    uStory = uStory.lstrip()
+    uStory = uStory.rstrip()
+    tasks = tasks.lstrip()
+    tasks = tasks.rstrip()
+
     projectName = response.COOKIES['Project']
     myquery = db.tasks.find_one ({"ProjectName":response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
     newvalues = {"$set": {"ProjectName": projectName }}
@@ -312,9 +322,12 @@ def updateProjectDetails(response):
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     myquery={"ProjectName": response.COOKIES['Project']}
     ProjectName = response.POST.get('ProjectName')
+
     projectDescription = response.POST.get('projectDescription')
     newvalues = {"$set": {}}
     if ProjectName:
+        ProjectName = ProjectName.lstrip()
+        ProjectName = ProjectName.rstrip()
         newvalues["$set"]["ProjectName"] = ProjectName
     if projectDescription:
         newvalues["$set"]["Description"] = projectDescription
@@ -342,6 +355,10 @@ def ADDTASKS(response):
             d = response.POST.get('endDate')
             e = response.POST.get('programmer')
             
+            a = a.lstrip()
+            a = a.rstrip()
+            b = b.lstrip()
+            b = b.rstrip()
             sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             c = sDate.strftime('%d.%m.%y %H:%M') #format change
