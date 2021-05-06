@@ -55,7 +55,7 @@ class Test(SimpleTestCase):
         self.assertTrue(is_project_inserted)
 
     def test_homepage_url(self):
-        response = self.client.get('')
+        response = self.client.post('')
         self.assertEquals(response.status_code, 200)
 '''
     def test_SIGNUP_url(self):
