@@ -53,7 +53,51 @@ class Test(SimpleTestCase):
         client.close()
         is_project_inserted = SV.find_one(project) != None
         self.assertTrue(is_project_inserted)
-
+    def test_getTasksFromDb(self):
+        todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
+        inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
+        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
+        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
+        print(todo)
+        print(inprogress)
+        print(done)
+     def test_getTasksFromDb(self):
+        todo = list(db.tasks.find({"status":"TODO"}))
+        inprogress=list(db.tasks.find({"status":"INPROGRESS"}))
+        intest = list(db.tasks.find({"status": "INTEST"}))
+        done = list(db.tasks.find({"status": "DONE"}))
+        print(todo)
+        print(inprogress)
+        print(done)
+     def test_EditTasks(self):
+        uStory = self['USERSTORY']
+        tasks = self['TASKS']
+        s = self['startDate']
+        e = self['endDate']
+        p =  self['programmer']
+        uStory = uStory.lstrip()
+        uStory = uStory.rstrip()
+        tasks = tasks.lstrip()
+        tasks = tasks.rstrip()
+        projectName = self['Project']
+        myquery = db.tasks.find_one ({"ProjectName":projectName,"USERSTORY": uStory})
+        newvalues = {"$set": {"ProjectName": projectName }}
+        db.tasks.update_one(myquery,newvalues)
+        print("ok);
+     def test_addTASK(self):
+        task = {
+                "ProjectName":self['projectName'],
+                "USERSTORY":self['USERSTORY'],
+                "Tasks": self['Tasks'],
+                "SDate": self['SDate'],
+                "EDate": self['EDate'],
+                "Programmer" : self['Programmer'],
+                "status":self['Status']
+            }
+         SV = db.tasks
+         SV.insert_one(task)
+         print(tasks)
+         print("new task added!")
     '''
     def test_homepage_url(self):
         response = self.client.get('')
