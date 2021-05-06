@@ -54,11 +54,10 @@ class Test(SimpleTestCase):
         is_project_inserted = SV.find_one(project) != None
         self.assertTrue(is_project_inserted)
 
-    '''
     def test_homepage_url(self):
         response = self.client.get('')
         self.assertEquals(response.status_code, 200)
-
+'''
     def test_SIGNUP_url(self):
         response = self.client.get('/SIGNUP')
         self.assertEquals(response.status_code, 200)
