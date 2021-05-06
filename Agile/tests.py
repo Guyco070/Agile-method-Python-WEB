@@ -53,51 +53,71 @@ class Test(SimpleTestCase):
         client.close()
         is_project_inserted = SV.find_one(project) != None
         self.assertTrue(is_project_inserted)
+
+    
     def test_getTasksFromDb(self):
         todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
-        inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
+        inprogress = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
         intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
         done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
-        print(todo)
-        print(inprogress)
-        print(done)
-     def test_getTasksFromDb(self):
+
+        is_task_exist = todo != None & inprogress != None & intest != None & done != None
+        self.assertTrue(is_user_inserted)
+
+    def test_getTasksFromDb(self):
         todo = list(db.tasks.find({"status":"TODO"}))
         inprogress=list(db.tasks.find({"status":"INPROGRESS"}))
         intest = list(db.tasks.find({"status": "INTEST"}))
         done = list(db.tasks.find({"status": "DONE"}))
-        print(todo)
-        print(inprogress)
-        print(done)
-     def test_EditTasks(self):
-        uStory = self['USERSTORY']
-        tasks = self['TASKS']
-        s = self['startDate']
-        e = self['endDate']
-        p =  self['programmer']
+        
+        is_task_exist = (todo != None) & (inprogress != None) & (intest != None) & (done != None)
+        self.assertTrue(is_task_exist)
+
+    def test_addTASK(self):
+        SV = db.tasks
+
+        projectName = " temp_projectName  "
+        uStory = " testUSERSTORY "
+
         uStory = uStory.lstrip()
         uStory = uStory.rstrip()
-        tasks = tasks.lstrip()
-        tasks = tasks.rstrip()
-        projectName = self['Project']
-        myquery = db.tasks.find_one ({"ProjectName":projectName,"USERSTORY": uStory})
-        newvalues = {"$set": {"ProjectName": projectName }}
-        db.tasks.update_one(myquery,newvalues)
-        print("ok);
-     def test_addTASK(self):
+        projectName = projectName.lstrip()
+        projectName = projectName.rstrip()
+        
+        SV.delete_many({"ProjectName":projectName,"USERSTORY": uStory})
         task = {
-                "ProjectName":self['projectName'],
-                "USERSTORY":self['USERSTORY'],
-                "Tasks": self['Tasks'],
-                "SDate": self['SDate'],
-                "EDate": self['EDate'],
-                "Programmer" : self['Programmer'],
-                "status":self['Status']
+                "ProjectName": projectName,
+                "USERSTORY": uStory,
+                "Tasks": "test_Tasks",
+                "SDate": "test_SDate",
+                "EDate": "test_EDate",
+                "Programmer" : "test_Programmer",
+                "status": "test_Status"
             }
-         SV = db.tasks
-         SV.insert_one(task)
-         print(tasks)
-         print("new task added!")
+        
+        SV.insert_one(task)
+
+        is_task_unserted = SV.find_one(task) != None
+        self.assertTrue(is_task_unserted)
+    
+    def test_EditTasks(self):
+        projectName = " temp_projectName  "
+        uStory = " testUSERSTORY "
+
+        uStory = uStory.lstrip()
+        uStory = uStory.rstrip()
+        projectName = projectName.lstrip()
+        projectName = projectName.rstrip()
+        
+        DB = db.tasks
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
+        DB.update_one(myquery,newvalues)
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        
+        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
     '''
     def test_homepage_url(self):
         response = self.client.get('')
