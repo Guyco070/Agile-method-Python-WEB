@@ -55,14 +55,22 @@ class Test(SimpleTestCase):
         self.assertTrue(is_project_inserted)
 
     
-    def test_getTasksFromDb(self):
-        todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
-        inprogress = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
-        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
-        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
-
-        is_task_exist = todo != None & inprogress != None & intest != None & done != None
-        self.assertTrue(is_user_inserted)
+    def test_getTasksFromDb_to_KanbanPage(self):
+        todo = list(db.tasks.find({"status":"TODO"}))
+        inprogress = list(db.tasks.find({"status":"INPROGRESS"}))
+        intest = list(db.tasks.find({"status": "INTEST"}))
+        done = list(db.tasks.find({"status": "DONE"}))
+        is_tasks_status_match = True
+        for t in todo:
+            is_tasks_status_match += t["status"] == "TODO"
+        for t in inprogress:
+            is_tasks_status_match += t["status"] == "INPROGRESS"
+        for t in intest:
+            is_tasks_status_match += t["status"] == "INTEST"
+        for t in done:
+            is_tasks_status_match += t["status"] == "DONE"
+        
+        self.assertTrue(is_tasks_status_match)
 
     def test_getTasksFromDb(self):
         todo = list(db.tasks.find({"status":"TODO"}))
