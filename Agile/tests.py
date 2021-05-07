@@ -161,7 +161,7 @@ class Test(SimpleTestCase):
         is_task_removed = SV.find_one({"ProjectName": "temp_projectName","USERSTORY": "testUSERSTORY"}) == None
         self.assertTrue(is_task_removed)
 
-    #13,24
+    #13,24,40
     def test_getTasksFromDb_to_KanbanPage_TODO(self):
         todo = list(db.tasks.find({"status":"TODO"}))
         is_tasks_status_match = True
@@ -169,7 +169,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "TODO"
         self.assertTrue(is_tasks_status_match)
 
-    #14,25
+    #14,25,41
     def test_getTasksFromDb_to_KanbanPage_inprogress(self):
         inprogress = list(db.tasks.find({"status":"INPROGRESS"}))
         is_tasks_status_match = True
@@ -177,7 +177,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "INPROGRESS"
         self.assertTrue(is_tasks_status_match)
 
-    #15,27
+    #15,27,42
     def test_getTasksFromDb_to_KanbanPage_done(self):
         done = list(db.tasks.find({"status": "DONE"}))
         is_tasks_status_match = True
@@ -185,7 +185,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "DONE"
         self.assertTrue(is_tasks_status_match)
     
-    #16,26
+    #16,26,43
     def test_getTasksFromDb_to_KanbanPage_intest(self):
         intest = list(db.tasks.find({"status": "INTEST"}))
         is_tasks_status_match = True
