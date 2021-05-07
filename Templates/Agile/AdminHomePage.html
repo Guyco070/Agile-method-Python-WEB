@@ -2,13 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <form onclick="location.href =''" method='POST'>{% csrf_token %}
+        <button id="logout" name="logout">Logout </button>
+    </form>
     <title>AdminHomePage</title>
 </head>
 <body>
 <form action="showMyProjects" method="POST">{% csrf_token %}
-    <h1>Hello admin user</h1>
+    {%if FName == ""%}
+        <h1>Hello admin user</h1>
+    {% else %}
+        <h1>Hello {{FName}} {{LName}} (project manager)</h1>
+    {% endif %}
     </br>
-    <h1>Projects:</h1>
     <button>Show My Projects</button>
 </form>
  </br>
