@@ -31,7 +31,7 @@
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in inprogress %}
         <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;margin:10px;">
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
       </br>
         {% endfor %}
@@ -41,7 +41,7 @@
          <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in intest %}
         <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;margin:10px;">
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
         </br>
         {% endfor %}
@@ -51,12 +51,16 @@
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj in done %}
         <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;margin:10px;">
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         </br>
         {% endfor %}
         </form>
     </td>
   </tr>
 </table>
+<form action="ADDTASKS" method="POST">{% csrf_token %}
+  </br></br>
+  <input type="submit" value="back To project" id="beckToP" name="beckToP">
+</form>
 </body>
 </html>

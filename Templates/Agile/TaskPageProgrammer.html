@@ -10,5 +10,9 @@
     <lable> {{value}} </lable>
     </li></br>
     {% endfor %}
+    <form action="ADDTASKS" method="POST">{% csrf_token %}
+        </br>
+        <input type="submit" value="back To project" id="beckToP" name="beckToP">
+    </form>
 </body>
 </html>
