@@ -32,8 +32,12 @@ def CreateProjDone(response):
         SV = db.projects
         Programmer_list = response.POST.getlist('programmer')
         client_list = response.POST.getlist('client')
+
+        ProjectName = response.POST.get('ProjectName')
+        ProjectName = ProjectName.lstrip()
+        ProjectName = ProjectName.rstrip()
         projects = {
-            "ProjectName" : response.POST.get('ProjectName'),
+            "ProjectName" : ProjectName,
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
             "Cilents":client_list,
@@ -160,7 +164,7 @@ def ChangeDetailsPage(response):
 
 def taskpage(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'],"USERSTORY": response.POST.get('TASKNAME')})
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME')})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
@@ -185,125 +189,56 @@ def taskpage(response):
         result = render(response, "Agile/TaskPageClient.html",TDetails)
     result.set_cookie('Task',response.POST.get('TASKNAME'), 1800)
     return result
-def taskpage1(response):
-    TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME1')})
-    if (tempPs != None):
-        USERSTORY = tempPs['USERSTORY']
-        Tasks = tempPs['Tasks']
-        Programmer=tempPs['Programmer']
-        sDate=tempPs['SDate']
-        eDate=tempPs['EDate']
-        if (USERSTORY != None):
-            TDetails['PDetails'].append(['User story', USERSTORY])
-        if (Tasks != None):
-            TDetails['PDetails'].append(['Tasks', Tasks])
-        if (sDate != None):
-            TDetails['PDetails'].append(['Estimated start', sDate])
-        if (eDate != None):
-            TDetails['PDetails'].append(['Estimated end', eDate])
-        if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer', Programmer])
-    if (response.COOKIES['TYPE'] == 'Admin'):
-        result = render(response, "Agile/TaskPageManager.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Programmer'):
-        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Client'):
-        result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME1'), 1800)
-    return result
-def taskpage2(response):
-    TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME2')})
-    if (tempPs != None):
-        USERSTORY = tempPs['USERSTORY']
-        Tasks = tempPs['Tasks']
-        Programmer=tempPs['Programmer']
-        sDate=tempPs['sDate']
-        eDate=tempPs['eDate']
-        if (USERSTORY != None):
-            TDetails['PDetails'].append(['User story', USERSTORY])
-        if (Tasks != None):
-            TDetails['PDetails'].append(['Tasks', Tasks])
-        if (sDate != None):
-            TDetails['PDetails'].append(['Estimated start', sDate])
-        if (eDate != None):
-            TDetails['PDetails'].append(['Estimated end', eDate])
-        if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer', Programmer])
-    if (response.COOKIES['TYPE'] == 'Admin'):
-        result = render(response, "Agile/TaskPageManager.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Programmer'):
-        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Client'):
-        result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME2'), 1800)
-    return result
-def taskpage3(response):
-    TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME3')})
-    if (tempPs != None):
-        USERSTORY = tempPs['USERSTORY']
-        Tasks = tempPs['Tasks']
-        Programmer=tempPs['Programmer']
-        sDate=tempPs['SDate']
-        eDate=tempPs['EDate']
-        if (USERSTORY != None):
-            TDetails['PDetails'].append(['User story', USERSTORY])
-        if (Tasks != None):
-            TDetails['PDetails'].append(['Tasks', Tasks])
-        if (sDate != None):
-            TDetails['PDetails'].append(['Estimated start', sDate])
-        if (eDate != None):
-            TDetails['PDetails'].append(['Estimated end', eDate])
-        if (Programmer != None):
-            TDetails['PDetails'].append(['Programmer', Programmer])
-    if (response.COOKIES['TYPE'] == 'Admin'):
-        result = render(response, "Agile/TaskPageManager.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Programmer'):
-        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
-    if (response.COOKIES['TYPE'] == 'Client'):
-        result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
-    return result
+
 def TaskPageEdit(response):
     PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     return render(response, "Agile/TaskPageEdit.html",PQuery)
 
 def EditTasks(response):
-    uStory = response.POST.get('USERSTORY')
-    tasks = response.POST.get('TASKS')
-    s = response.POST.get('startDate')
-    e = response.POST.get('endDate')
-    p = response.POST.get('programmer')
+    SV = db.tasks
     projectName = response.COOKIES['Project']
-    myquery = db.tasks.find_one ({"ProjectName":response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
-    newvalues = {"$set": {"ProjectName": projectName }}
-    if uStory:
-        newvalues["$set"]["USERSTORY"] = uStory
-    if tasks:
-        newvalues["$set"]["Tasks"] = tasks
-    if uStory:
-        newvalues["$set"]["USERSTORY"] = uStory
-    if s :
-        sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
-        s = sDate.strftime('%d.%m.%y %H:%M') #format change
-        if not e:
-            eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
-        else: 
+
+    if 'Delete' in response.POST:
+        SV.delete_many({"ProjectName":response.COOKIES['Project'],"USERSTORY": response.COOKIES['Task']})
+    else:
+        uStory = response.POST.get('USERSTORY')
+        tasks = response.POST.get('TASKS')
+        s = response.POST.get('startDate')
+        e = response.POST.get('endDate')
+        p = response.POST.get('programmer')
+
+        uStory = uStory.lstrip()
+        uStory = uStory.rstrip()
+        tasks = tasks.lstrip()
+        tasks = tasks.rstrip()
+
+        myquery = db.tasks.find_one ({"ProjectName": projectName,"USERSTORY": response.COOKIES['Task']})
+        newvalues = {"$set": {"ProjectName": projectName }}
+        if uStory:
+            newvalues["$set"]["USERSTORY"] = uStory
+        if tasks:
+            newvalues["$set"]["Tasks"] = tasks
+        if uStory:
+            newvalues["$set"]["USERSTORY"] = uStory
+        if s :
+            sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+            s = sDate.strftime('%d.%m.%y %H:%M') #format change
+            if not e:
+                eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+            else: 
+                eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+                e = eDate.strftime('%d.%m.%y %H:%M') #format change
+            if sDate < eDate:
+                newvalues["$set"]["EDate"] = e
+        elif e:
             eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             e = eDate.strftime('%d.%m.%y %H:%M') #format change
-        if sDate < eDate:
-            newvalues["$set"]["EDate"] = e
-    elif e:
-        eDate = datetime.strptime(e.replace("T"," ")[2:], '%y-%m-%d %H:%M')
-        e = eDate.strftime('%d.%m.%y %H:%M') #format change
-        sDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
-        if eDate > sDate:
-            newvalues["$set"]["EDate"] = e
-    if p != 'programmer' :
-        newvalues["$set"]["Programmer"] = p
-    db.tasks.update_one(myquery,newvalues)
+            sDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+            if eDate > sDate:
+                newvalues["$set"]["EDate"] = e
+        if p != 'programmer' :
+            newvalues["$set"]["Programmer"] = p
+        SV.update_one(myquery,newvalues)
     result = ProjectPage(response)
     result.set_cookie('Project',projectName,3000)
     return result
@@ -312,9 +247,12 @@ def updateProjectDetails(response):
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     myquery={"ProjectName": response.COOKIES['Project']}
     ProjectName = response.POST.get('ProjectName')
+
     projectDescription = response.POST.get('projectDescription')
     newvalues = {"$set": {}}
     if ProjectName:
+        ProjectName = ProjectName.lstrip()
+        ProjectName = ProjectName.rstrip()
         newvalues["$set"]["ProjectName"] = ProjectName
     if projectDescription:
         newvalues["$set"]["Description"] = projectDescription
@@ -342,6 +280,10 @@ def ADDTASKS(response):
             d = response.POST.get('endDate')
             e = response.POST.get('programmer')
             
+            a = a.lstrip()
+            a = a.rstrip()
+            b = b.lstrip()
+            b = b.rstrip()
             sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             c = sDate.strftime('%d.%m.%y %H:%M') #format change
@@ -367,18 +309,16 @@ def KanbanPage(response):
         tasks1={'tasks':[]}
         tasks2 ={'tasks': []}
         tasks3 = {'tasks': []}
-        #if(response.COOKIES['TYPE'] == 'Programmer'):
-        '''
-        todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
-        inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
-        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
-        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
-        #else :
-        '''
-        todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
-        inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
-        intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
-        done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
+        if(response.COOKIES['TYPE'] == 'Programmer'):
+            todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
+            inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
+            intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
+            done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
+        else :
+            todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
+            inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
+            intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
+            done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
@@ -481,3 +421,87 @@ def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+'''
+def taskpage1(response):
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME')})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['User story', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
+    result.set_cookie('Task',response.POST.get('TASKNAME1'), 1800)
+    return result
+def taskpage2(response):
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME2')})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['sDate']
+        eDate=tempPs['eDate']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['User story', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
+    result.set_cookie('Task',response.POST.get('TASKNAME2'), 1800)
+    return result
+def taskpage3(response):
+    TDetails = {'PDetails': []}
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME3')})
+    if (tempPs != None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer=tempPs['Programmer']
+        sDate=tempPs['SDate']
+        eDate=tempPs['EDate']
+        if (USERSTORY != None):
+            TDetails['PDetails'].append(['User story', USERSTORY])
+        if (Tasks != None):
+            TDetails['PDetails'].append(['Tasks', Tasks])
+        if (sDate != None):
+            TDetails['PDetails'].append(['Estimated start', sDate])
+        if (eDate != None):
+            TDetails['PDetails'].append(['Estimated end', eDate])
+        if (Programmer != None):
+            TDetails['PDetails'].append(['Programmer', Programmer])
+    if (response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
+    result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
+    return result
+'''

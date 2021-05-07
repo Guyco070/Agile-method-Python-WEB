@@ -81,11 +81,24 @@
         </script>
       </td>
     </tr>
+    <td>
+    </br>
+      <input type="submit" value="back To project" id="beckToP" name="beckToP">
+  </td>
   </form>
-  <form action="ADDTASKS" method="POST">{% csrf_token %}
+  <form action="EditTasks" method="POST">{% csrf_token %}
     <td>
       </br>
+<<<<<<< HEAD
       <input type="submit" value="back To project" id="beckToP" name="beckToP">
+=======
+      <input type="submit" value="Delete user story" id="Delete" name="Delete" onclick="alert_func('User story has been deleted successfully! \nlets go to project page...')">
+>>>>>>> origin/main
     </td>
   </form>
 </html>
+<script>
+  function alert_func(str) {
+              alert(str);
+          }
+</script>
