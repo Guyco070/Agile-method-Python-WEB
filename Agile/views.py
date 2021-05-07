@@ -49,12 +49,13 @@ def CreateProjDone(response):
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
-        print(response.POST.get('TYPE'))
         user = {
             "ID":response.POST.get('ID'),
             "PASSWORD":response.POST.get('PASSWORD'),
             "EMAIL": response.POST.get('EMAIL'),
             "TYPE" : response.POST.get('TYPE'),
+            "FName" : response.POST.get('FName'),
+            "LName" : response.POST.get('LName'),
         }
         SV.insert_one(user)
         client.close()
@@ -68,18 +69,27 @@ def showMyProjects(response):
         return ClientHomePage(response)
 def LoginStatus(response):
     if response.method=='POST':
+        if 'logout' in response.POST:
+            if 'Email' in response.COOKIES:
+                result = HomePage(response)
+                result.delete_cookie('Email')
+                result.delete_cookie('TYPE')
+            return result
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
         if(findUser!= None):
+            if 'FName' in findUser:
+                user_name = {"FName":findUser['FName'],"LName":findUser['LName']}
+            else: user_name = {"FName": "","LName":""}
             if(findUser['TYPE']=="Admin"):
-                result=render(response,"Agile/AdminHomePage.html")
+                result=render(response,"Agile/AdminHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'], max_age=1800)
                 result.set_cookie('Email', response.POST.get('EMAIL'), max_age=1800)
             if (findUser['TYPE'] == "Programmer"):
-                result=render(response, "Agile/ProgrammerHomePage.html")
+                result=render(response, "Agile/ProgrammerHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
                 result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
             if (findUser['TYPE'] == "Client"):
-                result =render(response, "Agile/ClientHomePage.html")
+                result =render(response, "Agile/ClientHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
                 result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
                 result.set_cookie('ID', findUser['ID'],max_age=1800)
@@ -415,7 +425,6 @@ def TaskPageProgrammer(response):
         return KanbanPage(response)
     TaskPageProgrammer_flag = True
     return KanbanPage(response)
-
 
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
