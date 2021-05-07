@@ -37,7 +37,7 @@ class Test(SimpleTestCase):
         }) != None
         self.assertFalse(is_user_Exist)
 
-    #5
+    #5,21,37
     def test_Project_DBFind_true(self):
         Programmer_list = ["Guyco070"]
         Clients_list = ["Guyco070"]
@@ -161,7 +161,7 @@ class Test(SimpleTestCase):
         is_task_removed = SV.find_one({"ProjectName": "temp_projectName","USERSTORY": "testUSERSTORY"}) == None
         self.assertTrue(is_task_removed)
 
-    #13
+    #13,24
     def test_getTasksFromDb_to_KanbanPage_TODO(self):
         todo = list(db.tasks.find({"status":"TODO"}))
         is_tasks_status_match = True
@@ -169,7 +169,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "TODO"
         self.assertTrue(is_tasks_status_match)
 
-    #14
+    #14,25
     def test_getTasksFromDb_to_KanbanPage_inprogress(self):
         inprogress = list(db.tasks.find({"status":"INPROGRESS"}))
         is_tasks_status_match = True
@@ -177,7 +177,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "INPROGRESS"
         self.assertTrue(is_tasks_status_match)
 
-    #15
+    #15,27
     def test_getTasksFromDb_to_KanbanPage_done(self):
         done = list(db.tasks.find({"status": "DONE"}))
         is_tasks_status_match = True
@@ -185,7 +185,7 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "DONE"
         self.assertTrue(is_tasks_status_match)
     
-    #16
+    #16,26
     def test_getTasksFromDb_to_KanbanPage_intest(self):
         intest = list(db.tasks.find({"status": "INTEST"}))
         is_tasks_status_match = True
@@ -193,15 +193,75 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "INTEST"
         self.assertTrue(is_tasks_status_match)
 
-    def test_getTasksFromDb(self):
-        todo = list(db.tasks.find({"status":"TODO"}))
-        inprogress=list(db.tasks.find({"status":"INPROGRESS"}))
-        intest = list(db.tasks.find({"status": "INTEST"}))
-        done = list(db.tasks.find({"status": "DONE"}))
-        
-        is_task_exist = (todo != None) & (inprogress != None) & (intest != None) & (done != None)
-        self.assertTrue(is_task_exist)
-    
+    #29,36
+    def test_Update_TaskStatus(self):
+        SV = db.tasks
+        projectName = "test"
+        uStory = "Utest"
+        uStory = uStory.lstrip()
+        uStory = uStory.rstrip()
+        projectName = projectName.lstrip()
+        projectName = projectName.rstrip()
+        task = {
+            "ProjectName": projectName,
+            "USERSTORY": uStory,
+            "Tasks": "test_Tasks",
+            "SDate": "test_SDate",
+            "EDate": "test_EDate",
+            "Programmer": "test_Programmer",
+            "status": "test_Status"
+        }
+        SV.insert_one(task)
+        SV.find_one_and_update(
+            {"ProjectName": "test"},
+            {"$set": {"status": "TODO"}}
+        )
+        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "test"})["status"]
+
+        client.close()
+        self.assertTrue(is_status_inserted)
+
+    #30
+    def test_Update_TaskStatus_INPROGRESS(self):
+        SV = db.tasks
+        SV.find_one_and_update(
+            {"ProjectName": "test"},
+            {"$set": {"status": "INPROGRESS"}}
+        )
+        is_status_inserted = "INPROGRESS" == SV.find_one({"ProjectName": "test"})["status"]
+        client.close()
+        self.assertTrue(is_status_inserted)
+    #31
+    def test_Update_TaskStatus_INTEST(self):
+        SV = db.tasks
+        SV.find_one_and_update(
+            {"ProjectName": "test"},
+            {"$set": {"status": "INTEST"}}
+        )
+        is_status_inserted = "INTEST" == SV.find_one({"ProjectName": "test"})["status"]
+        client.close()
+        self.assertTrue(is_status_inserted)
+    #32
+    def test_Update_TaskStatus_TODO(self):
+        SV = db.tasks
+        SV.find_one_and_update(
+            {"ProjectName": "test"},
+            {"$set": {"status": "TODO"}}
+        )
+        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "test"})["status"]
+        client.close()
+        self.assertTrue(is_status_inserted)
+    #33
+    def test_Update_TaskStatus_DONE(self):
+        SV = db.tasks
+        SV.find_one_and_update(
+            {"ProjectName": "test"},
+            {"$set": {"status": "DONE"}}
+        )
+        is_status_inserted = "DONE" == SV.find_one({"ProjectName": "test"})["status"]
+        client.close()
+        self.assertTrue(is_status_inserted)
+
     def test_EditTasks(self):
         projectName = " temp_projectName  "
         uStory = " testUSERSTORY "
