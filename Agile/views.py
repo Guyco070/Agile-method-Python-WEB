@@ -30,12 +30,11 @@ def NewProjectPage(response):
 def CreateProjDone(response):
     if response.method == 'POST':
         SV = db.projects
-        Programmer_list = response.POST.getlist('programmer')
-        client_list = response.POST.getlist('client')
+        Programmer_list = get_emails(response.POST.getlist('programmer'))
+        client_list = get_emails(response.POST.getlist('client'))
 
         ProjectName = response.POST.get('ProjectName')
-        ProjectName = ProjectName.lstrip()
-        ProjectName = ProjectName.rstrip()
+        ProjectName = remove_white_spaces_SE(ProjectName)
         projects = {
             "ProjectName" : ProjectName,
             "Description": response.POST.get('projectDescription'),
@@ -75,6 +74,7 @@ def LoginStatus(response):
                 result.delete_cookie('Email')
                 result.delete_cookie('TYPE')
             return result
+            
         findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
         if(findUser!= None):
             if 'FName' in findUser:
@@ -138,9 +138,7 @@ def ProgrammerHomePage(response):
 def ClientHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
-        print(response.COOKIES['ID'])
         tempPs = list(db.projects.find({"Cilents": response.COOKIES['Email']}))
-        print(tempPs)
         for pr in tempPs:
             p = pr['ProjectName']
             if (p != None):
@@ -217,10 +215,8 @@ def EditTasks(response):
         e = response.POST.get('endDate')
         p = response.POST.get('programmer')
 
-        uStory = uStory.lstrip()
-        uStory = uStory.rstrip()
-        tasks = tasks.lstrip()
-        tasks = tasks.rstrip()
+        uStory = remove_white_spaces_SE(uStory)
+        tasks = remove_white_spaces_SE(tasks)
 
         myquery = db.tasks.find_one ({"ProjectName": projectName,"USERSTORY": response.COOKIES['Task']})
         newvalues = {"$set": {"ProjectName": projectName }}
@@ -261,8 +257,7 @@ def updateProjectDetails(response):
     projectDescription = response.POST.get('projectDescription')
     newvalues = {"$set": {}}
     if ProjectName:
-        ProjectName = ProjectName.lstrip()
-        ProjectName = ProjectName.rstrip()
+        ProjectName = remove_white_spaces_SE(ProjectName)
         newvalues["$set"]["ProjectName"] = ProjectName
     if projectDescription:
         newvalues["$set"]["Description"] = projectDescription
@@ -290,10 +285,9 @@ def ADDTASKS(response):
             d = response.POST.get('endDate')
             e = response.POST.get('programmer')
             
-            a = a.lstrip()
-            a = a.rstrip()
-            b = b.lstrip()
-            b = b.rstrip()
+            a = remove_white_spaces_SE(a)
+            b = remove_white_spaces_SE(b)
+
             sDate = datetime.strptime(c.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             eDate = datetime.strptime(d.replace("T"," ")[2:], '%y-%m-%d %H:%M')
             c = sDate.strftime('%d.%m.%y %H:%M') #format change
@@ -319,16 +313,18 @@ def KanbanPage(response):
         tasks1={'tasks':[]}
         tasks2 ={'tasks': []}
         tasks3 = {'tasks': []}
+        
         if(response.COOKIES['TYPE'] == 'Programmer'):
-            todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":response.COOKIES['Email']}))
-            inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
-            intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
-            done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
+            todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer":get_id(response.COOKIES['Email'])})) + list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO","Programmer": response.COOKIES['Email']}))
+            inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":get_id(response.COOKIES['Email'])})) + list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS","Programmer":response.COOKIES['Email']}))
+            intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":get_id(response.COOKIES['Email'])})) + list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST","Programmer":response.COOKIES['Email']}))
+            done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":get_id(response.COOKIES['Email'])})) + list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE","Programmer":response.COOKIES['Email']}))
         else :
             todo = list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"TODO"}))
             inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
             intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
             done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
+        print(todo)
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
@@ -426,10 +422,26 @@ def TaskPageProgrammer(response):
     TaskPageProgrammer_flag = True
     return KanbanPage(response)
 
+def get_emails(users):
+    Programmer_list = list([])
+    for temp_pr in users:
+        temp_e = db.users.find_one({ "ID": temp_pr})
+        Programmer_list.append(temp_e["EMAIL"])
+    return Programmer_list
+
+def get_id(usere):
+    return db.users.find_one({ "EMAIL": usere})['ID']
+
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
+
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+def remove_white_spaces_SE(str_to_update): #remove white spaces from start+end of string
+    str_to_update = str_to_update.lstrip()
+    str_to_update = str_to_update.rstrip()
+    return str_to_update
 
 '''
 def taskpage1(response):
