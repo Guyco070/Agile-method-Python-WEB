@@ -358,15 +358,15 @@ def ClientKanbanPage(response):
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
-                tasks['tasks'].append([p,"red"])
+                tasks['tasks'].append([p,color_adapter(pr)])
         for pr in inprogress:
             p = pr['USERSTORY']
             if(p != None):
-                tasks1['tasks'].append(p)
+                tasks1['tasks'].append([p,color_adapter(pr)])
         for pr in intest:
             p = pr['USERSTORY']
             if(p != None):
-                tasks2['tasks'].append(p)
+                tasks2['tasks'].append([p,color_adapter(pr)])
         for pr in done:
             p = pr['USERSTORY']
             if(p != None):

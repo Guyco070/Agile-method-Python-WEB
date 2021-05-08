@@ -59,25 +59,37 @@
   </tr>
   <tr>
     <td>
-        {% for obj in todo %}
+        {% for obj,color in todo %}
         <form action="updateRate" method='POST'>{% csrf_token %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          {% endif %}
         </form>
         </br>
         {% endfor %}
     </td>
     <td>
         <form action="updateRate" method='POST'>{% csrf_token %}
-        {% for obj in inprogress %}
-        <input type="submit" id="TASKNAME1" name="TASKNAME1" value={{obj}} style="border: none;margin:10px;">
+        {% for obj,color in inprogress %}
+        {% if color == "red" %}
+          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+        {% else %}
+          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+        {% endif %}
       </br>
         {% endfor %}
         </form>
     </td>
     <td>
          <form action="updateRate" method='POST'>{% csrf_token %}
-        {% for obj in intest %}
-        <input type="submit" id="TASKNAME2" name="TASKNAME2" value={{obj}} style="border: none;margin:10px;">
+        {% for obj,color in intest %}
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          {% endif %}
         </br>
         {% endfor %}
         </form>
