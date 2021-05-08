@@ -1,7 +1,7 @@
 from django.test import TestCase,SimpleTestCase
 from django.urls import reverse, resolve
 from . import views
-from .views import db
+from .views import db, remove_white_spaces_SE, get_emails, get_id, client
 
 
 class Test(SimpleTestCase):
