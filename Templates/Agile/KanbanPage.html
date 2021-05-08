@@ -49,9 +49,13 @@
   </tr>
   <tr>
     <td>
-        {% for obj in todo %}
+        {% for obj,color in todo %}
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          {% endif %}
           <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
         </form>
         </br>
@@ -59,21 +63,29 @@
     </td>
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
-        {% for obj in inprogress %}
-        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
-        <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
-      </br>
+        {% for obj,color in inprogress %}
+          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          {% endif %}
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+          </br>
         {% endfor %}
         </form>
     </td>
     <td>
          <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
-        {% for obj in intest %}
-        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
-        <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
-        </br>
+        {% for obj,color in intest %}
+          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          {% endif %}
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+          </br>
         {% endfor %}
         </form>
     </td>

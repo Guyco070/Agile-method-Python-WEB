@@ -2,7 +2,7 @@ from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
 from pymongo.message import update
-from datetime import datetime
+from datetime import datetime, timedelta
 
 TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
@@ -327,15 +327,15 @@ def KanbanPage(response):
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
-                tasks['tasks'].append(p)
+                tasks['tasks'].append([p,color_adapter(pr)])
         for pr in inprogress:
             p = pr['USERSTORY']
             if(p != None):
-                tasks1['tasks'].append(p)
+                tasks1['tasks'].append([p,color_adapter(pr)])
         for pr in intest:
             p = pr['USERSTORY']
             if(p != None):
-                tasks2['tasks'].append(p)
+                tasks2['tasks'].append([p,color_adapter(pr)])
         for pr in done:
             p = pr['USERSTORY']
             if(p != None):
@@ -358,7 +358,7 @@ def ClientKanbanPage(response):
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
-                tasks['tasks'].append(p)
+                tasks['tasks'].append([p,"red"])
         for pr in inprogress:
             p = pr['USERSTORY']
             if(p != None):
@@ -445,6 +445,33 @@ def remove_white_spaces_SE(str_to_update): #remove white spaces from start+end o
     str_to_update = str_to_update.rstrip()
     return str_to_update
 
+def color_adapter(pr):
+    if "EDate" in pr:
+        EDate = datetime.strptime(pr["EDate"],'%d.%m.%y %H:%M')
+        now = datetime.now()
+        print(pr)
+        print(EDate - timedelta(days=3))
+        if pr["status"] == "TODO":
+            if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+                return "red"
+            else: "green"
+
+        if pr["status"] == "INPROGRESS":
+            if (EDate - timedelta(days=5)) < now:  # EDate - timedelta(5) = EDate - 5 days
+                return "red"
+            else: "green"
+
+        if pr["status"] == "INTEST":
+            if (EDate - timedelta(days=3)) < now:  # EDate - timedelta(3) = EDate - 3 days
+                return "red"
+            else: "green"
+
+    '''
+    sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+    s = sDate.strftime('%d.%m.%y %H:%M') #format change
+    if not e:
+        eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+    '''
 '''
 def taskpage1(response):
     TDetails = {'PDetails': []}
