@@ -80,38 +80,43 @@
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,rate in done %}
-          <div class="rate">
-            {% if rate == '5' %}
-              <input type="radio" id={{obj}}5 name="rate" value="5"  checked="true"  disabled="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}5 name="rate" value="5" disabled="true"/>
-            {% endif %}
-            <label for={{obj}}5 title="text">5 stars</label>
-            {% if rate == '4' %}
-              <input type="radio" id={{obj}}4 name="rate" value="4"  checked="true"  disabled="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}4 name="rate" value="4"  disabled="true"/>
-            {% endif %}
-            <label for={{obj}}4 title="text">4 stars</label>
-            {% if rate == '3' %}
-              <input type="radio" id={{obj}}3 name="rate" value="3"  checked="true"  disabled="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}3 name="rate" value="3"  disabled="true"/>
-            {% endif %}
-            <label for={{obj}}3 title="text">3 stars</label>
-            {% if rate == '2' %}
-              <input type="radio" id={{obj}}2 name="rate" value="2"  checked="true"  disabled="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}2 name="rate" value="2"  disabled="true"/>
-            {% endif %}
-            <label for={{obj}}2 title="text">2 stars</label>
-            {% if rate == '1' %}
-              <input type="radio" id={{obj}}1 name="rate" value="1"  checked="true"  disabled="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}1 name="rate" value="1"  disabled="true"/>
-            {% endif %}
-            <label for={{obj}}1 title="text">1 star</label>
-          </div>
+          {% if rate != 0%}
+            <div class="rate">
+              {% if rate == '5' %}
+                <input type="radio" id={{obj}}5 name="rate" value="5"  checked="true"  disabled="true"/>
+              {% else %}
+                <input type="radio" id={{obj}}5 name="rate" value="5" disabled="true"/>
+              {% endif %}
+              <label for={{obj}}5 title="text">5 stars</label>
+              {% if rate == '4' %}
+                <input type="radio" id={{obj}}4 name="rate" value="4"  checked="true"  disabled="true"/>
+              {% else %}
+                <input type="radio" id={{obj}}4 name="rate" value="4"  disabled="true"/>
+              {% endif %}
+              <label for={{obj}}4 title="text">4 stars</label>
+              {% if rate == '3' %}
+                <input type="radio" id={{obj}}3 name="rate" value="3"  checked="true"  disabled="true"/>
+              {% else %}
+                <input type="radio" id={{obj}}3 name="rate" value="3"  disabled="true"/>
+              {% endif %}
+              <label for={{obj}}3 title="text">3 stars</label>
+              {% if rate == '2' %}
+                <input type="radio" id={{obj}}2 name="rate" value="2"  checked="true"  disabled="true"/>
+              {% else %}
+                <input type="radio" id={{obj}}2 name="rate" value="2"  disabled="true"/>
+              {% endif %}
+              <label for={{obj}}2 title="text">2 stars</label>
+              {% if rate == '1' %}
+                <input type="radio" id={{obj}}1 name="rate" value="1"  checked="true"  disabled="true"/>
+              {% else %}
+                <input type="radio" id={{obj}}1 name="rate" value="1"  disabled="true"/>
+              {% endif %}
+              <label for={{obj}}1 title="text">1 star</label>
+            </div>
+          {% else %}
+            <label style="color: brown;">Not rated</label>
+          {% endif %}
+
         <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
         <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
         </br>
