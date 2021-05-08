@@ -289,7 +289,6 @@ class Test(SimpleTestCase):
         self.assertEquals(response.status_code, 200)
     '''
     def test_SIGNUP_url(self):
-        exec("python manage.py runserver")
         user = {"ID": "test_user", "PASSWORD": "test_password","EMAIL":"test@gmail.com","TYPE":"Admin"}
         response = self.client.post('./Templates/Agile/SIGNUP',data=user,follow=True)
         self.assertEquals(response.status_code, 404)
