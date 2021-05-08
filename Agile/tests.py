@@ -284,11 +284,11 @@ class Test(SimpleTestCase):
         
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
 
-    '''
+    
     def test_homepage_url(self):
         response = self.client.get('')
         self.assertEquals(response.status_code, 200)
-
+    '''
     def test_SIGNUP_url(self):
 
         user = {"ID": "test_user", "PASSWORD": "test_password","EMAIL":"test@gmail.com","TYPE":"Admin"}
