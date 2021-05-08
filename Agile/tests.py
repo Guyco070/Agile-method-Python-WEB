@@ -292,13 +292,13 @@ class Test(SimpleTestCase):
         exec("python manage.py runserver")
         user = {"ID": "test_user", "PASSWORD": "test_password","EMAIL":"test@gmail.com","TYPE":"Admin"}
         response = self.client.post('./Templates/Agile/SIGNUP',data=user,follow=True)
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 404)
 
     def test_LOGIN_url(self):
         response = self.client.get('./Templates/Agile/LOGIN')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 404)
 
     def test_SignUpDone_url(self):
         response = self.client.get('./Templates/Agile/SignUpDone')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 404)
     
