@@ -324,7 +324,6 @@ def KanbanPage(response):
             inprogress=list(db.tasks.find({"ProjectName":response.COOKIES['Project'],"status":"INPROGRESS"}))
             intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
             done = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "DONE"}))
-        print(todo)
         for pr in todo:
             p = pr['USERSTORY']
             if(p != None):
@@ -340,7 +339,10 @@ def KanbanPage(response):
         for pr in done:
             p = pr['USERSTORY']
             if(p != None):
-                tasks3['tasks'].append(p)
+                if('RATE' in pr):
+                    r = pr['RATE']
+                else: r = 0
+                tasks3['tasks'].append([p,r])
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def ClientKanbanPage(response):

@@ -9,8 +9,8 @@
 </head>
 <body>
 <form action="showMyProjects" method="POST">{% csrf_token %}
-    {%if FName == "" && FName == null %}
-        <h1>Hello client user</h1>
+    {%if FName == "" or FName == None%}
+        <h1>Client user</h1>
     {% else %}
         <h1>Hello {{FName}} {{LName}} (client)</h1>
     {% endif %}
