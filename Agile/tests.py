@@ -300,4 +300,28 @@ class Test(SimpleTestCase):
     def test_SignUpDone_url(self):
         response = self.client.get('./Templates/Agile/SignUpDone')
         self.assertEquals(response.status_code, 404)
+    def test_signup_and_login(self):
+        //signup
+        SV = db.users
+        SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID" : "", "EMAIL": ""})
+        user = {
+            "ID": "Guyco070",
+            "PASSWORD": "123456",
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
+        }
+        //login
+        SV.insert_one(user)
+        is_user_Exist = db.users.find_one({
+            "ID": "Guyco070",
+            "PASSWORD": "123456",
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
+        }) != None
+        self.assertTrue(is_user_Exist)
     
