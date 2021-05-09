@@ -21,7 +21,8 @@ class Test(SimpleTestCase):
             "ID": "Guyco070",
             "PASSWORD": "123456",
             "EMAIL": "gaico070@gmail.com",
-            "TYPE" : "Programmer",
+            "TYPE" : "
+            grammer",
             "FName": "Guy",
             "LName": "Cohen"
         }
@@ -301,7 +302,7 @@ class Test(SimpleTestCase):
         response = self.client.get('./Templates/Agile/SignUpDone')
         self.assertEquals(response.status_code, 404)
     def test_signup_and_login(self):
-        //signup
+        #signup
         SV = db.users
         SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
         SV.delete_many({"ID" : "", "EMAIL": ""})
@@ -313,7 +314,7 @@ class Test(SimpleTestCase):
             "FName": "Guy",
             "LName": "Cohen"
         }
-        //login
+        #login
         SV.insert_one(user)
         is_user_Exist = db.users.find_one({
             "ID": "Guyco070",
@@ -324,4 +325,60 @@ class Test(SimpleTestCase):
             "LName": "Cohen"
         }) != None
         self.assertTrue(is_user_Exist)
-    
+    def test_createproj_and_edit(self):
+        #create Project
+        SV = db.projects
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
+        SV.delete_one({"ProjectName" : "Test_project"})
+        project = {
+            "ProjectName" : "Test_project",
+            "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
+            "PManager": "gaico070@gmai.com",
+            "Cilents":Clients_list ,
+            "Programmer": Programmer_list
+        }
+        SV.insert_one(project)
+        #update project
+        SV.find_one_and_update(
+            {"ProjectName" : "Test_project"},
+            {"$pull": {"Clients": "Test_Client"}}
+        )
+
+        is_programmer_inserted = "Test_Client" not in SV.find_one({"ProjectName" : "Test_project"})["Clients"]
+        client.close()
+        self.assertTrue(is_programmer_inserted)
+    def test_createtask_and_edit(self):
+        SV = db.tasks
+
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)        
+        task = {
+                "ProjectName": projectName,
+                "USERSTORY": uStory,
+                "Tasks": "test_Tasks",
+                "SDate": "test_SDate",
+                "EDate": "test_EDate",
+                "Programmer" : "Gaico070",
+                "status": "test_Status"
+            }
+        
+        SV.insert_one(task)
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)
+        
+        DB = db.tasks
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
+        DB.update_one(myquery,newvalues)
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        
+        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
