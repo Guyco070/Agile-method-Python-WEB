@@ -172,21 +172,30 @@ def ChangeDetailsPage(response):
 
 def taskpage(response):
     TDetails = {'PDetails': []}
-    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.POST.get('TASKNAME')})
+    if response.POST.get('TASKNAME') != None:
+        taskname = response.POST.get('TASKNAME')
+    elif response.POST.get('TASKNAME1') != None:
+        taskname = response.POST.get('TASKNAME1')
+    elif response.POST.get('TASKNAME2') != None:
+        taskname = response.POST.get('TASKNAME2')
+    elif response.POST.get('TASKNAME3') != None:
+        taskname = response.POST.get('TASKNAME3')
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": taskname})
     if (tempPs != None):
         USERSTORY = tempPs['USERSTORY']
         Tasks = tempPs['Tasks']
         Programmer=tempPs['Programmer']
-        sDate=tempPs['SDate']
-        eDate=tempPs['EDate']
+        
         if (USERSTORY != None):
             TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
             TDetails['PDetails'].append(['Tasks', Tasks])
-        if (sDate != None):
+        if "SDate" in tempPs:
+            sDate=tempPs['SDate']
+            eDate=tempPs['EDate']
             TDetails['PDetails'].append(['Estimated start', sDate])
-        if (eDate != None):
-            TDetails['PDetails'].append(['Estimated end', eDate])
+            if (eDate != None):
+                TDetails['PDetails'].append(['Estimated end', eDate])
         if (Programmer != None):
             TDetails['PDetails'].append(['Programmer', Programmer])
     if(response.COOKIES['TYPE']=='Admin'):
@@ -377,14 +386,8 @@ def ClientKanbanPage(response):
     return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def updateRate(response):
-    if 'TASKNAME' in response.POST:
+    if 'TASKNAME' or 'TASKNAME1' or 'TASKNAME2' or 'TASKNAME3' in response.POST:
             return taskpage(response)
-    elif 'TASKNAME1' in response.POST:
-        return taskpage1(response)
-    elif 'TASKNAME2' in response.POST:
-        return taskpage2(response)
-    elif 'TASKNAME3' in response.POST:
-        return taskpage3(response)
     elif "rate" in response.POST:
         db.tasks.find_one_and_update({"USERSTORY" : response.POST["rateBut"]},{"$set": {"RATE":response.POST['rate']}},upsert=True)
         return ClientKanbanPage(response)
