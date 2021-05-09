@@ -339,14 +339,17 @@ class Test(SimpleTestCase):
         }
         SV.insert_one(project)
         #update project
-        SV.find_one_and_update(
-            {"ProjectName" : "Test_project"},
-            {"$pull": {"Clients": "Test_Client"}}
-        )
-
-        is_programmer_inserted = "Test_Client" not in SV.find_one({"ProjectName" : "Test_project"})["Clients"]
-        client.close()
-        self.assertTrue(is_programmer_inserted)
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
+        
+        is_project_Exist = db.projects.find_one({
+            "ProjectName" : "Test_project",
+            "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
+            "PManager": "gaico070@gmai.com",
+            "Cilents":Clients_list ,
+            "Programmer": Programmer_list
+        }) != None
+        self.assertTrue(is_project_Exist)
     def test_createtask_and_edit(self):
         SV = db.tasks
 
