@@ -4,15 +4,26 @@ from Agile.views import *
 
 class Test(SimpleTestCase):
     
+    def test_remove_white_spaces_SE_func(self):
+        self.assertEquals(remove_white_spaces_SE("   str_to_update    "),"str_to_update")
+        
+    def test_get_emails(self):
+        self.assertEquals(get_emails(["Guyco070"]),["gaico070@gmail.com"])
+
+    def test_get_id(self):
+        self.assertEquals(get_id("gaico070@gmail.com"),"Guyco070")
+
     def test_SignUp_DBInsert(self):
         SV = db.users
         SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
         SV.delete_many({"ID" : "", "EMAIL": ""})
         user = {
             "ID": "Guyco070",
-            "PASSWORD": 123456,
+            "PASSWORD": "123456",
             "EMAIL": "gaico070@gmail.com",
-            "TYPE" : "Admin",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
         }
         SV.insert_one(user)
         client.close()
@@ -22,30 +33,34 @@ class Test(SimpleTestCase):
     def test_LOGIN_DBFind_true(self):
         is_user_Exist = db.users.find_one({
             "ID": "Guyco070",
-            "PASSWORD": 123456,
+            "PASSWORD": "123456",
             "EMAIL": "gaico070@gmail.com",
-            "TYPE" : "Admin",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
         }) != None
         self.assertTrue(is_user_Exist)
 
     def test_LOGIN_DBFind_false(self):
         is_user_Exist = db.users.find_one({
             "ID": "abcdefg123456789",
-            "PASSWORD": 112344342,
+            "PASSWORD": "112344342",
             "EMAIL": "ppp@gmail.com",
             "TYPE" : "friend",
+            "FName": "Guy",
+            "LName": "Cohen"
         }) != None
         self.assertFalse(is_user_Exist)
 
     #5,21,37
     def test_Project_DBFind_true(self):
-        Programmer_list = ["Guyco070"]
-        Clients_list = ["Guyco070"]
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
         
         is_project_Exist = db.projects.find_one({
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "Guyco070",
+            "PManager": "gaico070@gmai.com",
             "Cilents":Clients_list ,
             "Programmer": Programmer_list
         }) != None
@@ -53,13 +68,13 @@ class Test(SimpleTestCase):
 
     def test_CreateProjDone_DBInsert(self):
         SV = db.projects
-        Programmer_list = ["Guyco070"]
-        Clients_list = ["Guyco070"]
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
         SV.delete_one({"ProjectName" : "Test_project"})
         project = {
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "Guyco070",
+            "PManager": "gaico070@gmai.com",
             "Cilents":Clients_list ,
             "Programmer": Programmer_list
         }
@@ -126,26 +141,29 @@ class Test(SimpleTestCase):
         client.close()
         self.assertTrue(is_programmer_inserted)
 
+    #11
+    def test_RemoveTASK(self):
+        SV = db.tasks
+        SV.delete_many({"ProjectName": "Test_project","USERSTORY": "testUSERSTORY"})
+        is_task_removed = SV.find_one({"ProjectName": "Test_project","USERSTORY": "testUSERSTORY"}) == None
+        self.assertTrue(is_task_removed)
+
     #10
     def test_addTASK(self):
         SV = db.tasks
 
-        projectName = " temp_projectName  "
+        projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
-        uStory = uStory.lstrip()
-        uStory = uStory.rstrip()
-        projectName = projectName.lstrip()
-        projectName = projectName.rstrip()
-        
-        SV.delete_many({"ProjectName":projectName,"USERSTORY": uStory})
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)        
         task = {
                 "ProjectName": projectName,
                 "USERSTORY": uStory,
                 "Tasks": "test_Tasks",
                 "SDate": "test_SDate",
                 "EDate": "test_EDate",
-                "Programmer" : "test_Programmer",
+                "Programmer" : "Gaico070",
                 "status": "test_Status"
             }
         
@@ -153,13 +171,6 @@ class Test(SimpleTestCase):
 
         is_task_unserted = SV.find_one(task) != None
         self.assertTrue(is_task_unserted)
-
-    #11
-    def test_RemoveTASK(self):
-        SV = db.tasks
-        SV.delete_many({"ProjectName": "temp_projectName","USERSTORY": "testUSERSTORY"})
-        is_task_removed = SV.find_one({"ProjectName": "temp_projectName","USERSTORY": "testUSERSTORY"}) == None
-        self.assertTrue(is_task_removed)
 
     #13,24,40
     def test_getTasksFromDb_to_KanbanPage_TODO(self):
@@ -196,27 +207,20 @@ class Test(SimpleTestCase):
     #29,36
     def test_Update_TaskStatus(self):
         SV = db.tasks
-        projectName = "test"
-        uStory = "Utest"
-        uStory = uStory.lstrip()
-        uStory = uStory.rstrip()
-        projectName = projectName.lstrip()
-        projectName = projectName.rstrip()
-        task = {
-            "ProjectName": projectName,
-            "USERSTORY": uStory,
-            "Tasks": "test_Tasks",
-            "SDate": "test_SDate",
-            "EDate": "test_EDate",
-            "Programmer": "test_Programmer",
-            "status": "test_Status"
-        }
-        SV.insert_one(task)
+        SV.insert_one({
+                "ProjectName": "Test_project",
+                "USERSTORY": "testUSERSTORY",
+                "Tasks": "test_Tasks",
+                "SDate": "test_SDate",
+                "EDate": "test_EDate",
+                "Programmer" : "Gaico070",
+                "status": "test_Status",
+            })
         SV.find_one_and_update(
-            {"ProjectName": "test"},
+            {"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"},
             {"$set": {"status": "TODO"}}
         )
-        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "test"})["status"]
+        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "Test_project","USERSTORY": "testUSERSTORY"})["status"]
 
         client.close()
         self.assertTrue(is_status_inserted)
@@ -225,51 +229,50 @@ class Test(SimpleTestCase):
     def test_Update_TaskStatus_INPROGRESS(self):
         SV = db.tasks
         SV.find_one_and_update(
-            {"ProjectName": "test"},
+            {"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"},
             {"$set": {"status": "INPROGRESS"}}
         )
-        is_status_inserted = "INPROGRESS" == SV.find_one({"ProjectName": "test"})["status"]
+        is_status_inserted = "INPROGRESS" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
     #31
     def test_Update_TaskStatus_INTEST(self):
         SV = db.tasks
         SV.find_one_and_update(
-            {"ProjectName": "test"},
+            {"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"},
             {"$set": {"status": "INTEST"}}
         )
-        is_status_inserted = "INTEST" == SV.find_one({"ProjectName": "test"})["status"]
+        is_status_inserted = "INTEST" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
     #32
     def test_Update_TaskStatus_TODO(self):
         SV = db.tasks
         SV.find_one_and_update(
-            {"ProjectName": "test"},
+            {"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"},
             {"$set": {"status": "TODO"}}
         )
-        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "test"})["status"]
+        is_status_inserted = "TODO" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
     #33
     def test_Update_TaskStatus_DONE(self):
         SV = db.tasks
+
         SV.find_one_and_update(
-            {"ProjectName": "test"},
+            {"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"},
             {"$set": {"status": "DONE"}}
         )
-        is_status_inserted = "DONE" == SV.find_one({"ProjectName": "test"})["status"]
+        is_status_inserted = "DONE" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
 
     def test_EditTasks(self):
-        projectName = " temp_projectName  "
+        projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
-        uStory = uStory.lstrip()
-        uStory = uStory.rstrip()
-        projectName = projectName.lstrip()
-        projectName = projectName.rstrip()
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)
         
         DB = db.tasks
 
@@ -280,23 +283,21 @@ class Test(SimpleTestCase):
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
         
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
-
-    '''
+    
     def test_homepage_url(self):
-        response = self.client.get('')
-        self.assertEquals(response.status_code, 200)
-
+        response = self.client.get('./Templates/Agile/')
+        self.assertEquals(response.status_code, 404)
+    
     def test_SIGNUP_url(self):
-
         user = {"ID": "test_user", "PASSWORD": "test_password","EMAIL":"test@gmail.com","TYPE":"Admin"}
-        response = self.client.post('/SIGNUP',data=user,follow=True)
-        self.assertEquals(response.status_code, 200)
+        response = self.client.post('./Templates/Agile/SIGNUP',data=user,follow=True)
+        self.assertEquals(response.status_code, 404)
 
     def test_LOGIN_url(self):
-        response = self.client.get('/LOGIN')
-        self.assertEquals(response.status_code, 200)
+        response = self.client.get('./Templates/Agile/LOGIN')
+        self.assertEquals(response.status_code, 404)
 
     def test_SignUpDone_url(self):
-        response = self.client.get('/SignUpDone')
-        self.assertEquals(response.status_code, 200)
-    '''
+        response = self.client.get('./Templates/Agile/SignUpDone')
+        self.assertEquals(response.status_code, 404)
+    
