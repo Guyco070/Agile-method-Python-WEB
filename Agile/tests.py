@@ -21,8 +21,7 @@ class Test(SimpleTestCase):
             "ID": "Guyco070",
             "PASSWORD": "123456",
             "EMAIL": "gaico070@gmail.com",
-            "TYPE" : "
-            grammer",
+            "TYPE" : "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
         }
