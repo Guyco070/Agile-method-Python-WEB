@@ -151,7 +151,7 @@ class Test(SimpleTestCase):
     #10
     def test_addTASK(self):
         SV = db.tasks
-
+        SV.delete_many({"ProjectName" : "Test_project", "USERSTORY": "testUSERSTORY"})
         projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
@@ -207,6 +207,7 @@ class Test(SimpleTestCase):
     #29,36
     def test_Update_TaskStatus(self):
         SV = db.tasks
+        SV.delete_many({"ProjectName" : "Test_project", "USERSTORY": "testUSERSTORY"})
         SV.insert_one({
                 "ProjectName": "Test_project",
                 "USERSTORY": "testUSERSTORY",
@@ -281,9 +282,19 @@ class Test(SimpleTestCase):
         DB.update_one(myquery,newvalues)
 
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
     
+    #44
+    def test_rate_add(self):
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE":"3"}},upsert=True)
+        is_rated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "3"}) == None
+        self.assertFalse(is_rated)
+
+    def test_rate_update(self):
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE": "5"}},upsert=True)
+        is_rate_updated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "5"}) == None
+        self.assertFalse(is_rate_updated)
+
     def test_homepage_url(self):
         response = self.client.get('./Templates/Agile/')
         self.assertEquals(response.status_code, 404)
@@ -300,6 +311,7 @@ class Test(SimpleTestCase):
     def test_SignUpDone_url(self):
         response = self.client.get('./Templates/Agile/SignUpDone')
         self.assertEquals(response.status_code, 404)
+
     def test_signup_and_login(self):
         #signup
         SV = db.users
@@ -350,6 +362,7 @@ class Test(SimpleTestCase):
             "Programmer": Programmer_list
         }) != None
         self.assertTrue(is_project_Exist)
+        
     def test_createtask_and_edit(self):
         SV = db.tasks
 

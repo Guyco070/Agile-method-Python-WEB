@@ -10,10 +10,13 @@ db = client["Agile"]
 
 def HomePage(request):
     return render(request,'Agile/HomePage.html')
+    
 def SIGNUP(request):
     return render(request,'Agile/SignUp.html')
+
 def LOGIN(request):
     return render(request,'Agile/LogIn.html')
+
 def NewProjectPage(response):
     Users = {'programmers': [],'clients':[]}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
@@ -27,6 +30,7 @@ def NewProjectPage(response):
         if (cl != None):
             Users['clients'].append(c)
     return render(response, "Agile/NewProjectPage.html", Users)
+
 def CreateProjDone(response):
     if response.method == 'POST':
         SV = db.projects
@@ -45,6 +49,7 @@ def CreateProjDone(response):
         SV.insert_one(projects)
         client.close()
     return showMyProjects(response)
+
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
@@ -59,6 +64,7 @@ def SignUpDone(response):
         SV.insert_one(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
+
 def showMyProjects(response):
     if(response.COOKIES['TYPE']=='Admin'):
         return AdminHomePage(response)
@@ -66,6 +72,7 @@ def showMyProjects(response):
         return ProgrammerHomePage(response)
     if(response.COOKIES['TYPE']=='Client'):
         return ClientHomePage(response)
+
 def LoginStatus(response):
     if response.method=='POST':
         if 'logout' in response.POST:
@@ -97,6 +104,7 @@ def LoginStatus(response):
             result = render(response, 'Agile/HomePage.html')
             result.set_cookie('Email',response.POST.get('None'),max_age=1800)
     return result
+
 def AdminHomePage(response):
     if response.method == 'POST':
         projects = {'projects':[]}
@@ -106,6 +114,7 @@ def AdminHomePage(response):
             if(p != None):
                 projects['projects'].append(p)
     return render(response,"Agile/AdminHomePage.html",projects)
+
 def ProjectPage(response):
     PDetails = {'PDetails': []}
     if 'Project' in response.POST:
@@ -126,6 +135,7 @@ def ProjectPage(response):
             result = render(response, "Agile/ProjectPageClient.html", PDetails)
         result.set_cookie('Project',response.POST.get('Project'),3000)
     return result
+
 def ProgrammerHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -135,6 +145,7 @@ def ProgrammerHomePage(response):
             if (p != None):
                 projects['projects'].append(p)
     return render(response, "Agile/ProgrammerHomePage.html", projects)
+
 def ClientHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -144,7 +155,6 @@ def ClientHomePage(response):
             if (p != None):
                 projects['projects'].append(p)
     return render(response, "Agile/ClientHomePage.html", projects)
-
 
 def ChangeDetailsPage(response):
     PDetails = {'PDetails': [],'programmers': [], 'clients': []}
@@ -257,6 +267,7 @@ def EditTasks(response):
     result = ProjectPage(response)
     result.set_cookie('Project',projectName,3000)
     return result
+
 def updateProjectDetails(response):
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -279,9 +290,11 @@ def updateProjectDetails(response):
         if (des != None):
             PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
+
 def AddTasks(request):
     PQuery = db.projects.find_one({"ProjectName": request.COOKIES['Project']})
     return render(request,"Agile/AddTasks.html",PQuery)
+
 def ADDTASKS(response):
     if response.method == 'POST':
         projectName = response.COOKIES['Project']
@@ -316,6 +329,7 @@ def ADDTASKS(response):
             result = AddTasks(response)
     result.set_cookie('Project',projectName,3000)
     return result
+
 def KanbanPage(response):
     if response.method == 'POST':
         tasks = {'tasks':[]}
