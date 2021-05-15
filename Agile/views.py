@@ -10,7 +10,7 @@ db = client["Agile"]
 
 def HomePage(request):
     return render(request,'Agile/HomePage.html')
-    
+
 def SIGNUP(request):
     return render(request,'Agile/SignUp.html')
 
@@ -466,8 +466,7 @@ def color_adapter(pr):
     if "EDate" in pr:
         EDate = datetime.strptime(pr["EDate"],'%d.%m.%y %H:%M')
         now = datetime.now()
-        print(pr)
-        print(EDate - timedelta(days=3))
+        
         if pr["status"] == "TODO":
             if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
                 return "red"

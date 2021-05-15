@@ -172,6 +172,39 @@ class Test(SimpleTestCase):
         is_task_unserted = SV.find_one(task) != None
         self.assertTrue(is_task_unserted)
 
+    #12 - integration - update start/end time for task + time meeting
+    def test_meet_times(self):
+        now = datetime.now()
+        SDate = datetime.strptime("10.05.21 11:12",'%d.%m.%y %H:%M')
+        EDate = now + timedelta(days=10) # EDate = now + 10 days
+
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"}, {"$set": {"SDate":SDate,"EDate": EDate}},upsert=True) # update start/end time for task
+
+        task = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "SDate":SDate,"EDate": EDate})
+
+        EDate = task["EDate"]
+        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+            color_view = "red"
+        else: color_view = "green"
+
+        self.assertEqual(color_view, "green")
+    
+    # integration - update end time for task + time not meeting
+    def test_not_meet_times(self):
+        now = datetime.now()
+        EDate = datetime.strptime("20.05.21 11:12",'%d.%m.%y %H:%M')
+
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"}, {"$set": {"EDate": EDate}},upsert=True) # update end time for task
+
+        task = db.tasks.find_one({"USERSTORY": "testUSERSTORY","EDate": EDate})
+
+        EDate = task["EDate"]
+        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+            color_view = "red"
+        else: color_view = "green"
+
+        self.assertEqual(color_view, "red")
+
     #13,24,40
     def test_getTasksFromDb_to_KanbanPage_TODO(self):
         todo = list(db.tasks.find({"status":"TODO"}))
@@ -336,6 +369,7 @@ class Test(SimpleTestCase):
             "LName": "Cohen"
         }) != None
         self.assertTrue(is_user_Exist)
+
     def test_createproj_and_edit(self):
         #create Project
         SV = db.projects
@@ -362,7 +396,7 @@ class Test(SimpleTestCase):
             "Programmer": Programmer_list
         }) != None
         self.assertTrue(is_project_Exist)
-        
+
     def test_createtask_and_edit(self):
         SV = db.tasks
 
