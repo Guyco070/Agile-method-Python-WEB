@@ -15,5 +15,8 @@
 <form action="ClientKanbanPage" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">KANBAN BOARD</button>
 </form>
+<form action="LoginStatus" method="POST">{% csrf_token %}
+    <button type="submit" name='bTuser' value="">Back to user page</button>
+</form>
 </body>
 </html>

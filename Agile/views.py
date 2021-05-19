@@ -81,8 +81,11 @@ def LoginStatus(response):
                 result.delete_cookie('Email')
                 result.delete_cookie('TYPE')
             return result
-            
-        findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
+        if 'bTuser' in response.POST:
+            findUser =db.users.find_one({"EMAIL": response.COOKIES['Email']})
+        else:
+            findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
+
         if(findUser!= None):
             if 'FName' in findUser:
                 user_name = {"FName":findUser['FName'],"LName":findUser['LName']}
@@ -90,15 +93,15 @@ def LoginStatus(response):
             if(findUser['TYPE']=="Admin"):
                 result=render(response,"Agile/AdminHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'], max_age=1800)
-                result.set_cookie('Email', response.POST.get('EMAIL'), max_age=1800)
+                result.set_cookie('Email', findUser['EMAIL'], max_age=1800)
             if (findUser['TYPE'] == "Programmer"):
                 result=render(response, "Agile/ProgrammerHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
-                result.set_cookie('Email', response.POST.get('EMAIL'),max_age=1800)
+                result.set_cookie('Email', findUser['EMAIL'],max_age=1800)
             if (findUser['TYPE'] == "Client"):
                 result =render(response, "Agile/ClientHomePage.html",user_name)
                 result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
-                result.set_cookie('Email',response.POST.get('EMAIL'),max_age=1800)
+                result.set_cookie('Email',findUser['EMAIL'] ,max_age=1800)
                 result.set_cookie('ID', findUser['ID'],max_age=1800)
         else:
             result = render(response, 'Agile/HomePage.html')
