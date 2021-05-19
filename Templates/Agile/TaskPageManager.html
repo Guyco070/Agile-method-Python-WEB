@@ -12,11 +12,11 @@
     {% endfor %}
 </br>
 <form action="TaskPageEdit" method="POST">{% csrf_token %}
-    <button type="submit" name='Project' value="">Edit Task</button>
+    <button type="submit" name='Project' value="">Edit user story</button>
 </form>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
 </br>
-<input type="submit" value="back To project" id="beckToP" name="beckToP">
+<input type="submit" value="Back to project" id="beckToP" name="beckToP">
 </form>
 </body>
 </html>
