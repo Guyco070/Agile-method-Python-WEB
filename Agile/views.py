@@ -17,6 +17,9 @@ def SIGNUP(request):
 def LOGIN(request):
     return render(request,'Agile/LogIn.html')
 
+def HowToUse(request):
+    return render(request,'Agile/HowToUsePage.html')
+
 def NewProjectPage(response):
     Users = {'programmers': [],'clients':[]}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
