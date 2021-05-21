@@ -151,7 +151,7 @@ class Test(SimpleTestCase):
     #10
     def test_addTASK(self):
         SV = db.tasks
-
+        SV.delete_many({"ProjectName" : "Test_project", "USERSTORY": "testUSERSTORY"})
         projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
@@ -171,6 +171,39 @@ class Test(SimpleTestCase):
 
         is_task_unserted = SV.find_one(task) != None
         self.assertTrue(is_task_unserted)
+
+    #12 - integration - update start/end time for task + time meeting
+    def test_meet_times(self):
+        now = datetime.now()
+        SDate = datetime.strptime("10.05.21 11:12",'%d.%m.%y %H:%M')
+        EDate = now + timedelta(days=10) # EDate = now + 10 days
+
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"}, {"$set": {"SDate":SDate,"EDate": EDate}},upsert=True) # update start/end time for task
+
+        task = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "SDate":SDate,"EDate": EDate})
+
+        EDate = task["EDate"]
+        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+            color_view = "red"
+        else: color_view = "green"
+
+        self.assertEqual(color_view, "green")
+    
+    # integration - update end time for task + time not meeting
+    def test_not_meet_times(self):
+        now = datetime.now()
+        EDate = datetime.strptime("20.05.21 11:12",'%d.%m.%y %H:%M')
+
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"}, {"$set": {"EDate": EDate}},upsert=True) # update end time for task
+
+        task = db.tasks.find_one({"USERSTORY": "testUSERSTORY","EDate": EDate})
+
+        EDate = task["EDate"]
+        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+            color_view = "red"
+        else: color_view = "green"
+
+        self.assertEqual(color_view, "red")
 
     #13,24,40
     def test_getTasksFromDb_to_KanbanPage_TODO(self):
@@ -207,6 +240,7 @@ class Test(SimpleTestCase):
     #29,36
     def test_Update_TaskStatus(self):
         SV = db.tasks
+        SV.delete_many({"ProjectName" : "Test_project", "USERSTORY": "testUSERSTORY"})
         SV.insert_one({
                 "ProjectName": "Test_project",
                 "USERSTORY": "testUSERSTORY",
@@ -281,9 +315,19 @@ class Test(SimpleTestCase):
         DB.update_one(myquery,newvalues)
 
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
     
+    #44
+    def test_rate_add(self):
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE":"3"}},upsert=True)
+        is_rated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "3"}) == None
+        self.assertFalse(is_rated)
+
+    def test_rate_update(self):
+        db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE": "5"}},upsert=True)
+        is_rate_updated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "5"}) == None
+        self.assertFalse(is_rate_updated)
+
     def test_homepage_url(self):
         response = self.client.get('./Templates/Agile/')
         self.assertEquals(response.status_code, 404)
@@ -300,4 +344,90 @@ class Test(SimpleTestCase):
     def test_SignUpDone_url(self):
         response = self.client.get('./Templates/Agile/SignUpDone')
         self.assertEquals(response.status_code, 404)
-    
+
+    def test_signup_and_login(self):
+        #signup
+        SV = db.users
+        SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID" : "", "EMAIL": ""})
+        user = {
+            "ID": "Guyco070",
+            "PASSWORD": "123456",
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
+        }
+        #login
+        SV.insert_one(user)
+        is_user_Exist = db.users.find_one({
+            "ID": "Guyco070",
+            "PASSWORD": "123456",
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
+        }) != None
+        self.assertTrue(is_user_Exist)
+
+    def test_createproj_and_edit(self):
+        #create Project
+        SV = db.projects
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
+        SV.delete_one({"ProjectName" : "Test_project"})
+        project = {
+            "ProjectName" : "Test_project",
+            "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
+            "PManager": "gaico070@gmai.com",
+            "Cilents":Clients_list ,
+            "Programmer": Programmer_list
+        }
+        SV.insert_one(project)
+        #update project
+        Programmer_list = get_emails(["Guyco070"])
+        Clients_list = get_emails(["Guyco070"])
+        
+        is_project_Exist = db.projects.find_one({
+            "ProjectName" : "Test_project",
+            "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
+            "PManager": "gaico070@gmai.com",
+            "Cilents":Clients_list ,
+            "Programmer": Programmer_list
+        }) != None
+        self.assertTrue(is_project_Exist)
+
+    def test_createtask_and_edit(self):
+        SV = db.tasks
+
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)        
+        task = {
+                "ProjectName": projectName,
+                "USERSTORY": uStory,
+                "Tasks": "test_Tasks",
+                "SDate": "test_SDate",
+                "EDate": "test_EDate",
+                "Programmer" : "Gaico070",
+                "status": "test_Status"
+            }
+        
+        SV.insert_one(task)
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)
+        
+        DB = db.tasks
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
+        DB.update_one(myquery,newvalues)
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        
+        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])

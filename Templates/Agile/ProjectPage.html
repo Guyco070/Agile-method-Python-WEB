@@ -21,5 +21,8 @@
 <form action="AddTasks" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Add Tasks</button>
 </form>
+<form action="LoginStatus" method="POST">{% csrf_token %}
+    <button type="submit" name='bTuser' value="">Back to user page</button>
+</form>
 </body>
 </html>
