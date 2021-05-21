@@ -13,14 +13,18 @@
     <lable> {{value}}</lable>
     </li></br>
     {% endfor %}
+    </br>
     <button type="submit" name='Project' value="">Change project details</button>
 </form>
+</br>
 <form action="KanbanPage" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Kanban board</button>
 </form>
+</br>
 <form action="AddTasks" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Add Tasks</button>
 </form>
+</br>
 <form action="LoginStatus" method="POST">{% csrf_token %}
     <button type="submit" name='bTuser' value="">Back to user page</button>
 </form>

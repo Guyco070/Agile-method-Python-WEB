@@ -43,6 +43,7 @@ urlpatterns = [
     path('TaskPageProgrammer', views.TaskPageProgrammer, name='TaskPageProgrammer'),
     path('ClientKanbanPage', views.ClientKanbanPage, name='ClientKanbanPage'),
     path('updateRate', views.updateRate, name='updateRate'),
+    path('sendMailPage', views.sendMailPage, name='sendMailPage'),
 
 ]
 

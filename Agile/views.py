@@ -1,12 +1,17 @@
+from django.http.response import BadHeaderError
+from Agile.settings import EMAIL_HOST_USER
 from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
+from pymongo import message
 from pymongo.message import update
 from datetime import datetime, timedelta
+from django.core.mail import send_mail
 
 TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
+MailEmsg=None
 
 def HomePage(request):
     return render(request,'Agile/HomePage.html')
@@ -95,20 +100,20 @@ def LoginStatus(response):
             else: user_name = {"FName": "","LName":""}
             if(findUser['TYPE']=="Admin"):
                 result=render(response,"Agile/AdminHomePage.html",user_name)
-                result.set_cookie('TYPE', findUser['TYPE'], max_age=1800)
-                result.set_cookie('Email', findUser['EMAIL'], max_age=1800)
+                result.set_cookie('TYPE', findUser['TYPE'], max_age=3000)
+                result.set_cookie('Email', findUser['EMAIL'], max_age=3000)
             if (findUser['TYPE'] == "Programmer"):
                 result=render(response, "Agile/ProgrammerHomePage.html",user_name)
-                result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
-                result.set_cookie('Email', findUser['EMAIL'],max_age=1800)
+                result.set_cookie('TYPE', findUser['TYPE'],max_age=3000)
+                result.set_cookie('Email', findUser['EMAIL'],max_age=3000)
             if (findUser['TYPE'] == "Client"):
                 result =render(response, "Agile/ClientHomePage.html",user_name)
-                result.set_cookie('TYPE', findUser['TYPE'],max_age=1800)
-                result.set_cookie('Email',findUser['EMAIL'] ,max_age=1800)
-                result.set_cookie('ID', findUser['ID'],max_age=1800)
+                result.set_cookie('TYPE', findUser['TYPE'],max_age=3000)
+                result.set_cookie('Email',findUser['EMAIL'] ,max_age=3000)
+                result.set_cookie('ID', findUser['ID'],max_age=3000)
         else:
             result = render(response, 'Agile/HomePage.html')
-            result.set_cookie('Email',response.POST.get('None'),max_age=1800)
+            result.set_cookie('Email',response.POST.get('None'),max_age=3000)
     return result
 
 def AdminHomePage(response):
@@ -122,7 +127,10 @@ def AdminHomePage(response):
     return render(response,"Agile/AdminHomePage.html",projects)
 
 def ProjectPage(response):
+    global MailEmsg
     PDetails = {'PDetails': []}
+    if MailEmsg:
+        PDetails["MailEmsg"] = "Codn't send mail (Apparently the recipient's email is incorrect). pleas try again later..."
     if 'Project' in response.POST:
         tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
     else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -139,9 +147,36 @@ def ProjectPage(response):
             result = render(response, "Agile/ProjectPageProgrammer.html", PDetails)
         if (response.COOKIES['TYPE'] == 'Client'):
             result = render(response, "Agile/ProjectPageClient.html", PDetails)
-        result.set_cookie('Project',response.POST.get('Project'),3000)
+        result.set_cookie('Project',tempPs['ProjectName'],3000)
     return result
+    
 
+def sendMailPage(response):
+    global MailEmsg
+    if response.method == 'POST':
+        if 'sendMailPage' in response.POST:
+            return render(response,"Agile/sendMailPage.html")
+        elif 'beckToP' in response.POST:
+            MailEmsg = None
+            return ProjectPage(response)
+
+        project = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
+        sender = db.users.find_one({"EMAIL": response.COOKIES['Email']})
+        mailDescription = "Mail from "+ sender['FName'] + " " + sender['LName'] +" (client of you): " + response.POST.get('mailDesc')
+        message = "About Project: "+project["ProjectName"] + "\n\n" +response.POST.get('mailInput')
+        is_send = 0
+        if 'sendMailPM' in response.POST:
+            try:
+                is_send = send_mail(mailDescription,message,EMAIL_HOST_USER,[project['PManager']],fail_silently=True)
+            except BadHeaderError:
+                MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+                return ProjectPage(response)
+            if is_send == 0:
+                MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+            elif is_send == 1:
+                MailEmsg = "Email sent successfully !"
+            return ProjectPage(response)
+ 
 def ProgrammerHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
@@ -220,7 +255,7 @@ def taskpage(response):
         result = render(response, "Agile/TaskPageProgrammer.html",TDetails)
     if (response.COOKIES['TYPE'] == 'Client'):
         result = render(response, "Agile/TaskPageClient.html",TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME'), 1800)
+    result.set_cookie('Task',response.POST.get('TASKNAME'), 3000)
     return result
 
 def TaskPageEdit(response):
@@ -305,6 +340,8 @@ def ADDTASKS(response):
     if response.method == 'POST':
         projectName = response.COOKIES['Project']
         if 'beckToP' in response.POST:
+            global MailEmsg
+            MailEmsg = None
             result = ProjectPage(response)
         else:
             a = response.POST.get('USERSTORY')
@@ -488,12 +525,13 @@ def color_adapter(pr):
                 return "red"
             else: "green"
 
-    '''
-    sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
-    s = sDate.strftime('%d.%m.%y %H:%M') #format change
-    if not e:
-        eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
-    '''
+
+'''
+sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
+s = sDate.strftime('%d.%m.%y %H:%M') #format change
+if not e:
+    eDate = datetime.strptime(myquery["SDate"],'%d.%m.%y %H:%M')
+'''
 '''
 def taskpage1(response):
     TDetails = {'PDetails': []}
@@ -520,7 +558,7 @@ def taskpage1(response):
         result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Client'):
         result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME1'), 1800)
+    result.set_cookie('Task',response.POST.get('TASKNAME1'), 3000)
     return result
 def taskpage2(response):
     TDetails = {'PDetails': []}
@@ -547,7 +585,7 @@ def taskpage2(response):
         result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Client'):
         result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME2'), 1800)
+    result.set_cookie('Task',response.POST.get('TASKNAME2'), 3000)
     return result
 def taskpage3(response):
     TDetails = {'PDetails': []}
@@ -574,6 +612,6 @@ def taskpage3(response):
         result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
     if (response.COOKIES['TYPE'] == 'Client'):
         result = render(response, "Agile/TaskPageClient.html", TDetails)
-    result.set_cookie('Task',response.POST.get('TASKNAME3'), 1800)
+    result.set_cookie('Task',response.POST.get('TASKNAME3'), 3000)
     return result
 '''
