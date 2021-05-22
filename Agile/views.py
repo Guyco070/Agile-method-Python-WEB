@@ -84,9 +84,10 @@ def showMyProjects(response):
 def LoginStatus(response):
     if response.method=='POST':
         if 'logout' in response.POST:
+            result = HomePage(response)
             if 'Email' in response.COOKIES:
-                result = HomePage(response)
                 result.delete_cookie('Email')
+            if 'TYPE' in response.COOKIES:
                 result.delete_cookie('TYPE')
             return result
         if 'bTuser' in response.POST:
@@ -117,6 +118,8 @@ def LoginStatus(response):
     return result
 
 def AdminHomePage(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         projects = {'projects':[]}
         tempPs = list(db.projects.find({"PManager": response.COOKIES['Email']}))
@@ -127,6 +130,8 @@ def AdminHomePage(response):
     return render(response,"Agile/AdminHomePage.html",projects)
 
 def ProjectPage(response):
+    if is_connected(response):
+        return is_connected(response)
     global MailEmsg
     PDetails = {'PDetails': []}
     if MailEmsg:
@@ -152,6 +157,8 @@ def ProjectPage(response):
     
 
 def sendMailPage(response):
+    if is_connected(response):
+        return is_connected(response)
     global MailEmsg
     if response.method == 'POST':
         if 'sendMailPage' in response.POST:
@@ -187,6 +194,8 @@ def sendMailPage(response):
         return ProjectPage(response)
  
 def ProgrammerHomePage(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         projects = {'projects': []}
         tempPs = list(db.projects.find({"Programmer": response.COOKIES['Email']}))
@@ -197,6 +206,8 @@ def ProgrammerHomePage(response):
     return render(response, "Agile/ProgrammerHomePage.html", projects)
 
 def ClientHomePage(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         projects = {'projects': []}
         tempPs = list(db.projects.find({"Clients": response.COOKIES['Email']}))
@@ -207,6 +218,8 @@ def ClientHomePage(response):
     return render(response, "Agile/ClientHomePage.html", projects)
 
 def ChangeDetailsPage(response):
+    if is_connected(response):
+        return is_connected(response)
     PDetails = {'PDetails': [],'programmers': [], 'clients': []}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
     for pr in tempPro:
@@ -231,6 +244,8 @@ def ChangeDetailsPage(response):
     return result
 
 def taskpage(response):
+    if is_connected(response):
+        return is_connected(response)
     TDetails = {'PDetails': []}
     if response.POST.get('TASKNAME') != None:
         taskname = response.POST.get('TASKNAME')
@@ -268,10 +283,14 @@ def taskpage(response):
     return result
 
 def TaskPageEdit(response):
+    if is_connected(response):
+        return is_connected(response)
     PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     return render(response, "Agile/TaskPageEdit.html",PQuery)
 
 def EditTasks(response):
+    if is_connected(response):
+        return is_connected(response)
     SV = db.tasks
     projectName = response.COOKIES['Project']
 
@@ -319,6 +338,8 @@ def EditTasks(response):
     return result
 
 def updateProjectDetails(response):
+    if is_connected(response):
+        return is_connected(response)
     PDetails = {'PDetails': []}
     tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     myquery={"ProjectName": response.COOKIES['Project']}
@@ -342,10 +363,14 @@ def updateProjectDetails(response):
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 
 def AddTasks(request):
+    if is_connected(request):
+        return is_connected(request)
     PQuery = db.projects.find_one({"ProjectName": request.COOKIES['Project']})
     return render(request,"Agile/AddTasks.html",PQuery)
 
 def ADDTASKS(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         projectName = response.COOKIES['Project']
         if 'beckToP' in response.POST:
@@ -383,6 +408,8 @@ def ADDTASKS(response):
     return result
 
 def KanbanPage(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         tasks = {'tasks':[]}
         tasks1={'tasks':[]}
@@ -421,6 +448,8 @@ def KanbanPage(response):
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def ClientKanbanPage(response):
+    if is_connected(response):
+        return is_connected(response)
     if response.method == 'POST':
         tasks = {'tasks':[]}
         tasks1={'tasks':[]}
@@ -452,6 +481,8 @@ def ClientKanbanPage(response):
     return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
 def updateRate(response):
+    if is_connected(response):
+        return is_connected(response)
     if 'TASKNAME' or 'TASKNAME1' or 'TASKNAME2' or 'TASKNAME3' in response.POST:
             return taskpage(response)
     elif "rate" in response.POST:
@@ -459,6 +490,8 @@ def updateRate(response):
         return ClientKanbanPage(response)
 
 def TaskPageProgrammer(response):
+    if is_connected(response):
+        return is_connected(response)
     global TaskPageProgrammer_flag
     if(TaskPageProgrammer_flag):
         if 'TASKNAME' in response.POST:
@@ -534,7 +567,14 @@ def color_adapter(pr):
                 return "red"
             else: "green"
 
-
+def is_connected(response):
+    msg = {"reconnect_msg":None}
+    if 'Email' not in response.COOKIES:
+        msg["reconnect_msg"] = "Sorry, it's been too long since the last action.\nPlease reconnect ..."
+        return render(response,'Agile/HomePage.html',msg)
+    elif response.COOKIES['Email'] == "":
+        msg["reconnect_msg"] = "Sorry, it's been too long since the last action.\nPlease reconnect ..."
+        return render(response,'Agile/HomePage.html',msg)
 '''
 sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
 s = sDate.strftime('%d.%m.%y %H:%M') #format change

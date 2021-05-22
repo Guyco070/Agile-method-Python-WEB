@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>HomePage</title>
 </head>
+{%if reconnect_msg %}
+<script type="text/javascript">
+    alert("Sorry, it's been too long since the last action.\nPlease reconnect ...");
+    </script>
+{% endif %}
+
+
+
 <body>
     <button onclick="location.href ='SIGNUP'">Sign Up</button>
     <button onclick="location.href ='LOGIN'">Login</button>
