@@ -237,6 +237,75 @@ class Test(SimpleTestCase):
             is_tasks_status_match += t["status"] == "INTEST"
         self.assertTrue(is_tasks_status_match)
 
+    # 17,18,28,38
+    def test_mail_sent(self):
+        projectName = " Test_project  "
+        sender = "unit test"
+        mailDescription = "From - "+ sender +" (type of user): " + "description of the emaill."
+        message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
+        has_sent = 0
+        try:
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[EMAIL_HOST_USER],fail_silently=True)
+        except BadHeaderError:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+
+        if has_sent == 0:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+        elif has_sent == 1:
+            MailEmsg = "Email sent successfully !"
+
+        self.assertEqual(has_sent, 1)
+
+    def test_mail_sent_t_few(self):
+        projectName = " Test_project  "
+        sender = "unit test"
+        mailDescription = "From - "+ sender +" (type of user): " + "description of the emaill."
+        message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
+        has_sent = 0
+        try:
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[EMAIL_HOST_USER,EMAIL_HOST_USER],fail_silently=True)
+        except BadHeaderError:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+
+        if has_sent == 0:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+        elif has_sent == 1:
+            MailEmsg = "Email sent successfully !"
+
+        self.assertEqual(has_sent, 1)
+
+    def test_mail_sent_not_legit(self):
+        projectName = " Test_project  "
+        sender = "unit test"
+        mailDescription = "From - "+ sender +" (type of user): " + "description of the emaill."
+        message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
+        has_sent = 0
+        try:
+            send_mail(mailDescription,message,EMAIL_HOST_USER,["not_legit"],fail_silently=False)
+        except BadHeaderError:
+            has_sent = 0
+
+
+        self.assertEqual(has_sent, 0)
+
+    def test_mail_sent_empty(self):
+        projectName = " Test_project  "
+        sender = "unit test"
+        mailDescription = "From - "+ sender +" (type of user): " + "description of the emaill."
+        message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
+        has_sent = 0
+        try:
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[],fail_silently=True)
+        except BadHeaderError:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+
+        if has_sent == 0:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+        elif has_sent == 1:
+            MailEmsg = "Email sent successfully !"
+
+        self.assertEqual(has_sent, 0)
+
     #29,36
     def test_Update_TaskStatus(self):
         SV = db.tasks
