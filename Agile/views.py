@@ -51,7 +51,7 @@ def CreateProjDone(response):
             "ProjectName" : ProjectName,
             "Description": response.POST.get('projectDescription'),
             "PManager": response.COOKIES['Email'],
-            "Cilents":client_list,
+            "Clients":client_list,
             "Programmer":Programmer_list,
         }
         SV.insert_one(projects)
@@ -130,7 +130,7 @@ def ProjectPage(response):
     global MailEmsg
     PDetails = {'PDetails': []}
     if MailEmsg:
-        PDetails["MailEmsg"] = "Codn't send mail (Apparently the recipient's email is incorrect). pleas try again later..."
+        PDetails["MailEmsg"] = MailEmsg
     if 'Project' in response.POST:
         tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
     else: tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -155,27 +155,36 @@ def sendMailPage(response):
     global MailEmsg
     if response.method == 'POST':
         if 'sendMailPage' in response.POST:
-            return render(response,"Agile/sendMailPage.html")
+            return render(response,"Agile/sendMailPage.html",{"type":response.COOKIES['TYPE']})
         elif 'beckToP' in response.POST:
             MailEmsg = None
             return ProjectPage(response)
 
         project = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
         sender = db.users.find_one({"EMAIL": response.COOKIES['Email']})
-        mailDescription = "Mail from "+ sender['FName'] + " " + sender['LName'] +" (client of you): " + response.POST.get('mailDesc')
-        message = "About Project: "+project["ProjectName"] + "\n\n" +response.POST.get('mailInput')
-        is_send = 0
+        mailDescription = "From - "+ sender['FName'] + " " + sender['LName'] +" (" + sender['TYPE'] + "): " + response.POST.get('mailDesc')
+        message = "About Project: "+project["ProjectName"] + ".\nSender Mail: "+sender["EMAIL"]+"\n\n" +response.POST.get('mailInput')
+        has_sent = 0
+
         if 'sendMailPM' in response.POST:
-            try:
-                is_send = send_mail(mailDescription,message,EMAIL_HOST_USER,[project['PManager']],fail_silently=True)
-            except BadHeaderError:
-                MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-                return ProjectPage(response)
-            if is_send == 0:
-                MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-            elif is_send == 1:
-                MailEmsg = "Email sent successfully !"
+            sendTo = [project['PManager']]
+        elif 'sendMailProgs' in response.POST:
+            sendTo = project['Programmer']
+        elif 'sendMailCli' in response.POST:
+            sendTo = project['Clients']
+
+        try:
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,sendTo,fail_silently=True)
+        except BadHeaderError:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
             return ProjectPage(response)
+
+        if has_sent == 0:
+            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
+        elif has_sent == 1:
+            MailEmsg = "Email sent successfully !"
+
+        return ProjectPage(response)
  
 def ProgrammerHomePage(response):
     if response.method == 'POST':
@@ -190,7 +199,7 @@ def ProgrammerHomePage(response):
 def ClientHomePage(response):
     if response.method == 'POST':
         projects = {'projects': []}
-        tempPs = list(db.projects.find({"Cilents": response.COOKIES['Email']}))
+        tempPs = list(db.projects.find({"Clients": response.COOKIES['Email']}))
         for pr in tempPs:
             p = pr['ProjectName']
             if (p != None):

@@ -6,6 +6,12 @@
 </head>
 <body>
 
+    {%if MailEmsg %}
+    <script type="text/javascript">
+        alert("{{MailEmsg}}");
+        </script>
+    {% endif %}
+
 <h1>Project view</h1>
 <form action="ChangeDetailsPage" method="POST">{% csrf_token %}
     {% for key,value in PDetails %}
@@ -23,6 +29,10 @@
 </br>
 <form action="AddTasks" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Add Tasks</button>
+</form>
+</br>
+<form action="sendMailPage" method="POST">{% csrf_token %}
+    <button type="submit" name='sendMailPage' value="">Send mail</button>
 </form>
 </br>
 <form action="LoginStatus" method="POST">{% csrf_token %}
