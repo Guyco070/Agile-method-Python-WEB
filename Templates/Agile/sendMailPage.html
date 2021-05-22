@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Mail page</title>
+</head>
+<body>
+
+<h1>Send Mail</h1>
+{% for key,value in PDetails %}
+<li><b>{{key}}: </b>
+<lable> {{value}}</lable>
+</li></br>
+{% endfor %}
+</br>
+<table style="text-align:center;" >
+    <form action="sendMailPage" method="POST">{% csrf_token %}
+
+    <tr>
+        <td>
+            <label for="mailDesc">Mail description:</label></br>
+        </td>
+        <td style="text-align:left;">
+            <textarea rows="1" cols="40" class="form-control" id="mailDesc" name="mailDesc" required data-validation-required-message="Escriba su mensaje" maxlength="100" requir></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="mailInput">Mail body:</label></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
+        </td>
+        <td>
+            <br>
+            <textarea rows="10" cols="100" class="form-control" id="mailInput" name="mailInput" required data-validation-required-message="Escriba su mensaje" maxlength="999" style="resize:none" requir></textarea>
+        </td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td style="text-align:left;">
+                {% if type == "Client" or type == "Programmer" %}
+                    <br></br>
+                    <button type="submit" name='sendMailPM' value="">Send to project manager</button>
+                {% endif %}
+                {% if type == "Admin" %}
+                    <br></br>
+                    <button type="submit" name='sendMailProgs' value="">Send to project programmers</button>
+                    <br></br>
+                    <button type="submit" name='sendMailCli' value="">Send to project clients</button>
+                {% endif %}
+            </form>
+        </br>
+        </br>
+            <form action="sendMailPage" method="POST">{% csrf_token %}
+                <input type="submit" value="Back to project" id="beckToP" name="beckToP">
+            </form>
+            </br>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>
