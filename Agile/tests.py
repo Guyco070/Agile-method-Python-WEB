@@ -284,8 +284,7 @@ class Test(SimpleTestCase):
             send_mail(mailDescription,message,EMAIL_HOST_USER,["not_legit"],fail_silently=False)
         except BadHeaderError:
             has_sent = 0
-
-
+            
         self.assertEqual(has_sent, 0)
 
     def test_mail_sent_empty(self):

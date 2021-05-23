@@ -14,6 +14,8 @@ db = client["Agile"]
 MailEmsg=None
 
 def HomePage(request):
+    #split_tasks("   1) fdsgjodgfh g hopdfghm l dgfh  \n 2) trohkorek4 t,trh dfghfg gf hdgfrh \n 4)dfsg f sdfg fdg df \n")
+    print(get_edit_tasks_string(array_tasksToString(split_tasks("   1) fdsgjodgfh g hopdfghm l 7) dgfh 9) \n 2) trohkorek4 t,trh dfghfg gf hdgfrh \n 4)dfsg f sdfg fdg df \n",eliminate_empty = True)),"1)tasks_to_replace 2) 4)gdh gffdghj 5)jghjhg"))
     return render(request,'Agile/HomePage.html')
 
 def SIGNUP(request):
@@ -311,6 +313,7 @@ def EditTasks(response):
         if uStory:
             newvalues["$set"]["USERSTORY"] = uStory
         if tasks:
+            tasks = get_edit_tasks_string(myquery["Tasks"] ,tasks)
             newvalues["$set"]["Tasks"] = tasks
         if uStory:
             newvalues["$set"]["USERSTORY"] = uStory
@@ -379,7 +382,7 @@ def ADDTASKS(response):
             result = ProjectPage(response)
         else:
             a = response.POST.get('USERSTORY')
-            b = response.POST.get('TASKS')
+            b = array_tasksToString(split_tasks(response.POST.get('TASKS'),eliminate_empty = True))
             c = response.POST.get('startDate')
             d = response.POST.get('endDate')
             e = response.POST.get('programmer')
@@ -575,6 +578,123 @@ def is_connected(response):
     elif response.COOKIES['Email'] == "":
         msg["reconnect_msg"] = "Sorry, it's been too long since the last action.\nPlease reconnect ..."
         return render(response,'Agile/HomePage.html',msg)
+
+
+def get_edit_tasks_string(tasks,tasks_to_replace): #tasks is a string fron DB and tasks_to_replace is a string from edit tasks text box
+    tasks_arr = split_tasks(tasks) # tasks_arr is an legit array of tasks
+    tasks_arr = tasks_edit_acts(tasks_arr,tasks_to_replace) 
+    return array_tasksToString(tasks_arr)
+
+def array_tasksToString(tasks_arr):
+    tasks = ""
+    for rep in tasks_arr:
+        tasks += (rep+"\n")
+    return tasks[0:len(tasks)-1] # remove last /n
+
+def split_tasks(tasks,eliminate_empty = False):
+    search_end = False
+    tasks = tasks.lstrip()
+
+    numbers=[]
+    for i in range(30):
+        numbers.append(str(i))
+        numbers.append(str(i)+')')
+
+    tasks_arr = []
+    if tasks[0] in numbers:
+        start = 0
+        i=0
+        while i<=len(tasks):
+            if i == len(tasks) or i != len(tasks)-2 and tasks[i:i+2] in numbers:
+                if search_end == False:
+                    start = i
+                    search_end = True
+
+                else:
+                    tasks_arr.append(tasks[start:i].rstrip())
+                    search_end = False
+                    i=i-1
+            i+=1
+    else: #split by empty line/s
+        split_tasks("1)"+tasks)
+
+    if eliminate_empty:
+        tasks_arr = remove_tasks(tasks_arr)
+    #bubble sort
+    tasks_arr = tasks_bubbleSort(tasks_arr)
+
+    #set numbers
+    tasks_arr = set_numbers(tasks_arr)
+
+    return tasks_arr
+
+def tasks_edit_acts(tasks_arr,tasks_to_replace):
+    tasks_to_replace = split_tasks(tasks_to_replace)
+    
+    #remove
+    tasks_arr = remove_tasks(tasks_arr)
+
+    #switch
+    tasks_arr = switch_tasks(tasks_arr,tasks_to_replace)
+
+    #add
+    tasks_arr = add_tasks(tasks_arr,tasks_to_replace)
+
+    #bubble sort
+    tasks_arr = tasks_bubbleSort(tasks_arr)
+
+    #set numbers
+    tasks_arr = set_numbers(tasks_arr)
+
+    return tasks_arr
+
+def tasks_bubbleSort(tasks_arr):
+    n = len(tasks_arr)
+
+    # Traverse through all array elements
+    for i in range(n):
+    # range(n) also work but outer loop will repeat one time more than needed.
+
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+
+            # traverse the array from 0 to n-i-1
+            # Swap if the element found is greater
+            # than the next element
+            if int(tasks_arr[j][0]) > int(tasks_arr[j+1][0]):
+                tasks_arr[j], tasks_arr[j+1] = tasks_arr[j+1], tasks_arr[j]
+    return tasks_arr
+
+def set_numbers(tasks_arr):
+    for i in range(len(tasks_arr)):
+        tasks_arr[i] = str(i+1) + tasks_arr[i][1:len(tasks_arr[i])+1]
+    return tasks_arr
+
+def remove_tasks(tasks_arr):
+    tasks_arr = [rep for rep in tasks_arr if len(rep) != 2]
+    return tasks_arr
+
+def add_tasks(tasks_arr,tasks_to_replace):
+    tasks = ""
+    for i in tasks_arr:
+        tasks += "\n" + i
+    i=j=0
+    for rep in tasks_to_replace:
+        if rep[0:2] not in tasks:             
+            tasks_arr.append(rep)
+    return tasks_arr
+
+def switch_tasks(tasks_arr,tasks_to_replace):
+    i=j=0
+    for cur in tasks_arr:                
+        for rep in tasks_to_replace:
+            if cur[0] == rep[0]:
+                tasks_arr[i] = tasks_to_replace[j]
+            j+=1
+        j=0
+        i+=1
+    return tasks_arr
+    
 '''
 sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
 s = sDate.strftime('%d.%m.%y %H:%M') #format change
