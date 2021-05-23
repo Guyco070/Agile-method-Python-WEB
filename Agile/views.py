@@ -12,10 +12,9 @@ TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 MailEmsg=None
+from_edit = False
 
 def HomePage(request):
-    #split_tasks("   1) fdsgjodgfh g hopdfghm l dgfh  \n 2) trohkorek4 t,trh dfghfg gf hdgfrh \n 4)dfsg f sdfg fdg df \n")
-    print(get_edit_tasks_string(array_tasksToString(split_tasks("   1) fdsgjodgfh g hopdfghm l 7) dgfh 9) \n 2) trohkorek4 t,trh dfghfg gf hdgfrh \n 4)dfsg f sdfg fdg df \n",eliminate_empty = True)),"1)tasks_to_replace 2) 4)gdh gffdghj 5)jghjhg"))
     return render(request,'Agile/HomePage.html')
 
 def SIGNUP(request):
@@ -581,6 +580,9 @@ def is_connected(response):
 
 
 def get_edit_tasks_string(tasks,tasks_to_replace): #tasks is a string fron DB and tasks_to_replace is a string from edit tasks text box
+    global from_edit
+    from_edit = True
+
     tasks_arr = split_tasks(tasks) # tasks_arr is an legit array of tasks
     tasks_arr = tasks_edit_acts(tasks_arr,tasks_to_replace) 
     return array_tasksToString(tasks_arr)
@@ -601,6 +603,7 @@ def split_tasks(tasks,eliminate_empty = False):
         numbers.append(str(i)+')')
 
     tasks_arr = []
+        
     if tasks[0] in numbers:
         start = 0
         i=0
@@ -616,10 +619,17 @@ def split_tasks(tasks,eliminate_empty = False):
                     i=i-1
             i+=1
     else: #split by empty line/s
-        split_tasks("1)"+tasks)
+        global from_edit
+        if from_edit:
+            from_edit = False
+            print(split_tasks("29) "+tasks))
+
+        else:    
+            return split_tasks("1) "+tasks)
 
     if eliminate_empty:
         tasks_arr = remove_tasks(tasks_arr)
+        
     #bubble sort
     tasks_arr = tasks_bubbleSort(tasks_arr)
 
@@ -666,12 +676,15 @@ def tasks_bubbleSort(tasks_arr):
     return tasks_arr
 
 def set_numbers(tasks_arr):
+    if len(tasks_arr) == 1 and "29)" in tasks_arr[0]:
+        return tasks_arr
+
     for i in range(len(tasks_arr)):
         tasks_arr[i] = str(i+1) + tasks_arr[i][1:len(tasks_arr[i])+1]
     return tasks_arr
 
 def remove_tasks(tasks_arr):
-    tasks_arr = [rep for rep in tasks_arr if len(rep) != 2]
+    tasks_arr = [rep for rep in tasks_arr if len(rep.rstrip()) != 2]
     return tasks_arr
 
 def add_tasks(tasks_arr,tasks_to_replace):
@@ -680,7 +693,7 @@ def add_tasks(tasks_arr,tasks_to_replace):
         tasks += "\n" + i
     i=j=0
     for rep in tasks_to_replace:
-        if rep[0:2] not in tasks:             
+        if rep[0:2] not in tasks and len(rep.rstrip()) != 2:             
             tasks_arr.append(rep)
     return tasks_arr
 
@@ -694,7 +707,7 @@ def switch_tasks(tasks_arr,tasks_to_replace):
         j=0
         i+=1
     return tasks_arr
-    
+
 '''
 sDate = datetime.strptime(s.replace("T"," ")[2:], '%y-%m-%d %H:%M')
 s = sDate.strftime('%d.%m.%y %H:%M') #format change
