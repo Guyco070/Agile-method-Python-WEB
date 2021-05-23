@@ -621,9 +621,10 @@ def split_tasks(tasks,eliminate_empty = False):
     else: #split by empty line/s
         global from_edit
         if from_edit:
-            from_edit = False
-            print(split_tasks("29) "+tasks))
-
+            c = split_tasks("9) "+tasks)
+            c[0] = "9" + c[0][1:len(c[0])]
+            from_edit = False 
+            return c
         else:    
             return split_tasks("1) "+tasks)
 
