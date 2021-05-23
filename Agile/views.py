@@ -265,7 +265,7 @@ def taskpage(response):
         if (USERSTORY != None):
             TDetails['PDetails'].append(['User story', USERSTORY])
         if (Tasks != None):
-            TDetails['PDetails'].append(['Tasks', Tasks])
+            TDetails['PDetails'].append(['Tasks', split_tasks(Tasks)])
         if "SDate" in tempPs:
             sDate=tempPs['SDate']
             eDate=tempPs['EDate']
