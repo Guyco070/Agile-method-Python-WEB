@@ -47,9 +47,15 @@
                 {% endif %}
                 {% if type == "Admin" %}
                     <br></br>
-                    <button type="submit" name='sendMailProgs' value="">Send to project programmers</button>
-                    <br></br>
-                    <button type="submit" name='sendMailCli' value="">Send to project clients</button>
+                    {% if from_task == True %}
+                        <form action="sendMailPage" method="POST">{% csrf_token %}
+                            <button type="submit" name='sendMailProg' value="">send to programmer</button>
+                        </form>
+                    {% else %}
+                        <button type="submit" name='sendMailProgs' value="">Send to project programmers</button>
+                        <br></br>
+                        <button type="submit" name='sendMailCli' value="">Send to project clients</button>
+                    {% endif %}
                 {% endif %}
             </form>
         </br>

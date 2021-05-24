@@ -5,11 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-{% for key,value in PDetails %}
+    {% for key,value in PDetails %}
     <li><b>{{key}}: </b>
-    <lable> {{value}} </lable>
+    {% if key == "Tasks"%}
+        </br>
+        {% for x in value %}
+            <lable>&emsp;&ensp;&ensp; {{x}}</lable>
+            </br>
+        {% endfor %}
+    {% else %}
+        <lable> {{value}}</lable>
+    {% endif %}
     </li></br>
     {% endfor %}
+</br>
     <form action="ADDTASKS" method="POST">{% csrf_token %}
         </br>
         <input type="submit" value="back To project" id="beckToP" name="beckToP">

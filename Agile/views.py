@@ -163,7 +163,10 @@ def sendMailPage(response):
     global MailEmsg
     if response.method == 'POST':
         if 'sendMailPage' in response.POST:
-            return render(response,"Agile/sendMailPage.html",{"type":response.COOKIES['TYPE']})
+            if response.POST.get('sendMailPage') =="from_task":
+                return render(response,"Agile/sendMailPage.html",{"type":response.COOKIES['TYPE'],"from_task":True})
+            else:
+                return render(response,"Agile/sendMailPage.html",{"type":response.COOKIES['TYPE'],"from_task":False})
         elif 'beckToP' in response.POST:
             MailEmsg = None
             return ProjectPage(response)
@@ -176,7 +179,11 @@ def sendMailPage(response):
 
         if 'sendMailPM' in response.POST:
             sendTo = [project['PManager']]
-        elif 'sendMailProgs' in response.POST:
+        elif 'sendMailProgs' in response.POST: # send to project programmers
+            sendTo = project['Programmer']
+        elif 'sendMailProg' in response.POST: # send to task programmer
+            if "Task" in response.COOKIES:
+                message = "About Project: "+ project["ProjectName"] + ",\nUser Story: " + response.COOKIES['Task'] + ".\n\nSender Mail: "+sender["EMAIL"]+"\n\n" + response.POST.get('mailInput')
             sendTo = project['Programmer']
         elif 'sendMailCli' in response.POST:
             sendTo = project['Clients']
@@ -191,8 +198,11 @@ def sendMailPage(response):
             MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
         elif has_sent == 1:
             MailEmsg = "Email sent successfully !"
-
-        return ProjectPage(response)
+        
+        if 'sendMailProg' in response.POST: # send to task programmer
+            return taskpage(response)
+        else:
+            return ProjectPage(response)
  
 def ProgrammerHomePage(response):
     if is_connected(response):
@@ -248,9 +258,13 @@ def taskpage(response):
     if is_connected(response):
         return is_connected(response)
     TDetails = {'PDetails': []}
+    if MailEmsg:
+        TDetails["MailEmsg"] = MailEmsg
     if response.POST.get('TASKNAME') != None:
         taskname = response.POST.get('TASKNAME')
-    elif response.POST.get('TASKNAME1') != None:
+    elif "Task" in response.COOKIES:
+        taskname = response.COOKIES['Task']
+    if response.POST.get('TASKNAME1') != None:
         taskname = response.POST.get('TASKNAME1')
     elif response.POST.get('TASKNAME2') != None:
         taskname = response.POST.get('TASKNAME2')
@@ -292,6 +306,9 @@ def TaskPageEdit(response):
 def EditTasks(response):
     if is_connected(response):
         return is_connected(response)
+    elif 'beckToP' in response.POST:
+        return ADDTASKS(response)
+
     SV = db.tasks
     projectName = response.COOKIES['Project']
 
@@ -618,7 +635,7 @@ def split_tasks(tasks,eliminate_empty = False):
                     search_end = False
                     i=i-1
             i+=1
-    else: #split by empty line/s
+    else:
         global from_edit
         if from_edit:
             toLast = split_tasks("9) "+tasks)
