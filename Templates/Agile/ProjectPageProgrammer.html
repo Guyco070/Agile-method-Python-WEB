@@ -6,12 +6,6 @@
 </head>
 <body>
 
-    {%if MailEmsg %}
-    <script type="text/javascript">
-        alert("{{MailEmsg}}");
-        </script>
-    {% endif %}
-
 <h1>Project view</h1>
 {% for key,value in PDetails %}
 <li><b>{{key}}: </b>
@@ -21,10 +15,6 @@
 </br>
 <form action="KanbanPage" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Kanban board</button>
-</form>
-</br>
-<form action="sendMailPage" method="POST">{% csrf_token %}
-    <button type="submit" name='sendMailPage' value="">Send mail</button>
 </form>
 </br>
 <form action="LoginStatus" method="POST">{% csrf_token %}

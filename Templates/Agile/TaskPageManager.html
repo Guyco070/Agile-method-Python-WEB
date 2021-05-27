@@ -4,38 +4,19 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-
-{%if MailEmsg %}
-    <script type="text/javascript">
-        alert("{{MailEmsg}}");
-    </script>
-{% endif %}
-
 <body>
 {% for key,value in PDetails %}
     <li><b>{{key}}: </b>
-    {% if key == "Tasks"%}
-        </br>
-        {% for x in value %}
-            <lable>&emsp;&ensp;&ensp; {{x}}</lable>
-            </br>
-        {% endfor %}
-    {% else %}
-        <lable> {{value}}</lable>
-    {% endif %}
+    <lable> {{value}}</lable>
     </li></br>
     {% endfor %}
 </br>
 <form action="TaskPageEdit" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Edit user story</button>
 </form>
-<form action="sendMailPage" method="POST">{% csrf_token %}
-    </br>
-    <button type="submit" name='sendMailPage' value="from_task">Contact User Story programmer</button>
-</form>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
-    </br>
-    <input type="submit" value="Back to project" id="beckToP" name="beckToP">
+</br>
+<input type="submit" value="Back to project" id="beckToP" name="beckToP">
 </form>
 </body>
 </html>

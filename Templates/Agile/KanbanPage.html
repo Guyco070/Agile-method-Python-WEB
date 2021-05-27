@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+       <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         table, th, td {
         border: 1px solid black;
@@ -33,14 +38,27 @@
         content: '★ ';
     }
     .rate > input:checked ~ label {
-        color: #ffc700;    
+        color: #ffc700;
     }
-
+    .body,h1 {font-family: "Raleway", Arial, sans-serif}
+    h1 {letter-spacing: 6px}
+    .w3-row-padding img {margin-bottom: 12px}
+    .logo{
+	position:absolute;
+	top:0;
+	left:250px;
+}
 
   </style>
 </head>
+<img src="https://i.ibb.co/3FD9Cb6/2021-05-27-004950.png" class="logo">
 <body>
-<table style="width:100%;text-align:center;" >
+<div class="w3-content" style="max-width:1500px">
+<!-- Header -->
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+  <div class="w3-padding-32">
+    <div class="w3-bar w3-border">
+<table style="width:100%;text-align:center;"  >
   <tr>
     <th>To Do : </th>
     <th>In Progress : </th>
@@ -52,11 +70,11 @@
         {% for obj,color in todo %}
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
         </form>
         </br>
         {% endfor %}
@@ -64,13 +82,13 @@
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
-          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
+          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);" class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
           </br>
         {% endfor %}
         </form>
@@ -78,59 +96,59 @@
     <td>
          <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
-          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
+          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
           </br>
         {% endfor %}
         </form>
     </td>
     <td>
-        <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
+        <form action="TaskPageProgrammer" method='POST' >{% csrf_token %}
         {% for obj,rate in done %}
           {% if rate != 0%}
             <div class="rate">
               {% if rate == '5' %}
-                <input type="radio" id={{obj}}5 name="rate" value="5"  checked="true"  disabled="true"/>
+                <input type="radio" id={{obj}}5 name="rate" value="5"  checked="true"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% else %}
-                <input type="radio" id={{obj}}5 name="rate" value="5" disabled="true"/>
+                <input type="radio" id={{obj}}5 name="rate" value="5" disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
               <label for={{obj}}5 title="text">5 stars</label>
               {% if rate == '4' %}
-                <input type="radio" id={{obj}}4 name="rate" value="4"  checked="true"  disabled="true"/>
+                <input type="radio" id={{obj}}4 name="rate" value="4"  checked="true"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% else %}
-                <input type="radio" id={{obj}}4 name="rate" value="4"  disabled="true"/>
+                <input type="radio" id={{obj}}4 name="rate" value="4"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
               <label for={{obj}}4 title="text">4 stars</label>
               {% if rate == '3' %}
-                <input type="radio" id={{obj}}3 name="rate" value="3"  checked="true"  disabled="true"/>
+                <input type="radio" id={{obj}}3 name="rate" value="3"  checked="true"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% else %}
-                <input type="radio" id={{obj}}3 name="rate" value="3"  disabled="true"/>
+                <input type="radio" id={{obj}}3 name="rate" value="3"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
               <label for={{obj}}3 title="text">3 stars</label>
               {% if rate == '2' %}
-                <input type="radio" id={{obj}}2 name="rate" value="2"  checked="true"  disabled="true"/>
+                <input type="radio" id={{obj}}2 name="rate" value="2"  checked="true"  disabled="true"/ class="w3-button w3-white w3-border w3-border-black w3-round-large">
               {% else %}
-                <input type="radio" id={{obj}}2 name="rate" value="2"  disabled="true"/>
+                <input type="radio" id={{obj}}2 name="rate" value="2"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
               <label for={{obj}}2 title="text">2 stars</label>
               {% if rate == '1' %}
-                <input type="radio" id={{obj}}1 name="rate" value="1"  checked="true"  disabled="true"/>
+                <input type="radio" id={{obj}}1 name="rate" value="1"  checked="true"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% else %}
-                <input type="radio" id={{obj}}1 name="rate" value="1"  disabled="true"/>
+                <input type="radio" id={{obj}}1 name="rate" value="1"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
-              <label for={{obj}}1 title="text">1 star</label>
+              <label for={{obj}}1 title="text"class="w3-button w3-white w3-border w3-border-black w3-round-large">1 star</label>
             </div>
           {% else %}
-            <label style="color: brown;">Not rated</label>
+            <label style="color: brown;" >Not rated</label>
           {% endif %}
 
-        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;">beck stage</button>
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;">
+        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
         </br>
         {% endfor %}
         </form>
@@ -139,7 +157,19 @@
 </table>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
   </br></br>
-  <input type="submit" value="back To project" id="beckToP" name="beckToP">
+  <input type="submit" value="back To project" id="beckToP" name="beckToP"class="w3-button w3-white w3-border w3-border-black w3-round-large">
 </form>
+         </div>
+  </div>
+</header>
+</div>
+<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+</footer>
 </body>
 </html>

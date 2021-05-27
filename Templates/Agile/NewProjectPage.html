@@ -1,140 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body {font-family: Arial, Helvetica, sans-serif;}
-
-table, th, td {
-  border: 1px solid black;
-  margin:-185px 0 0 1px;
-}
-
-/* Full-width input fields */
-input[type=text] {
-  width: 30%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Set a style for all buttons */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 15%;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-/* Extra styles for the cancel button */
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-  margin-left: 0px;
-  margin-top: 50px;
-}
-.Creat{
-    margin-top: 50px
-}
-/* Center the image and position the close button */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-  position: relative;
-}
-
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  padding-top: 60px;
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-
-/* Add Zoom Animation */
-.animate {
-  -webkit-animation: animatezoom 0.6s;
-  animation: animatezoom 0.6s
-}
-
-@-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)}
-  to {-webkit-transform: scale(1)}
-}
-
-@keyframes animatezoom {
-  from {transform: scale(0)}
-  to {transform: scale(1)}
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-  .ChooseClient {
-    position: absolute;
-    left: 1222px;
-  }
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+h1 {letter-spacing: 6px}
+.w3-row-padding img {margin-bottom: 12px}
+.logo{
+	position:absolute;
+	top:0;
+	left:250px;
 }
 </style>
-</head>
+<img src="https://i.ibb.co/3FD9Cb6/2021-05-27-004950.png" class="logo">
 <body>
-
+<div class="w3-content" style="max-width:1500px">
+<!-- Header -->
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+  <div class="w3-padding-32">
+    <div class="w3-bar w3-border">
 <form action="CreateProjDone" method="POST">{% csrf_token %}
         <div class="container">
             <label>Project Name : </label>
             </br>
-            <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" required>
+            <input type="text" placeholder="Enter Project name" name="ProjectName" class="w3-button w3-white w3-border w3-border-black w3-round-large" id="ProjectName" required >
             </br>
             <label for="projectDescription">Description:</label> </br>
-            <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
+            <textarea id="projectDescription"  class="w3-button w3-white w3-border w3-border-black w3-round-large" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
             </br>
 
             <div>
@@ -147,43 +44,50 @@ span.psw {
             <tr>
                 <td>
                 {% for obj in programmers %}
-                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}" >
+                    <input type="checkbox" id="{{obj}}" class="w3-button w3-white w3-border w3-border-black w3-round-large" name="programmer" value="{{obj}}" >
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
                 </td>
-
+            </tr>
+                </table>
             </div>
 
 
             <div class="ChooseClient">
-            </br>
-
                     <td>
                 {% for obj in clients %}
-                    <input type="checkbox" id="{{obj}}" name="client" value="{{obj}}">
+                    <input type="checkbox" id="{{obj}}" name="client" class="w3-button w3-white w3-border w3-border-black w3-round-large" value="{{obj}}">
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
 
                 </td>
             </tr>
-                </br>
-                </br>
-                </br>
-                </br>
+
 
             </div>
-            <button type="submit" onclick="myFunction()">Creat Project</button>
+            <button type="submit" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Creat Project</button>
             <script>
                 function myFunction() {
                     alert("Project successfully created");
                 }
             </script>
-            <button type="button" class="cancelbtn" > Cancel</button>
+            <button type="button" class="w3-button w3-white w3-border w3-border-black w3-round-large" class="cancelbtn" > Cancel</button>
         </div>
 </form>
-
+          </div>
+  </div>
+</header>
+</div>
+<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+</footer>
 
 </body>
 </html>
