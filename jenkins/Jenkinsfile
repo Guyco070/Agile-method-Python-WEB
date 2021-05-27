@@ -29,11 +29,7 @@ pipeline {
                 }
             }
         }
-        stage('Pep80 Results') {
-            steps{
-                recordIssues(tools: [pep8(pattern: 'reports/pep8.report')])
-            }
-        }
+       
         stage('Pylint Results') {
             steps{
                 recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
