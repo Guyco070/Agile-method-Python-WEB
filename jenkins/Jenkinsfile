@@ -29,5 +29,10 @@ pipeline {
                 }
             }
         }
+        stage('Pep8 Results') {
+            steps{
+                recordIssues(tools: [pep8(pattern: 'reports/pep8.report')])
+            }
+        }
     }
 }
