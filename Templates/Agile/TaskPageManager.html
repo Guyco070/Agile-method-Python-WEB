@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
+
+    {%if MailEmsg %}
+    <script type="text/javascript">
+        alert("{{MailEmsg}}");
+    </script>
+    {% endif %}
+
     {% for key,value in PDetails %}
         <li><b>{{key}}: </b>
         {% if key == "Tasks"%}
@@ -22,9 +29,15 @@
 <form action="TaskPageEdit" method="POST">{% csrf_token %}
     <button type="submit" name='Project' value="">Edit user story</button>
 </form>
+
+<form action="sendMailPage" method="POST">{% csrf_token %}
+    </br>
+    <button type="submit" name='sendMailPage' value="from_task">Contact User Story programmer</button>
+</form>
+
 <form action="ADDTASKS" method="POST">{% csrf_token %}
-</br>
-<input type="submit" value="Back to project" id="beckToP" name="beckToP">
+    </br>
+    <input type="submit" value="Back to project" id="beckToP" name="beckToP">
 </form>
 </body>
 </html>
