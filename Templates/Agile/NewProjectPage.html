@@ -16,6 +16,7 @@ h1 {letter-spacing: 6px}
 	top:0;
 	left:250px;
 }
+
 </style>
 <img src="https://i.ibb.co/3FD9Cb6/2021-05-27-004950.png" class="logo">
 <body>
@@ -25,7 +26,6 @@ h1 {letter-spacing: 6px}
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
 <form action="CreateProjDone" method="POST">{% csrf_token %}
-        <div class="container">
             <label>Project Name : </label>
             </br>
             <input type="text" placeholder="Enter Project name" name="ProjectName" class="w3-button w3-white w3-border w3-border-black w3-round-large" id="ProjectName" required >
@@ -37,7 +37,7 @@ h1 {letter-spacing: 6px}
             <div>
                 <label><b>Choose Team </b> : </label>
                 <table style="width:50%;text-align:left;" >
-                <tr>
+                            <tr>
                 <th>Programmers : </th>
                 <th>clients : </th>
             </tr>
@@ -49,13 +49,7 @@ h1 {letter-spacing: 6px}
                     <br>
                 {% endfor %}
                 </td>
-            </tr>
-                </table>
-            </div>
-
-
-            <div class="ChooseClient">
-                    <td>
+                <td>
                 {% for obj in clients %}
                     <input type="checkbox" id="{{obj}}" name="client" class="w3-button w3-white w3-border w3-border-black w3-round-large" value="{{obj}}">
                     <label for="{{obj}}"> {{obj}}</label>
@@ -64,9 +58,8 @@ h1 {letter-spacing: 6px}
 
                 </td>
             </tr>
-
-
-            </div>
+                </table>
+                <div>
             <button type="submit" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Creat Project</button>
             <script>
                 function myFunction() {
@@ -75,8 +68,9 @@ h1 {letter-spacing: 6px}
             </script>
             <button type="button" class="w3-button w3-white w3-border w3-border-black w3-round-large" class="cancelbtn" > Cancel</button>
         </div>
+            </div>
 </form>
-          </div>
+    </div>
   </div>
 </header>
 </div>

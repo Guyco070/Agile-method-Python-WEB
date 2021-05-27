@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>ChangeDetailsPage</title>
-    <style>
-      body {font-family: Arial, Helvetica, sans-serif;}
+</head>
+<style>
+h1 {letter-spacing: 6px}
+      body {font-family:"Raleway", Arial, sans-serif;}
       table, th, td {
          border: 1px solid black;
          margin:-246px 0 0 1px;
@@ -19,7 +21,7 @@
         border: 1px solid #ccc;
         box-sizing: border-box;
       }
-      
+
       /* Set a style for all buttons */
       button {
         background-color: #4CAF50;
@@ -30,11 +32,11 @@
         cursor: pointer;
         width: 15%;
       }
-      
+
       button:hover {
         opacity: 0.8;
       }
-      
+
       /* Extra styles for the cancel button */
       .cancelbtn {
         width: auto;
@@ -52,21 +54,21 @@
         margin: 24px 0 12px 0;
         position: relative;
       }
-      
+
       img.avatar {
         width: 40%;
         border-radius: 50%;
       }
-      
+
       .container {
         padding: 16px;
       }
-      
+
       span.psw {
         float: right;
         padding-top: 16px;
       }
-      
+
       /* The Modal (background) */
       .modal {
         display: none; /* Hidden by default */
@@ -81,7 +83,7 @@
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         padding-top: 60px;
       }
-      
+
       /* Modal Content/Box */
       .modal-content {
         background-color: #fefefe;
@@ -92,24 +94,24 @@
       #GoBackbutton {
             background-color: grey;
         }
-      
-      
+
+
       /* Add Zoom Animation */
       .animate {
         -webkit-animation: animatezoom 0.6s;
         animation: animatezoom 0.6s
       }
-      
+
       @-webkit-keyframes animatezoom {
         from {-webkit-transform: scale(0)}
         to {-webkit-transform: scale(1)}
       }
-      
+
       @keyframes animatezoom {
         from {transform: scale(0)}
         to {transform: scale(1)}
       }
-      
+
       /* Change styles for span and cancel button on extra small screens */
       @media screen and (max-width: 300px) {
         span.psw {
@@ -122,7 +124,6 @@
 
       }
       </style>
-</head>
 <body>
 
 <h1>Change Details Page view</h1>
@@ -142,10 +143,11 @@
             <label for="projectDescription">Description:</label> </br>
             <textarea id="projectDescription" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
             </br>
+             <label><b>Choose Team </b> : </label>
+        </div>
 
-            <div>
-                <label><b>Choose Team </b> : </label>
-                <table style="width:50%;text-align:left;" >
+        <div>
+                <table style="width:50%;text-align:left;margin-top:10px; margin-left:1px;" >
             <tr>
                 <th>Programmers : </th>
                 <th>clients : </th>
@@ -153,33 +155,22 @@
             <tr>
                 <td>
                 {% for obj in programmers %}
-                    <input type="checkbox" id="{{obj}}" name="programmer" value="{{obj}}" >
+                    <input type="checkbox" id="{{obj}}" class="w3-button w3-white w3-border w3-border-black w3-round-large" name="programmer" value="{{obj}}" >
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
                 </td>
-
-            </div>
-
-
-            <div class="ChooseClient">
-            </br>
-
-                    <td>
+                <td>
                 {% for obj in clients %}
-                    <input type="checkbox" id="{{obj}}" name="client" value="{{obj}}">
+                    <input type="checkbox" id="{{obj}}" name="client" class="w3-button w3-white w3-border w3-border-black w3-round-large" value="{{obj}}">value="{{obj}}">
                     <label for="{{obj}}"> {{obj}}</label>
                     <br>
                 {% endfor %}
 
                 </td>
             </tr>
-                </br>
-                </br>
-                </br>
-                </br>
-
-            </div>
+                </table>
+             <div>
             <button type="submit" onclick="myFunction()">Creat Project</button>
             <script>
                 function myFunction() {
@@ -187,11 +178,13 @@
                 }
             </script>
             <button type="button" class="cancelbtn" > Cancel</button>
+                </div>
         </div>
 </form>
 </br>
     <form action="showMyProjects" method="POST">{% csrf_token %}
         <button type="submit" id="GoBackbutton">go back </button>
     </form>
+
 </body>
 </html>
