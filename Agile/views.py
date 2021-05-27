@@ -144,13 +144,15 @@ def ProjectPage(response):
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
-        create_date = tempPs['Create_time']
+        
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
-        if (des != None):    
-            PDetails['PDetails'].append(['Created at',create_date])
+        if "Create_time" in tempPs:
+            create_date = tempPs['Create_time']
+            if (create_date != None):    
+                PDetails['PDetails'].append(['Created at',create_date])
         if (response.COOKIES['TYPE'] == 'Admin'):
             result = render(response, "Agile/ProjectPageManager.html", PDetails)
         if (response.COOKIES['TYPE'] == 'Programmer'):
@@ -290,6 +292,11 @@ def taskpage(response):
             TDetails['PDetails'].append(['Estimated start', sDate])
             if (eDate != None):
                 TDetails['PDetails'].append(['Estimated end', eDate])
+        if "done_time" in tempPs:
+            done_time = tempPs['done_time']
+            if (done_time != None and done_time != ""): 
+                TDetails['PDetails'].append(['Actual end',done_time])
+                print(TDetails['PDetails'])
         if (Programmer != None):
             TDetails['PDetails'].append(['Programmer', Programmer])
     if(response.COOKIES['TYPE']=='Admin'):
@@ -533,7 +540,7 @@ def TaskPageProgrammer(response):
             elif(status == "INPROGRESS"):
                 db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "INTEST"}})
             elif(status == "INTEST"):
-                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "DONE"}})
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')},{"$set": {"status": "DONE", "done_time": datetime.now().strftime('%d.%m.%y %H:%M')}})
         elif 'returnStage' in response.POST:
             tempT = db.tasks.find_one({"USERSTORY": response.POST.get('returnStage')})
             status = tempT['status']
@@ -542,7 +549,7 @@ def TaskPageProgrammer(response):
             elif status == "INTEST":
                 db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INPROGRESS"}})
             elif status == "DONE":
-                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST"}})
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('returnStage')},{"$set": {"status": "INTEST" ,"done_time": ""}})
         client.close()
         TaskPageProgrammer_flag = False
         return KanbanPage(response)
