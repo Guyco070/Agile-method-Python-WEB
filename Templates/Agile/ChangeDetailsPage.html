@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1 {font-family: "Raleway", Arial, sans-serif}
+body,h1 {font-family: "Raleway", Arial, sans-serif;text-align:left}
 h1 {letter-spacing: 6px}
 .w3-row-padding img {margin-bottom: 12px}
 .logo{
@@ -17,7 +17,7 @@ h1 {letter-spacing: 6px}
 	left:250px;
 }
 div.a{
-text-align:left
+text-align:center
 }
 
 </style>
@@ -29,15 +29,18 @@ text-align:left
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
 <h1>Change Details Page view</h1>
+
 <form action="ChangeDetailsPage" method="POST">{% csrf_token %}
+    <div class="a">
     {% for key,value in PDetails %}
     <li><b>{{key}}: </b>
     <lable> {{value}}</lable>
     </li></br>
     {% endfor %}
+    </div>
 </form>
 <form action="updateProjectDetails" method="POST">{% csrf_token %}
-        <div class="container">
+        <div class="a">
             <label>Project Name : </label>
             </br>
             <input type="text" placeholder="Enter Project name" name="ProjectName" id="ProjectName" required>
