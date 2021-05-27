@@ -29,5 +29,16 @@ pipeline {
                 }
             }
         }
+       
+        stage('Pylint Results') {
+            steps{
+                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
+            }
+        }
+        stage('Pyflakes Results') {
+            steps{
+                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
+            }
+        }
     }
 }
