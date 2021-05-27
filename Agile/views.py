@@ -296,7 +296,6 @@ def taskpage(response):
             done_time = tempPs['done_time']
             if (done_time != None and done_time != ""): 
                 TDetails['PDetails'].append(['Actual end',done_time])
-                print(TDetails['PDetails'])
         if (Programmer != None):
             TDetails['PDetails'].append(['Programmer', Programmer])
     if(response.COOKIES['TYPE']=='Admin'):
