@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f73aaa07-4232-411a-9383-0b9b3d8c5f62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Agile/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Agile/AdminHomePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/AdminHomePage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Templates/Agile/ChangeDetailsPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/ChangeDetailsPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Agile/HomePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/HomePage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Agile/NewProjectPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Agile/NewProjectPage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
