@@ -54,6 +54,7 @@ def CreateProjDone(response):
             "PManager": response.COOKIES['Email'],
             "Clients":client_list,
             "Programmer":Programmer_list,
+            "Create_time": datetime.now().strftime('%d.%m.%y %H:%M')
         }
         SV.insert_one(projects)
         client.close()
@@ -143,10 +144,13 @@ def ProjectPage(response):
     if(tempPs != None):
         name = tempPs['ProjectName']
         des = tempPs['Description']
+        create_date = tempPs['Create_time']
         if (name != None):
             PDetails['PDetails'].append(['Project name',name])
         if (des != None):    
             PDetails['PDetails'].append(['Description',des])
+        if (des != None):    
+            PDetails['PDetails'].append(['Created at',create_date])
         if (response.COOKIES['TYPE'] == 'Admin'):
             result = render(response, "Agile/ProjectPageManager.html", PDetails)
         if (response.COOKIES['TYPE'] == 'Programmer'):
