@@ -1,33 +1,34 @@
 from django.http.response import BadHeaderError
 from Agile.settings import EMAIL_HOST_USER
-from idlelib import query
 from django.shortcuts import render
 from pymongo import MongoClient
-from pymongo import message
-from pymongo.message import update
 from datetime import datetime, timedelta
-from django.core.mail import send_mail
 
 TaskPageProgrammer_flag = True
 client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
-MailEmsg=None
+MailEmsg = None
 from_edit = False
 
+
 def HomePage(request):
-    return render(request,'Agile/HomePage.html')
+    return render(request , 'Agile/HomePage.html')
+
 
 def SIGNUP(request):
-    return render(request,'Agile/SignUp.html')
+    return render(request , 'Agile/SignUp.html')
+
 
 def LOGIN(request):
-    return render(request,'Agile/LogIn.html')
+    return render(request , 'Agile/LogIn.html')
+
 
 def HowToUse(request):
-    return render(request,'Agile/HowToUsePage.html')
+    return render(request , 'Agile/HowToUsePage.html')
+
 
 def NewProjectPage(response):
-    Users = {'programmers': [],'clients':[]}
+    Users = {'programmers': [] , 'clients':[]}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
     for pr in tempPro:
         p = pr['ID']
@@ -39,6 +40,7 @@ def NewProjectPage(response):
         if (cl != None):
             Users['clients'].append(c)
     return render(response, "Agile/NewProjectPage.html", Users)
+
 
 def CreateProjDone(response):
     if response.method == 'POST':
@@ -60,6 +62,7 @@ def CreateProjDone(response):
         client.close()
     return showMyProjects(response)
 
+
 def SignUpDone(response):
     if response.method == 'POST':
         SV = db.users
@@ -73,7 +76,8 @@ def SignUpDone(response):
         }
         SV.insert_one(user)
         client.close()
-    return render(response, 'Agile/SignupDone.html')
+    return render(response , 'Agile/SignupDone.html')
+
 
 def showMyProjects(response):
     if(response.COOKIES['TYPE']=='Admin'):
@@ -82,6 +86,7 @@ def showMyProjects(response):
         return ProgrammerHomePage(response)
     if(response.COOKIES['TYPE']=='Client'):
         return ClientHomePage(response)
+
 
 def LoginStatus(response):
     if response.method=='POST':
@@ -95,29 +100,30 @@ def LoginStatus(response):
         if 'bTuser' in response.POST:
             findUser =db.users.find_one({"EMAIL": response.COOKIES['Email']})
         else:
-            findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL') , "PASSWORD": response.POST.get("PASSWORD")})
+            findUser =db.users.find_one({"EMAIL": response.POST.get('EMAIL'), "PASSWORD": response.POST.get("PASSWORD")})
 
         if(findUser!= None):
             if 'FName' in findUser:
-                user_name = {"FName":findUser['FName'],"LName":findUser['LName']}
-            else: user_name = {"FName": "","LName":""}
+                user_name = {"FName":findUser['FName'], "LName":findUser['LName']}
+            else: user_name = {"FName": "", "LName": ""}
             if(findUser['TYPE']=="Admin"):
-                result=render(response,"Agile/AdminHomePage.html",user_name)
+                result=render(response, "Agile/AdminHomePage.html", user_name)
                 result.set_cookie('TYPE', findUser['TYPE'], max_age=3000)
                 result.set_cookie('Email', findUser['EMAIL'], max_age=3000)
             if (findUser['TYPE'] == "Programmer"):
-                result=render(response, "Agile/ProgrammerHomePage.html",user_name)
-                result.set_cookie('TYPE', findUser['TYPE'],max_age=3000)
-                result.set_cookie('Email', findUser['EMAIL'],max_age=3000)
+                result=render(response, "Agile/ProgrammerHomePage.html", user_name)
+                result.set_cookie('TYPE', findUser['TYPE'], max_age=3000)
+                result.set_cookie('Email', findUser['EMAIL'], max_age=3000)
             if (findUser['TYPE'] == "Client"):
-                result =render(response, "Agile/ClientHomePage.html",user_name)
-                result.set_cookie('TYPE', findUser['TYPE'],max_age=3000)
-                result.set_cookie('Email',findUser['EMAIL'] ,max_age=3000)
-                result.set_cookie('ID', findUser['ID'],max_age=3000)
+                result =render(response, "Agile/ClientHomePage.html", user_name)
+                result.set_cookie('TYPE', findUser['TYPE'], max_age=3000)
+                result.set_cookie('Email', findUser['EMAIL'], max_age=3000)
+                result.set_cookie('ID', findUser['ID'], max_age=3000)
         else:
             result = render(response, 'Agile/HomePage.html')
-            result.set_cookie('Email',response.POST.get('None'),max_age=3000)
+            result.set_cookie('Email', response.POST.get('None'), max_age=3000)
     return result
+
 
 def AdminHomePage(response):
     if is_connected(response):
@@ -129,7 +135,8 @@ def AdminHomePage(response):
             p = pr['ProjectName']
             if(p != None):
                 projects['projects'].append(p)
-    return render(response,"Agile/AdminHomePage.html",projects)
+    return render(response, "Agile/AdminHomePage.html",projects)
+
 
 def ProjectPage(response):
     if is_connected(response):
@@ -209,7 +216,8 @@ def sendMailPage(response):
             return taskpage(response)
         else:
             return ProjectPage(response)
- 
+
+
 def ProgrammerHomePage(response):
     if is_connected(response):
         return is_connected(response)
@@ -222,6 +230,7 @@ def ProgrammerHomePage(response):
                 projects['projects'].append(p)
     return render(response, "Agile/ProgrammerHomePage.html", projects)
 
+
 def ClientHomePage(response):
     if is_connected(response):
         return is_connected(response)
@@ -233,6 +242,7 @@ def ClientHomePage(response):
             if (p != None):
                 projects['projects'].append(p)
     return render(response, "Agile/ClientHomePage.html", projects)
+
 
 def ChangeDetailsPage(response):
     if is_connected(response):
@@ -259,6 +269,7 @@ def ChangeDetailsPage(response):
             PDetails['PDetails'].append(['Description',des])
     result=render(response, "Agile/ChangeDetailsPage.html", PDetails)
     return result
+
 
 def taskpage(response):
     if is_connected(response):
@@ -307,11 +318,13 @@ def taskpage(response):
     result.set_cookie('Task',response.POST.get('TASKNAME'), 3000)
     return result
 
+
 def TaskPageEdit(response):
     if is_connected(response):
         return is_connected(response)
     PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     return render(response, "Agile/TaskPageEdit.html",PQuery)
+
 
 def EditTasks(response):
     if is_connected(response):
@@ -366,6 +379,7 @@ def EditTasks(response):
     result.set_cookie('Project',projectName,3000)
     return result
 
+
 def updateProjectDetails(response):
     if is_connected(response):
         return is_connected(response)
@@ -391,11 +405,13 @@ def updateProjectDetails(response):
             PDetails['PDetails'].append(['Description', des])
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 
+
 def AddTasks(request):
     if is_connected(request):
         return is_connected(request)
     PQuery = db.projects.find_one({"ProjectName": request.COOKIES['Project']})
     return render(request,"Agile/AddTasks.html",PQuery)
+
 
 def ADDTASKS(response):
     if is_connected(response):
@@ -435,6 +451,7 @@ def ADDTASKS(response):
             result = AddTasks(response)
     result.set_cookie('Project',projectName,3000)
     return result
+
 
 def KanbanPage(response):
     if is_connected(response):
@@ -476,6 +493,7 @@ def KanbanPage(response):
                 tasks3['tasks'].append([p,r])
     return render(response,"Agile/KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
+
 def ClientKanbanPage(response):
     if is_connected(response):
         return is_connected(response)
@@ -509,6 +527,7 @@ def ClientKanbanPage(response):
                 tasks3['tasks'].append([p,r])
     return render(response,"Agile/Client‏‏KanbanPage.html",{"todo":tasks['tasks'],"inprogress":tasks1['tasks'],"intest":tasks2['tasks'],"done":tasks3['tasks']})
 
+
 def updateRate(response):
     if is_connected(response):
         return is_connected(response)
@@ -517,6 +536,7 @@ def updateRate(response):
     elif "rate" in response.POST:
         db.tasks.find_one_and_update({"USERSTORY" : response.POST["rateBut"]},{"$set": {"RATE":response.POST['rate']}},upsert=True)
         return ClientKanbanPage(response)
+
 
 def TaskPageProgrammer(response):
     if is_connected(response):
@@ -555,6 +575,7 @@ def TaskPageProgrammer(response):
     TaskPageProgrammer_flag = True
     return KanbanPage(response)
 
+
 def get_emails(users):
     Programmer_list = list([])
     for temp_pr in users:
@@ -562,25 +583,29 @@ def get_emails(users):
         Programmer_list.append(temp_e["EMAIL"])
     return Programmer_list
 
+
 def get_id(usere):
     return db.users.find_one({ "EMAIL": usere})['ID']
+
 
 def get_item_DL(dictionary, key, number):
     return dictionary.get(key)[number]
 
+
 def get_item(dictionary, key):
     return dictionary.get(key)
+
 
 def remove_white_spaces_SE(str_to_update): #remove white spaces from start+end of string
     str_to_update = str_to_update.lstrip()
     str_to_update = str_to_update.rstrip()
     return str_to_update
 
+
 def color_adapter(pr):
     if "EDate" in pr:
         EDate = datetime.strptime(pr["EDate"],'%d.%m.%y %H:%M')
         now = datetime.now()
-        
         if pr["status"] == "TODO":
             if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
                 return "red"
@@ -590,11 +615,11 @@ def color_adapter(pr):
             if (EDate - timedelta(days=5)) < now:  # EDate - timedelta(5) = EDate - 5 days
                 return "red"
             else: "green"
-
         if pr["status"] == "INTEST":
             if (EDate - timedelta(days=3)) < now:  # EDate - timedelta(3) = EDate - 3 days
                 return "red"
             else: "green"
+
 
 def is_connected(response):
     msg = {"reconnect_msg":None}
@@ -619,6 +644,7 @@ def array_tasksToString(tasks_arr):
     for rep in tasks_arr:
         tasks += (rep+"\n")
     return tasks[0:len(tasks)-1] # remove last /n
+
 
 def split_tasks(tasks,eliminate_empty = False):
     search_end = False
@@ -666,6 +692,7 @@ def split_tasks(tasks,eliminate_empty = False):
 
     return tasks_arr
 
+
 def tasks_edit_acts(tasks_arr,tasks_to_replace):
     tasks_to_replace = split_tasks(tasks_to_replace)
     
@@ -686,6 +713,7 @@ def tasks_edit_acts(tasks_arr,tasks_to_replace):
 
     return tasks_arr
 
+
 def tasks_bubbleSort(tasks_arr):
     n = len(tasks_arr)
 
@@ -703,6 +731,7 @@ def tasks_bubbleSort(tasks_arr):
                 tasks_arr[j], tasks_arr[j+1] = tasks_arr[j+1], tasks_arr[j]
     return tasks_arr
 
+
 def set_numbers(tasks_arr):
     if len(tasks_arr) == 1 and "29)" in tasks_arr[0]:
         return tasks_arr
@@ -711,9 +740,11 @@ def set_numbers(tasks_arr):
         tasks_arr[i] = str(i+1) + tasks_arr[i][1:len(tasks_arr[i])+1]
     return tasks_arr
 
+
 def remove_tasks(tasks_arr):
     tasks_arr = [rep for rep in tasks_arr if len(rep.rstrip()) != 2]
     return tasks_arr
+
 
 def add_tasks(tasks_arr,tasks_to_replace):
     tasks = ""
@@ -724,6 +755,7 @@ def add_tasks(tasks_arr,tasks_to_replace):
         if rep[0:2] not in tasks and len(rep.rstrip()) != 2:             
             tasks_arr.append(rep)
     return tasks_arr
+
 
 def switch_tasks(tasks_arr,tasks_to_replace):
     i=j=0
