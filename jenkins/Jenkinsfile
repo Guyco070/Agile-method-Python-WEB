@@ -32,12 +32,12 @@ pipeline {
        
         stage('Pylint Results') {
             steps{
-                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report',args: ["--ignore", "E501"])])
+                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
         }
-        stage('Pyflakes Results') {
+        stage('Pyflakes8 Results') {
             steps{
-                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
+                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report'args: ["--ignore", "E501"])])
             }
         }
     }
