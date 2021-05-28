@@ -75,7 +75,7 @@ def CreateProjDone(response):
                 if (cl is not None):
                     Users['clients'].append(c)
             result=render(response, "Agile/NewProjectPage.html", Users)
-            result.set_cookie('STATE', 'PROJECT_DETAILS_ARE_IN_USE', max_age=30)
+            result.set_cookie('STATE', 'PROJECT_NAME_ARE_IN_USE', max_age=30)
             return result
         SV.insert_one(projects)
         client.close()
@@ -93,6 +93,12 @@ def SignUpDone(response):
             "FName": response.POST.get('FName'),
             "LName": response.POST.get('LName'),
         }
+        auth = db.users.find_one({"ID": response.POST.get('ID')})
+        auth1= db.users.find_one({"EMAIL": response.POST.get('EMAIL')})
+        if(auth1!=None or auth!=None):
+            result=render(response, 'Agile/SignUp.html')
+            result.set_cookie('STATE', 'EMAIL_OR_ID_ARE_IN_USE', max_age=30)
+            return result
         SV.insert_one(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')
