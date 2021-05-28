@@ -1,5 +1,4 @@
-from django.test import TestCase,SimpleTestCase
-from django.urls import reverse, resolve
+from django.test import SimpleTestCase
 from Agile.views import *
 
 class Test(SimpleTestCase):

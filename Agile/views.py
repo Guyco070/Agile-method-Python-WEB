@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 
 TaskPageProgrammer_flag = True
-client = MongoClient("mongodb+srv: //TeamFour: TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
+client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
 db = client["Agile"]
 MailEmsg = None
 from_edit = False
