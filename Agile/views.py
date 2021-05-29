@@ -57,7 +57,7 @@ def CreateProjDone(response):
             "PManager": response.COOKIES['Email'],
             "Clients": client_list,
             "Programmer": Programmer_list,
-            "Create_time": datetime.now().strftime('%d.%m.%y %H: %M')
+            "Create_time": datetime.now().strftime('%d.%m.%y %H:%M')
         }
         SV.insert_one(projects)
         client.close()
@@ -360,19 +360,19 @@ def EditTasks(response):
         if uStory:
             newvalues["$set"]["USERSTORY"] = uStory
         if s:
-            sDate = datetime.strptime(s.replace("T", " ")[2:], '%y-%m-%d %H: %M')
-            s = sDate.strftime('%d.%m.%y %H: %M')  # format change
+            sDate = datetime.strptime(s.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            s = sDate.strftime('%d.%m.%y %H:%M')  # format change
             if not e:
-                eDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H: %M')
+                eDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
             else:
-                eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H: %M')
-                e = eDate.strftime('%d.%m.%y %H: %M')  # format change
+                eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+                e = eDate.strftime('%d.%m.%y %H:%M')  # format change
             if sDate < eDate:
                 newvalues["$set"]["EDate"] = e
         elif e:
-            eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H: %M')
-            e = eDate.strftime('%d.%m.%y %H: %M')  # format change
-            sDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H: %M')
+            eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            e = eDate.strftime('%d.%m.%y %H:%M')  # format change
+            sDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
             if eDate > sDate:
                 newvalues["$set"]["EDate"] = e
         if p != 'programmer':
@@ -435,10 +435,10 @@ def ADDTASKS(response):
             a = remove_white_spaces_SE(a)
             b = remove_white_spaces_SE(b)
 
-            sDate = datetime.strptime(c.replace("T", " ")[2:], '%y-%m-%d %H: %M')
-            eDate = datetime.strptime(d.replace("T", " ")[2:], '%y-%m-%d %H: %M')
-            c = sDate.strftime('%d.%m.%y %H: %M')  # format change
-            d = eDate.strftime('%d.%m.%y %H: %M')  # format change
+            sDate = datetime.strptime(c.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            eDate = datetime.strptime(d.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            c = sDate.strftime('%d.%m.%y %H:%M')  # format change
+            d = eDate.strftime('%d.%m.%y %H:%M')  # format change
             task = {
                 "ProjectName": projectName,
                 "USERSTORY": a,
@@ -558,7 +558,7 @@ def TaskPageProgrammer(response):
             elif(status == "INPROGRESS"):
                 db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')}, {"$set": {"status": "INTEST"}})
             elif(status == "INTEST"):
-                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')}, {"$set": {"status": "DONE", "done_time": datetime.now().strftime('%d.%m.%y %H: %M')}})
+                db.tasks.find_one_and_update({"USERSTORY": response.POST.get('passNext')}, {"$set": {"status": "DONE", "done_time": datetime.now().strftime('%d.%m.%y %H:%M')}})
         elif 'returnStage' in response.POST:
             tempT = db.tasks.find_one({"USERSTORY": response.POST.get('returnStage')})
             status = tempT['status']
@@ -603,7 +603,7 @@ def remove_white_spaces_SE(str_to_update):  # remove white spaces from start+end
 
 def color_adapter(pr):
     if "EDate" in pr:
-        EDate = datetime.strptime(pr["EDate"], '%d.%m.%y %H: %M')
+        EDate = datetime.strptime(pr["EDate"], '%d.%m.%y %H:%M')
         now = datetime.now()
         if pr["status"] == "TODO":
             if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days

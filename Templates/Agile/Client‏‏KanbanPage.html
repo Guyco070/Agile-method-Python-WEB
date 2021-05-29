@@ -70,9 +70,9 @@
         {% for obj,color in todo %}
         <form action="updateRate" method='POST'>{% csrf_token %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: red;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: rgb(25, 196, 25);">
           {% endif %}
         </form>
         </br>
@@ -82,9 +82,9 @@
         <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
         {% if color == "red" %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: red;">
         {% else %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: rgb(25, 196, 25);">
         {% endif %}
       </br>
         {% endfor %}
@@ -94,9 +94,9 @@
          <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: red;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="border: none;margin:10px; color: rgb(25, 196, 25);">
           {% endif %}
         </br>
         {% endfor %}
@@ -137,8 +137,8 @@
             {% endif %}
             <label for={{obj}}1 title="text">1 star</label>
           </div>
-          <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;margin:10px;">
-          <button type="submit" id="rateBut" name="rateBut" value={{obj}} style="margin:10px;" onclick="myFunction()">Rate</button>
+          <input type="submit" id="TASKNAME3" name="TASKNAME3" value="{{obj}}" style="border: none;margin:10px;">
+          <button type="submit" id="rateBut" name="rateBut" value="{{obj}}" style="margin:10px;" onclick="myFunction()">Rate</button>
           <script>
             function myFunction() {
                 alert("Rate changed successfully");
