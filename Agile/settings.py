@@ -54,11 +54,7 @@ ROOT_URLCONF = 'Agile.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
         'DIRS': [r'C:\Users\גיא החתיך\Documents\SmartGit - rep\Agile-method-Python-WEB\Templates'],
-=======
-        'DIRS': [r'C:\Users\Koral\PycharmProjects\Agile\Agile\Templates'],
->>>>>>> origin/main
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
