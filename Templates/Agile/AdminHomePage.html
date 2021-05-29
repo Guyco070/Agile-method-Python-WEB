@@ -22,8 +22,6 @@ body, html {
 
 .bg {
   /* The image used */
-  background-image: url("https://i.ibb.co/gVTfP6c/line-geometry-polygonal-chain-colorful-abstract-geometric-polyline-579b4704dd38b174a9a1310d1e528b2c.png");
-
   /* Full height */
   height: 100%;
 
@@ -40,6 +38,10 @@ body, html {
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
+   <form action="AdminHomePage" method="POST">{% csrf_token %}
+        <button onclick="location.href='http://127.0.0.1:8000/LoginStatus';" class=" w3-left w3-button w3-white w3-border w3-border-black w3-round-large" >HomePage </button>
+    </form>
+        <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
 <form action="showMyProjects" method="POST">{% csrf_token %}
     {%if FName == "" or FName == None%}
         <h1>Hello Admin user</h1>
@@ -58,7 +60,6 @@ body, html {
 <button onclick="location.href ='NewProjectPage'"class="w3-button w3-white w3-border w3-border-black w3-round-large">Open New Project </button>
 
               <form onclick="location.href =''" method='POST'>{% csrf_token %}
-        </br><button id="logout" name="logout" class="w3-button w3-white w3-border w3-border-black w3-round-large">Logout </button>
     </form>
               </div>
   </div>
