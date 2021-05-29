@@ -1,3 +1,4 @@
+﻿import certifi
 from django.http.response import BadHeaderError
 from Agile.settings import EMAIL_HOST_USER
 from django.shortcuts import render
@@ -6,7 +7,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 
 TaskPageProgrammer_flag = True
-client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true")
+client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",tlsCAFile=certifi.where())
 db = client["Agile"]
 MailEmsg = None
 from_edit = False
@@ -59,6 +60,23 @@ def CreateProjDone(response):
             "Programmer": Programmer_list,
             "Create_time": datetime.now().strftime('%d.%m.%y %H:%M')
         }
+        auth = db.projects.find_one({"ProjectName": response.POST.get('ProjectName')})
+        if(auth!=None):
+            print(auth)
+            Users = {'programmers': [], 'clients': []}
+            tempPro = list(db.users.find({"TYPE": "Programmer"}))
+            for pr in tempPro:
+                p = pr['ID']
+                if (p is not None):
+                    Users['programmers'].append(p)
+            tempCli = list(db.users.find({"TYPE": "Client"}))
+            for cl in tempCli:
+                c = cl['ID']
+                if (cl is not None):
+                    Users['clients'].append(c)
+            result=render(response, "Agile/NewProjectPage.html", Users)
+            result.set_cookie('STATE', 'PROJECT_NAME_ARE_IN_USE', max_age=30)
+            return result
         SV.insert_one(projects)
         client.close()
     return showMyProjects(response)
@@ -75,6 +93,12 @@ def SignUpDone(response):
             "FName": response.POST.get('FName'),
             "LName": response.POST.get('LName'),
         }
+        auth = db.users.find_one({"ID": response.POST.get('ID')})
+        auth1= db.users.find_one({"EMAIL": response.POST.get('EMAIL')})
+        if(auth1!=None or auth!=None):
+            result=render(response, 'Agile/SignUp.html')
+            result.set_cookie('STATE', 'EMAIL_OR_ID_ARE_IN_USE', max_age=30)
+            return result
         SV.insert_one(user)
         client.close()
     return render(response, 'Agile/SignupDone.html')

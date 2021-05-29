@@ -40,6 +40,18 @@ body, html {
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
+            <h1 id="myId"></h1>
+<script>
+document.getElementById('myId').innerHTML=listCookies()
+function listCookies() {
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 1 ; i <= theCookies.length; i++) {
+        aString += i + ' ' + theCookies[i-1] + "\n";
+}
+    return theCookies[1];
+}
+</script>
 <form action="SignUpDone" method="POST">{% csrf_token %}
   <label for="FName">First Name:</label>
   <input type="text" id="FName" name="FName" class="w3-button w3-white w3-border w3-border-black w3-round-large"><br><br>
