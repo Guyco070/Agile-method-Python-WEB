@@ -34,7 +34,7 @@ pipeline {
                 recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
         }
-        /*stage('Pyflakes8 Results') {
+        stage('Pyflakes8 Results') {
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pip install flake8'
@@ -42,7 +42,7 @@ pipeline {
                 }
                 //recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report',args: ["--ignore", "E501"])]) // --ignore E501 is to ignore Error for lines longer of 79 letters
             }
-        }*/
+        }
     }
     
      post {
