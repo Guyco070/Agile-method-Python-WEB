@@ -40,7 +40,7 @@ pipeline {
                     sh 'python -m pip install flake8'
                     sh 'python -m flake8 Agile/views.py --ignore E501'
                 }
-                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report',args: ["--ignore", "E501"])]) // --ignore E501 is to ignore Error for lines longer of 79 letters
+                //recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report',args: ["--ignore", "E501"])]) // --ignore E501 is to ignore Error for lines longer of 79 letters
             }
         }
     }
