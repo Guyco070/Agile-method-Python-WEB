@@ -58,16 +58,18 @@ pipeline {
         }
         
         failure{
-			emailext ( body: 'Test Message',
+			emailext ( 
+			body: 'Test Message',
     			subject: 'Test Subject',
     			to: 'navesh@ac.sce.ac.il'
 				  )
 		}
 		success{	
-			emailext (body: 'Test Message',
+			emailext (
+			body: 'Test Message',
     			subject: 'Test Subject',
     			to: 'navesh@ac.sce.ac.il'
-				  )
+				 )
 		}
        
     }
