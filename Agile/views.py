@@ -673,7 +673,7 @@ def array_tasksToString(tasks_arr):
     return tasks[0: len(tasks) - 1]  # remove last /n
 
 
-def split_tasks(tasks, eliminate_empty=False):
+def split_tasks(tasks, eliminate_empty=False):  # get string of tasks and make an legit array. eliminate_empty=True clear empty tasks, for example 1) one. 2) 3) three.  ->  ['1) one', '2) three'] 
     search_end = False
     tasks = tasks.lstrip()
 
@@ -711,11 +711,11 @@ def split_tasks(tasks, eliminate_empty=False):
     if eliminate_empty:
         tasks_arr = remove_tasks(tasks_arr)
 
-    # bubble sort
-    tasks_arr = tasks_bubbleSort(tasks_arr)
+        # bubble sort
+        tasks_arr = tasks_bubbleSort(tasks_arr)
 
-    # set numbers
-    tasks_arr = set_numbers(tasks_arr)
+        # set numbers
+        tasks_arr = set_numbers(tasks_arr)
 
     return tasks_arr
 
@@ -723,14 +723,14 @@ def split_tasks(tasks, eliminate_empty=False):
 def tasks_edit_acts(tasks_arr, tasks_to_replace):
     tasks_to_replace = split_tasks(tasks_to_replace)
 
-    # remove
-    tasks_arr = remove_tasks(tasks_arr)
-
     # switch
     tasks_arr = switch_tasks(tasks_arr, tasks_to_replace)
 
     # add
     tasks_arr = add_tasks(tasks_arr, tasks_to_replace)
+
+    # remove
+    tasks_arr = remove_tasks(tasks_arr)
 
     # bubble sort
     tasks_arr = tasks_bubbleSort(tasks_arr)
