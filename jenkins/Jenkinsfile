@@ -56,23 +56,17 @@ pipeline {
             }
             mail bcc: '', body: 'The last build failed, check it!', cc: 'yarinaf1@gmail.com', from: 'gaico070@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'gaico070@gmail.com'
         }
-       
+        /*
         failure{
-			emailext (
-    				subject: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER}'",
-    				body: """<p>Check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME}</a></p>""",
-    				to: "navesh@ac.sce.ac.il",
-    				from: "navesh@ac.sce.ac.il"
-)
+			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
+			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
+			body: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
 		}
 		success{
-			emailext (
-    			subject: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER}'",
-    			body: """<p>Check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME}</a></p>""",
-    			to: "navesh@ac.sce.ac.il",
-    			from: "navesh@ac.sce.ac.il"
-)
+			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com'
+			subject: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
+			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
 		}
-        
+        */
     }
 }
