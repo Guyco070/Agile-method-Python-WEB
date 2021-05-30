@@ -38,6 +38,7 @@ pipeline {
         }
         stage('Pyflakes8 Results') {
             steps{
+                sh 'flake8 Agile/views.py --ignore E501'
                 recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report',args: ["--ignore", "E501"])]) // --ignore E501 is to ignore Error for lines longer of 79 letters
             }
         }
@@ -52,7 +53,7 @@ pipeline {
                     sh 'python3 send_mail.py "Jenkins Build Failed" "The last build failed, check it!"'
 		}
             }
-            //mail bcc: '', body: 'The last build failed, check it!', cc: 'yarinaf1@gmail.com', from: 'gaico070@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'gaico070@gmail.com'
+            mail bcc: '', body: 'The last build failed, check it!', cc: 'yarinaf1@gmail.com', from: 'gaico070@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'gaico070@gmail.com'
         }
     }
 }

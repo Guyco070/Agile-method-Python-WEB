@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 
 TaskPageProgrammer_flag = True
-client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",tlsCAFile=certifi.where())
+client = MongoClient("mongodb+srv://TeamFour:TeamFour1234@cluster0.kwe3f.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qwx95l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true", tlsCAFile=certifi.where())
 db = client["Agile"]
 MailEmsg = None
 from_edit = False
@@ -61,7 +61,7 @@ def CreateProjDone(response):
             "Create_time": datetime.now().strftime('%d.%m.%y %H:%M')
         }
         auth = db.projects.find_one({"ProjectName": response.POST.get('ProjectName')})
-        if(auth!=None):
+        if(auth is not None):
             print(auth)
             Users = {'programmers': [], 'clients': []}
             tempPro = list(db.users.find({"TYPE": "Programmer"}))
@@ -74,7 +74,7 @@ def CreateProjDone(response):
                 c = cl['ID']
                 if (cl is not None):
                     Users['clients'].append(c)
-            result=render(response, "Agile/NewProjectPage.html", Users)
+            result = render(response, "Agile/NewProjectPage.html", Users)
             result.set_cookie('STATE', 'ERROR', max_age=30)
             return result
         SV.insert_one(projects)
@@ -94,9 +94,9 @@ def SignUpDone(response):
             "LName": response.POST.get('LName'),
         }
         auth = db.users.find_one({"ID": response.POST.get('ID')})
-        auth1= db.users.find_one({"EMAIL": response.POST.get('EMAIL')})
-        if(auth1!=None or auth!=None):
-            result=render(response, 'Agile/SignUp.html')
+        auth1 = db.users.find_one({"EMAIL": response.POST.get('EMAIL')})
+        if(auth1 is not None or auth is not None):
+            result = render(response, 'Agile/SignUp.html')
             result.set_cookie('STATE', 'ERROR', max_age=30)
             return result
         SV.insert_one(user)
@@ -673,7 +673,7 @@ def array_tasksToString(tasks_arr):
     return tasks[0: len(tasks) - 1]  # remove last /n
 
 
-def split_tasks(tasks, eliminate_empty=False):
+def split_tasks(tasks, eliminate_empty=False):  # get string of tasks and make an legit array. eliminate_empty=True clear empty tasks, for example 1) one. 2) 3) three.  ->  ['1) one', '2) three']
     search_end = False
     tasks = tasks.lstrip()
 
@@ -711,11 +711,11 @@ def split_tasks(tasks, eliminate_empty=False):
     if eliminate_empty:
         tasks_arr = remove_tasks(tasks_arr)
 
-    # bubble sort
-    tasks_arr = tasks_bubbleSort(tasks_arr)
+        # bubble sort
+        tasks_arr = tasks_bubbleSort(tasks_arr)
 
-    # set numbers
-    tasks_arr = set_numbers(tasks_arr)
+        # set numbers
+        tasks_arr = set_numbers(tasks_arr)
 
     return tasks_arr
 
@@ -723,14 +723,14 @@ def split_tasks(tasks, eliminate_empty=False):
 def tasks_edit_acts(tasks_arr, tasks_to_replace):
     tasks_to_replace = split_tasks(tasks_to_replace)
 
-    # remove
-    tasks_arr = remove_tasks(tasks_arr)
-
     # switch
     tasks_arr = switch_tasks(tasks_arr, tasks_to_replace)
 
     # add
     tasks_arr = add_tasks(tasks_arr, tasks_to_replace)
+
+    # remove
+    tasks_arr = remove_tasks(tasks_arr)
 
     # bubble sort
     tasks_arr = tasks_bubbleSort(tasks_arr)
