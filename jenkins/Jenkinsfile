@@ -38,7 +38,7 @@ pipeline {
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pip install flake8'
-                    //sh 'flake8 Agile/views.py --ignore E501'
+                    sh 'flake8 Agile/views.py --ignore E501'
                 }
                 recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report',args: ["--ignore", "E501"])]) // --ignore E501 is to ignore Error for lines longer of 79 letters
             }
@@ -46,6 +46,17 @@ pipeline {
     }
     
      post {
+        failure {
+            withEnv(["HOME=${env.WORKSPACE}"]) {
+                withCredentials([string(credentialsId: 'MAIL_PASS', variable: 'PASS_ONLY')]) {
+		    echo "${currentBuild.fullDisplayName} AAAA ${currentBuild.result} BBBB ${env.BUILD_URL}"
+                    //sh 'python3 send_mail.py "Jenkins Build ${currentBuild.fullDisplayName} ${currentBuild.result}" "The last build failed, check it! url: ${env.BUILD_URL}"'
+                    sh 'python3 send_mail.py'
+		        }
+            }
+            mail bcc: '', body: 'The last build failed, check it!', cc: 'yarinaf1@gmail.com', from: 'gaico070@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'gaico070@gmail.com'
+        }
+        /*
         failure{
 			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
 			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
@@ -56,6 +67,6 @@ pipeline {
 			subject: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
 			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
 		}
-        
+        */
     }
 }
