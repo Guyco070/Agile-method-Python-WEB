@@ -191,7 +191,6 @@ class Test(SimpleTestCase):
     #11
     def test_RemoveTASK(self):
         SV = db.tasks
-        SV = db.tasks
         SV.delete_many({"ProjectName": "Test_project",  "USERSTORY": "testUSERSTORY"})
         is_task_removed = SV.find_one({"ProjectName": "Test_project",  "USERSTORY": "testUSERSTORY"}) == None
         self.assertTrue(is_task_removed)
