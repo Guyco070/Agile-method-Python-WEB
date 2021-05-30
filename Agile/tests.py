@@ -1,17 +1,60 @@
-from django.test import TestCase,SimpleTestCase
-from django.urls import reverse, resolve
+from django.test import SimpleTestCase
 from Agile.views import *
 
 class Test(SimpleTestCase):
-    
+
+
     def test_remove_white_spaces_SE_func(self):
         self.assertEquals(remove_white_spaces_SE("   str_to_update    "),"str_to_update")
-        
+
+
     def test_get_emails(self):
         self.assertEquals(get_emails(["Guyco070"]),["gaico070@gmail.com"])
 
+
     def test_get_id(self):
         self.assertEquals(get_id("gaico070@gmail.com"),"Guyco070")
+
+
+    def test_split_tasks_EliminateFalse(self):
+        self.assertEquals(split_tasks("1) task one. 2) task two. 3) task three.", eliminate_empty=False), ['1) task one.', '2) task two.', '3) task three.'])
+
+
+    def test_split_tasks_eliminateTrue(self):
+        self.assertEquals(split_tasks("1) task one. 2) task two. 3) task three. 4) 5) five.", eliminate_empty=True), ['1) task one.', '2) task two.', '3) task three.', '4) five.'])
+
+
+    def test_get_edit_tasks_string(self):
+        self.assertEquals(array_tasksToString(['1) task one.', '2) task two.', '3) task three.']),"1) task one.\n2) task two.\n3) task three.")
+
+
+    def test_switch_tasks(self):
+        self.assertEquals(switch_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']),['1) task one.', '2) new task two.', '3) task three.'])
+
+
+    def test_add_tasks(self):
+        self.assertEquals(add_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']),['1) task one.', '2) task two.', '3) task three.' , '4) new task four'])
+
+
+    def test_remove_tasks(self):
+        self.assertEquals(remove_tasks(['1) task one.', '2) ', '3) task three.']),['1) task one.', '3) task three.'])
+
+
+    def test_set_numbers(self):
+        self.assertEquals(set_numbers(['1) task one.', '3) task three.']),['1) task one.', '2) task three.'])
+
+
+    def test_tasks_bubbleSort(self):
+        self.assertEquals(tasks_bubbleSort(['2) task two.', '3) task three.', '1) task one.']),['1) task one.', '2) task two.', '3) task three.'])
+
+
+    def test_tasks_tasks_edit_acts(self):
+        self.assertEquals(tasks_edit_acts(['1) task one.', '2) task two.', '3) task three.'], '2) new task two. 4) new task four. 3) '), ['1) task one.', '2) new task two.', '3) new task four.'])
+
+
+    def test_get_edit_tasks_string(self):
+        self.assertEquals(get_edit_tasks_string('1) task one. 2) task two. 3) task three.', '2) new task two. 4) new task four. 3) '), '1) task one.\n2) new task two.\n3) new task four.')
+
 
     def test_SignUp_DBInsert(self):
         SV = db.users
@@ -29,7 +72,8 @@ class Test(SimpleTestCase):
         client.close()
         is_user_inserted = SV.find_one(user) != None
         self.assertTrue(is_user_inserted)
-    
+
+
     def test_LOGIN_DBFind_true(self):
         is_user_Exist = db.users.find_one({
             "ID": "Guyco070",
@@ -40,6 +84,7 @@ class Test(SimpleTestCase):
             "LName": "Cohen"
         }) != None
         self.assertTrue(is_user_Exist)
+
 
     def test_LOGIN_DBFind_false(self):
         is_user_Exist = db.users.find_one({
@@ -66,6 +111,7 @@ class Test(SimpleTestCase):
         }) != None
         self.assertTrue(is_project_Exist)
 
+
     def test_CreateProjDone_DBInsert(self):
         SV = db.projects
         Programmer_list = get_emails(["Guyco070"])
@@ -82,6 +128,7 @@ class Test(SimpleTestCase):
         client.close()
         is_project_inserted = SV.find_one(project) != None
         self.assertTrue(is_project_inserted)
+
 
     def test_Project_DBFind_false(self):
         is_project_Exist = db.projects.find_one({
@@ -188,7 +235,7 @@ class Test(SimpleTestCase):
         else: color_view = "green"
 
         self.assertEqual(color_view, "green")
-    
+
     # integration - update end time for task + time not meeting
     def test_not_meet_times(self):
         now = datetime.now()
@@ -228,7 +275,7 @@ class Test(SimpleTestCase):
         for t in done:
             is_tasks_status_match += t["status"] == "DONE"
         self.assertTrue(is_tasks_status_match)
-    
+
     #16,26,43
     def test_getTasksFromDb_to_KanbanPage_intest(self):
         intest = list(db.tasks.find({"status": "INTEST"}))
@@ -256,6 +303,7 @@ class Test(SimpleTestCase):
 
         self.assertEqual(has_sent, 1)
 
+
     def test_mail_sent_t_few(self):
         projectName = " Test_project  "
         sender = "unit test"
@@ -274,6 +322,7 @@ class Test(SimpleTestCase):
 
         self.assertEqual(has_sent, 1)
 
+
     def test_mail_sent_not_legit(self):
         projectName = " Test_project  "
         sender = "unit test"
@@ -286,6 +335,7 @@ class Test(SimpleTestCase):
             has_sent = 0
             
         self.assertEqual(has_sent, 0)
+
 
     def test_mail_sent_empty(self):
         projectName = " Test_project  "
@@ -337,6 +387,7 @@ class Test(SimpleTestCase):
         is_status_inserted = "INPROGRESS" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
+
     #31
     def test_Update_TaskStatus_INTEST(self):
         SV = db.tasks
@@ -347,6 +398,7 @@ class Test(SimpleTestCase):
         is_status_inserted = "INTEST" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
+
     #32
     def test_Update_TaskStatus_TODO(self):
         SV = db.tasks
@@ -357,6 +409,7 @@ class Test(SimpleTestCase):
         is_status_inserted = "TODO" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
+
     #33
     def test_Update_TaskStatus_DONE(self):
         SV = db.tasks
@@ -368,6 +421,7 @@ class Test(SimpleTestCase):
         is_status_inserted = "DONE" == SV.find_one({"ProjectName": "Test_project", "USERSTORY": "testUSERSTORY"})["status"]
         client.close()
         self.assertTrue(is_status_inserted)
+
 
     def test_EditTasks(self):
         projectName = " Test_project  "
@@ -384,34 +438,40 @@ class Test(SimpleTestCase):
 
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
-    
+
     #44
     def test_rate_add(self):
         db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE":"3"}},upsert=True)
         is_rated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "3"}) == None
         self.assertFalse(is_rated)
 
+
     def test_rate_update(self):
         db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE": "5"}},upsert=True)
         is_rate_updated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "5"}) == None
         self.assertFalse(is_rate_updated)
 
+
     def test_homepage_url(self):
         response = self.client.get('./Templates/Agile/')
         self.assertEquals(response.status_code, 404)
-    
+
+
     def test_SIGNUP_url(self):
         user = {"ID": "test_user", "PASSWORD": "test_password","EMAIL":"test@gmail.com","TYPE":"Admin"}
         response = self.client.post('./Templates/Agile/SIGNUP',data=user,follow=True)
         self.assertEquals(response.status_code, 404)
 
+
     def test_LOGIN_url(self):
         response = self.client.get('./Templates/Agile/LOGIN')
         self.assertEquals(response.status_code, 404)
 
+
     def test_SignUpDone_url(self):
         response = self.client.get('./Templates/Agile/SignUpDone')
         self.assertEquals(response.status_code, 404)
+
 
     def test_signup_and_login(self):
         #signup
@@ -437,6 +497,7 @@ class Test(SimpleTestCase):
             "LName": "Cohen"
         }) != None
         self.assertTrue(is_user_Exist)
+
 
     def test_createproj_and_edit(self):
         #create Project
@@ -464,6 +525,7 @@ class Test(SimpleTestCase):
             "Programmer": Programmer_list
         }) != None
         self.assertTrue(is_project_Exist)
+
 
     def test_createtask_and_edit(self):
         SV = db.tasks

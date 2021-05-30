@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
        <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="max-width=device-max-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -28,7 +28,7 @@
     }
     .rate:not(:checked) > label {
         float:right;
-        width:1em;
+        max-width:1em;
         overflow:hidden;
         white-space:nowrap;
         font-size:30px;
@@ -55,10 +55,18 @@
 <body>
 <div class="w3-content" style="max-width:1500px">
 <!-- Header -->
-<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px; max-width:100%;">
   <div class="w3-padding-32">
     <div class="w3-bar w3-border">
-<table style="width:100%;text-align:center;"  >
+    <form action="LoginStatus" method="POST">{% csrf_token %}
+        <button type="submit" name='bTuser' value="" class="w3-left w3-button w3-white w3-border w3-border-black w3-round-large">HomePage</button>
+    </form>
+        <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
+    <br>
+    <br>
+    <br>
+    <br>
+<table style="max-width:100%;text-align:center;"  >
   <tr>
     <th>To Do : </th>
     <th>In Progress : </th>
@@ -70,11 +78,11 @@
         {% for obj,color in todo %}
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
         </form>
         </br>
         {% endfor %}
@@ -82,13 +90,13 @@
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
-          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
-          {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
+        <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+        {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);" class="w3-button w3-white w3-border w3-border-black w3-round-large">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
           </br>
         {% endfor %}
         </form>
@@ -96,13 +104,13 @@
     <td>
          <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
-          <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);"  class="w3-button w3-white w3-border w3-border-black w3-round-large">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% endif %}
-          <button type="submit" id="passNext" name="passNext" value={{obj}} style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
+          <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
           </br>
         {% endfor %}
         </form>
@@ -147,8 +155,8 @@
             <label style="color: brown;" >Not rated</label>
           {% endif %}
 
-        <button type="submit" id="returnStage" name="returnStage" value={{obj}} style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
-        <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
+        <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+        <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
         </br>
         {% endfor %}
         </form>
