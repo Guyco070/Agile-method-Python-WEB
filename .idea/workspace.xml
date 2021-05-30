@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f73aaa07-4232-411a-9383-0b9b3d8c5f62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Agile/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agile/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jenkins/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/jenkins/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/send_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/send_mail.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +15,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
