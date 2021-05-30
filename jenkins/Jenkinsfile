@@ -58,14 +58,14 @@ pipeline {
         }
         /*
         failure{
-			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
-			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
-			body: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
+			emailext body: 'Test Message',
+    			subject: 'Test Subject',
+    			to: 'navesh@ac.sce.ac.il'
 		}
 		success{
-			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com'
-			subject: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
-			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
+			emailext body: 'Test Message',
+    			subject: 'Test Subject',
+    			to: 'navesh@ac.sce.ac.il'
 		}
         */
     }
