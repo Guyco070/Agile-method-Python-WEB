@@ -5,15 +5,15 @@ class Test(SimpleTestCase):
 
 
     def test_remove_white_spaces_SE_func(self):
-        self.assertEquals(remove_white_spaces_SE("   str_to_update    "),"str_to_update")
+        self.assertEquals(remove_white_spaces_SE("   str_to_update    "), "str_to_update")
 
 
     def test_get_emails(self):
-        self.assertEquals(get_emails(["Guyco070"]),["gaico070@gmail.com"])
+        self.assertEquals(get_emails(["Guyco070"]), ["gaico070@gmail.com"])
 
 
     def test_get_id(self):
-        self.assertEquals(get_id("gaico070@gmail.com"),"Guyco070")
+        self.assertEquals(get_id("gaico070@gmail.com"), "Guyco070")
 
 
     def test_split_tasks_EliminateFalse(self):
@@ -25,27 +25,27 @@ class Test(SimpleTestCase):
 
 
     def test_get_edit_tasks_string(self):
-        self.assertEquals(array_tasksToString(['1) task one.', '2) task two.', '3) task three.']),"1) task one.\n2) task two.\n3) task three.")
+        self.assertEquals(array_tasksToString(['1) task one.', '2) task two.', '3) task three.']), "1) task one.\n2) task two.\n3) task three.")
 
 
     def test_switch_tasks(self):
-        self.assertEquals(switch_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']),['1) task one.', '2) new task two.', '3) task three.'])
+        self.assertEquals(switch_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']), ['1) task one.', '2) new task two.', '3) task three.'])
 
 
     def test_add_tasks(self):
-        self.assertEquals(add_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']),['1) task one.', '2) task two.', '3) task three.' , '4) new task four'])
+        self.assertEquals(add_tasks(['1) task one.', '2) task two.', '3) task three.'], ['2) new task two.', '3) task three.', '4) new task four']), ['1) task one.', '2) task two.', '3) task three.' , '4) new task four'])
 
 
     def test_remove_tasks(self):
-        self.assertEquals(remove_tasks(['1) task one.', '2) ', '3) task three.']),['1) task one.', '3) task three.'])
+        self.assertEquals(remove_tasks(['1) task one.', '2) ', '3) task three.']), ['1) task one.', '3) task three.'])
 
 
     def test_set_numbers(self):
-        self.assertEquals(set_numbers(['1) task one.', '3) task three.']),['1) task one.', '2) task three.'])
+        self.assertEquals(set_numbers(['1) task one.', '3) task three.']), ['1) task one.', '2) task three.'])
 
 
     def test_tasks_bubbleSort(self):
-        self.assertEquals(tasks_bubbleSort(['2) task two.', '3) task three.', '1) task one.']),['1) task one.', '2) task two.', '3) task three.'])
+        self.assertEquals(tasks_bubbleSort(['2) task two.', '3) task three.', '1) task one.']), ['1) task one.', '2) task two.', '3) task three.'])
 
 
     def test_tasks_tasks_edit_acts(self):
@@ -292,7 +292,7 @@ class Test(SimpleTestCase):
         message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
         has_sent = 0
         try:
-            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[EMAIL_HOST_USER],fail_silently=True)
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [EMAIL_HOST_USER],fail_silently=True)
         except BadHeaderError:
             MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
 
@@ -311,7 +311,7 @@ class Test(SimpleTestCase):
         message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
         has_sent = 0
         try:
-            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[EMAIL_HOST_USER,EMAIL_HOST_USER],fail_silently=True)
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [EMAIL_HOST_USER,EMAIL_HOST_USER],fail_silently=True)
         except BadHeaderError:
             MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
 
@@ -330,7 +330,7 @@ class Test(SimpleTestCase):
         message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
         has_sent = 0
         try:
-            send_mail(mailDescription,message,EMAIL_HOST_USER,["not_legit"],fail_silently=False)
+            send_mail(mailDescription,message,EMAIL_HOST_USER, ["not_legit"],fail_silently=False)
         except BadHeaderError:
             has_sent = 0
             
@@ -344,7 +344,7 @@ class Test(SimpleTestCase):
         message = "About Project: "+ projectName + ".\nSender Mail: "+ EMAIL_HOST_USER +"\n\n" + "Body of the email."
         has_sent = 0
         try:
-            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER,[],fail_silently=True)
+            has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [],fail_silently=True)
         except BadHeaderError:
             MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
 
