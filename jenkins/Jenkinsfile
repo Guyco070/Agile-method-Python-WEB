@@ -33,6 +33,9 @@ pipeline {
        
         stage('Pylint Results') {
             steps{
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'flake8 Agile/views.py --ignore E501'
+                }
                 recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
         }
