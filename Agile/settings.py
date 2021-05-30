@@ -54,7 +54,7 @@ ROOT_URLCONF = 'Agile.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\גיא החתיך\Documents\SmartGit - rep\Agile-method-Python-WEB\Templates'],
+        'DIRS': [r'C:\Users\user\Desktop\הנדסת תוכנה\Projects\AgileProject\Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,3 +130,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = "Ap147258"
+
+
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_pyflakes',
+)
