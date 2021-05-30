@@ -47,15 +47,15 @@ pipeline {
     }
     
      post {
-        failure {
-            withEnv(["HOME=${env.WORKSPACE}"]) {
-                withCredentials([string(credentialsId: 'MAIL_PASS', variable: 'PASS_ONLY')]) {
-		    echo "${currentBuild.fullDisplayName} AAAA ${currentBuild.result} BBBB ${env.BUILD_URL}"
-                    //sh 'python3 send_mail.py "Jenkins Build ${currentBuild.fullDisplayName} ${currentBuild.result}" "The last build failed, check it! url: ${env.BUILD_URL}"'
-                    sh 'python3 send_mail.py'
+        failure{
+			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
+			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
+			body: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
 		}
-            }
-            mail bcc: '', body: 'The last build failed, check it!', cc: 'yarinaf1@gmail.com', from: 'gaico070@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'gaico070@gmail.com'
-        }
+		success{
+			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com'
+			subject: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
+			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
+		}
     }
 }
