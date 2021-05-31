@@ -24,7 +24,7 @@ class Test(SimpleTestCase):
         self.assertEquals(split_tasks("1) task one. 2) task two. 3) task three. 4) 5) five.", eliminate_empty=True), ['1) task one.', '2) task two.', '3) task three.', '4) five.'])
 
 
-    def test_get_edit_tasks_string(self):
+    def test_get_array_tasksToString(self):
         self.assertEquals(array_tasksToString(['1) task one.', '2) task two.', '3) task three.']), "1) task one.\n2) task two.\n3) task three.")
 
 
@@ -42,6 +42,10 @@ class Test(SimpleTestCase):
 
     def test_set_numbers(self):
         self.assertEquals(set_numbers(['1) task one.', '3) task three.']), ['1) task one.', '2) task three.'])
+
+
+    def test_set_numbers_one_task_add(self):  # if len(tasks_arr) == 1 and "29)" in tasks_arr[0]:  return tasks_arr
+        self.assertEquals(set_numbers(['29) added task.']), ['29) added task.'])
 
 
     def test_tasks_bubbleSort(self):
