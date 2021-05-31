@@ -234,9 +234,8 @@ class Test(SimpleTestCase):
         task = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "SDate":SDate,"EDate": EDate})
 
         EDate = task["EDate"]
-        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
-            color_view = "red"
-        else: color_view = "green"
+        if (EDate - timedelta(days=7)) >= now:  # EDate - timedelta(7) = EDate - 7 days
+            color_view = "green"
 
         self.assertEqual(color_view, "green")
 
@@ -250,9 +249,8 @@ class Test(SimpleTestCase):
         task = db.tasks.find_one({"USERSTORY": "testUSERSTORY","EDate": EDate})
 
         EDate = task["EDate"]
-        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 5 days
+        if (EDate - timedelta(days=7)) < now:  # EDate - timedelta(7) = EDate - 7 days
             color_view = "red"
-        else: color_view = "green"
 
         self.assertEqual(color_view, "red")
 
@@ -297,13 +295,8 @@ class Test(SimpleTestCase):
         has_sent = 0
         try:
             has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [EMAIL_HOST_USER],fail_silently=True)
-        except BadHeaderError:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-
-        if has_sent == 0:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-        elif has_sent == 1:
-            MailEmsg = "Email sent successfully !"
+        except BadHeaderError:  # pragma: no cover
+            print("Codnt send mail (Apparently the recipients email is incorrect). pleas try again later...")
 
         self.assertEqual(has_sent, 1)
 
@@ -316,13 +309,8 @@ class Test(SimpleTestCase):
         has_sent = 0
         try:
             has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [EMAIL_HOST_USER,EMAIL_HOST_USER],fail_silently=True)
-        except BadHeaderError:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-
-        if has_sent == 0:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-        elif has_sent == 1:
-            MailEmsg = "Email sent successfully !"
+        except BadHeaderError:  # pragma: no cover
+            print("Codnt send mail (Apparently the recipients email is incorrect). pleas try again later...")
 
         self.assertEqual(has_sent, 1)
 
@@ -335,7 +323,7 @@ class Test(SimpleTestCase):
         has_sent = 0
         try:
             send_mail(mailDescription,message,EMAIL_HOST_USER, ["not_legit"],fail_silently=False)
-        except BadHeaderError:
+        except BadHeaderError:  # pragma: no cover
             has_sent = 0
             
         self.assertEqual(has_sent, 0)
@@ -349,13 +337,8 @@ class Test(SimpleTestCase):
         has_sent = 0
         try:
             has_sent = send_mail(mailDescription,message,EMAIL_HOST_USER, [],fail_silently=True)
-        except BadHeaderError:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-
-        if has_sent == 0:
-            MailEmsg = "Codnt send mail (Apparently the recipients email is incorrect). pleas try again later..."
-        elif has_sent == 1:
-            MailEmsg = "Email sent successfully !"
+        except BadHeaderError:  # pragma: no cover
+            print("Codnt send mail (Apparently the recipients email is incorrect). pleas try again later...")
 
         self.assertEqual(has_sent, 0)
 

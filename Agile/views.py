@@ -13,23 +13,23 @@ MailEmsg = None
 from_edit = False
 
 
-def HomePage(request):
+def HomePage(request):  # pragma: no cover
     return render(request, 'Agile/HomePage.html')
 
 
-def SIGNUP(request):
+def SIGNUP(request):  # pragma: no cover
     return render(request, 'Agile/SignUp.html')
 
 
-def LOGIN(request):
+def LOGIN(request):  # pragma: no cover
     return render(request, 'Agile/LogIn.html')
 
 
-def HowToUse(request):
+def HowToUse(request):  # pragma: no cover
     return render(request, 'Agile/HowToUsePage.html')
 
 
-def NewProjectPage(response):
+def NewProjectPage(response):  # pragma: no cover
     Users = {'programmers': [], 'clients': []}
     tempPro = list(db.users.find({"TYPE": "Programmer"}))
     for pr in tempPro:
@@ -44,7 +44,7 @@ def NewProjectPage(response):
     return render(response, "Agile/NewProjectPage.html", Users)
 
 
-def CreateProjDone(response):
+def CreateProjDone(response):  # pragma: no cover
     if response.method == 'POST':
         SV = db.projects
         Programmer_list = get_emails(response.POST.getlist('programmer'))
@@ -82,7 +82,7 @@ def CreateProjDone(response):
     return showMyProjects(response)
 
 
-def SignUpDone(response):
+def SignUpDone(response):  # pragma: no cover
     if response.method == 'POST':
         SV = db.users
         user = {
@@ -112,7 +112,7 @@ def SignUpDone(response):
     return render(response, 'Agile/SignupDone.html')
 
 
-def showMyProjects(response):
+def showMyProjects(response):  # pragma: no cover
     if(response.COOKIES['TYPE'] == 'Admin'):
         return AdminHomePage(response)
     if(response.COOKIES['TYPE'] == 'Programmer'):
@@ -121,7 +121,7 @@ def showMyProjects(response):
         return ClientHomePage(response)
 
 
-def LoginStatus(response):
+def LoginStatus(response):  # pragma: no cover
     if response.method == 'POST':
         if 'logout' in response.POST:
             result = HomePage(response)
@@ -159,7 +159,7 @@ def LoginStatus(response):
     return result
 
 
-def AdminHomePage(response):
+def AdminHomePage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -172,7 +172,7 @@ def AdminHomePage(response):
     return render(response, "Agile/AdminHomePage.html", projects)
 
 
-def ProjectPage(response):
+def ProjectPage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     global MailEmsg
@@ -205,7 +205,7 @@ def ProjectPage(response):
     return result
 
 
-def sendMailPage(response):
+def sendMailPage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     global MailEmsg
@@ -253,7 +253,7 @@ def sendMailPage(response):
             return ProjectPage(response)
 
 
-def ProgrammerHomePage(response):
+def ProgrammerHomePage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -266,7 +266,7 @@ def ProgrammerHomePage(response):
     return render(response, "Agile/ProgrammerHomePage.html", projects)
 
 
-def ClientHomePage(response):
+def ClientHomePage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -279,7 +279,7 @@ def ClientHomePage(response):
     return render(response, "Agile/ClientHomePage.html", projects)
 
 
-def ChangeDetailsPage(response):
+def ChangeDetailsPage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     PDetails = {'PDetails': [], 'programmers': [], 'clients': []}
@@ -306,7 +306,7 @@ def ChangeDetailsPage(response):
     return result
 
 
-def taskpage(response):
+def taskpage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     TDetails = {'PDetails': []}
@@ -354,14 +354,14 @@ def taskpage(response):
     return result
 
 
-def TaskPageEdit(response):
+def TaskPageEdit(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
     return render(response, "Agile/TaskPageEdit.html", PQuery)
 
 
-def EditTasks(response):
+def EditTasks(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     elif 'beckToP' in response.POST:
@@ -415,7 +415,7 @@ def EditTasks(response):
     return result
 
 
-def updateProjectDetails(response):
+def updateProjectDetails(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     PDetails = {'PDetails': []}
@@ -441,14 +441,14 @@ def updateProjectDetails(response):
     return render(response, "Agile/ChangeDetailsPage.html", PDetails)
 
 
-def AddTasks(request):
+def AddTasks(request):  # pragma: no cover
     if is_connected(request):
         return is_connected(request)
     PQuery = db.projects.find_one({"ProjectName": request.COOKIES['Project']})
     return render(request, "Agile/AddTasks.html", PQuery)
 
 
-def ADDTASKS(response):
+def ADDTASKS(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -488,7 +488,7 @@ def ADDTASKS(response):
     return result
 
 
-def KanbanPage(response):
+def KanbanPage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -530,7 +530,7 @@ def KanbanPage(response):
     return render(response, "Agile/KanbanPage.html", {"todo": tasks['tasks'], "inprogress": tasks1['tasks'], "intest": tasks2['tasks'], "done": tasks3['tasks']})
 
 
-def ClientKanbanPage(response):
+def ClientKanbanPage(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if response.method == 'POST':
@@ -565,7 +565,7 @@ def ClientKanbanPage(response):
     return render(response, "Agile/Client‏‏KanbanPage.html", {"todo": tasks['tasks'], "inprogress": tasks1['tasks'], "intest": tasks2['tasks'], "done": tasks3['tasks']})
 
 
-def updateRate(response):
+def updateRate(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     if 'TASKNAME' or 'TASKNAME1' or 'TASKNAME2' or 'TASKNAME3' in response.POST:
@@ -575,7 +575,7 @@ def updateRate(response):
         return ClientKanbanPage(response)
 
 
-def TaskPageProgrammer(response):
+def TaskPageProgrammer(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
     global TaskPageProgrammer_flag

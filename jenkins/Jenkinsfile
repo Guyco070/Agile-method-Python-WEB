@@ -33,7 +33,7 @@ pipeline {
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m coverage run manage.py test'
-                    sh 'python -m coverage report -m --fail-under=45'
+                    sh 'python -m coverage report -m --fail-under=90'
                 }
                 //recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
