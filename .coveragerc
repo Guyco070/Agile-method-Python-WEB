@@ -1,0 +1,8 @@
+[run]
+source = .
+omit =
+    *settings.py*
+    */.local/*
+    *matching_game/asgi.py*
+    *matching_game/wsgi.py*
+    *manage.py*
