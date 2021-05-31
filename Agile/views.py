@@ -93,17 +93,17 @@ def SignUpDone(response):
             "FName": response.POST.get('FName'),
             "LName": response.POST.get('LName'),
         }
-        regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
-        regex1 = '^(\d{10}|\d{12})$'
-        auth=None
-        auth1=None
-        if(not re.search(regex, response.POST.get('EMAIL')) and not re.search(regex1,response.POST.get('ID'))):
+        regex = '^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$'
+        regex1 = '^(\\d{10}|\\d{12})$'
+        auth = None
+        auth1 = None
+        if(not re.search(regex, response.POST.get('EMAIL')) and not re.search(regex1, response.POST.get('ID'))):
             result = render(response, 'Agile/SignUp.html')
             result.set_cookie('STATE', 'ERROR', max_age=30)
             return result
         auth = db.users.find_one({"ID": response.POST.get('ID')})
         auth1 = db.users.find_one({"EMAIL": response.POST.get('EMAIL')})
-        if(auth1 is not None or auth is not None ):
+        if(auth1 is not None or auth is not None):
             result = render(response, 'Agile/SignUp.html')
             result.set_cookie('STATE', 'ERROR', max_age=30)
             return result
