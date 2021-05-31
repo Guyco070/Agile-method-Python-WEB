@@ -32,6 +32,7 @@ pipeline {
         stage('Coverage Results') {
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'pip install coverage'
                     sh 'python -m coverage run manage.py test'
                     sh 'python -m coverage report --fail-under=90'
                 }
