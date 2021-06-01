@@ -224,23 +224,19 @@ class Test(SimpleTestCase):
         self.assertTrue(is_task_inserted)
 
     # integration - add a full task with smart add and getting the string of the tasks for display
-    def ADDTASKS(self):
+    def test_ADDTASKS_smart(self):
         projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
         tasks = array_tasksToString(split_tasks("1) task one. 2) task two. 3) task three.", eliminate_empty=True))
         now = datetime.now()
-        SDate = datetime.strptime("10.05.21 11:12",'%d.%m.%y %H:%M')
-        EDate = now + timedelta(days=10) # EDate = now + 10 days
+        SDate = datetime.strptime("10.05.21 10:12",'%d.%m.%y %H:%M')
+        EDate = now + timedelta(days=10)  # EDate = now + 10 days
         Programmer = "Gaico070"
 
         uStory = remove_white_spaces_SE(uStory)
         tasks = remove_white_spaces_SE(tasks)
 
-        sDate = datetime.strptime(c.replace("T", " ")[2:], '%y-%m-%d %H:%M')
-        eDate = datetime.strptime(d.replace("T", " ")[2:], '%y-%m-%d %H:%M')
-        c = sDate.strftime('%d.%m.%y %H:%M')  # format change
-        d = eDate.strftime('%d.%m.%y %H:%M')  # format change
         task = {
             "ProjectName": projectName,
             "USERSTORY": uStory,
@@ -261,9 +257,9 @@ class Test(SimpleTestCase):
         if not is_task_inserted:
             self.assertTrue(is_task_inserted)
         else:
-            self.assertEqual(US_from_db, "1) task one.\n2) task two.\n3) task three.")  # chack that the string is ready fot display after insert to DB
+            self.assertEqual(US_from_db["Tasks"], "1) task one.\n2) task two.\n3) task three.")  # chack that the string is ready fot display after insert to DB
 
-    #12 - integration - update start/end time for task + time meeting
+    # 12 - integration - update start/end time for task + time meeting
     def test_meet_times(self):
         now = datetime.now()
         SDate = datetime.strptime("10.05.21 11:12",'%d.%m.%y %H:%M')
