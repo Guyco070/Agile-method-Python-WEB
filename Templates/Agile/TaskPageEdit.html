@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
     <meta charset="UTF-8">
     <title>edit task</title>
-</head>
+ <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+h1 {letter-spacing: 6px}
+.w3-row-padding img {margin-bottom: 12px}
+.logo{
+	position:absolute;
+	top:0;
+	left:350px;
+}
+</style>
+<img src="https://i.ibb.co/zrLh3G1/LOGO-removebg-preview-1.png" class="logo">
 <body>
+<div class="w3-content" style="max-width:1500px">
+<!-- Header -->
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+  <div class="w3-padding-32">
+    <div class="w3-bar w3-border">
 <form action="EditTasks" method="POST">{% csrf_token %}
   <h2>Fill in the fields you want to change:</h2>
     <table style="text-align:center;" >
@@ -37,13 +57,13 @@
         </td>
         <td>
           <label for="endDate">Estimated end:</label></br>
-          <input type="datetime-local" id="endDate" name="endDate" ><br><br>
+          <input class="w3-button w3-white w3-border w3-border-black w3-round-large" type="datetime-local" id="endDate" name="endDate" ><br><br>
         </td>
       </tr>
     <tr>
       <td>
       </br>
-        <input type="submit" value="Submit" onclick="myFunction()">
+        <input class="w3-button w3-white w3-border w3-border-black w3-round-large"   type="submit" value="Submit" onclick="myFunction()">
         <script>
           function myFunction() {
               var a = document.forms["newtask"]["USERSTORY"].value;
@@ -83,15 +103,29 @@
     </tr>
     <td>
     </br>
-      <input type="submit" value="Back to project" id="beckToP" name="beckToP">
+      <input class="w3-button w3-white w3-border w3-border-black w3-round-large"  type="submit" value="Back to project" id="beckToP" name="beckToP">
   </td>
+    </table>
   </form>
   <form action="EditTasks" method="POST">{% csrf_token %}
     <td>
       </br>
-      <input type="submit" value="Delete user story" id="Delete" name="Delete" onclick="alert_func('User story has been deleted successfully! \nlets go to project page...')">
+      <input class="w3-button w3-white w3-border w3-border-black w3-round-large"  type="submit" value="Delete user story" id="Delete" name="Delete" onclick="alert_func('User story has been deleted successfully! \nlets go to project page...')">
     </td>
   </form>
+                                            </div>
+  </div>
+</header>
+</div>
+<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+</footer>
+</body>
 </html>
 <script>
   function alert_func(str) {
