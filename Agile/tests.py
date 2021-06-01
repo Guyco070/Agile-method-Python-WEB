@@ -125,7 +125,7 @@ class Test(SimpleTestCase):
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
             "PManager": "gaico070@gmai.com",
-            "Cilents":Clients_list ,
+            "Cilents": Clients_list,
             "Programmer": Programmer_list
         }
         SV.insert_one(project)
@@ -219,9 +219,49 @@ class Test(SimpleTestCase):
             }
         
         SV.insert_one(task)
+        
+        is_task_inserted = SV.find_one(task) != None
+        self.assertTrue(is_task_inserted)
 
-        is_task_unserted = SV.find_one(task) != None
-        self.assertTrue(is_task_unserted)
+    # integration - add a full task with smart add and getting the string of the tasks for display
+    def ADDTASKS(self):
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        tasks = array_tasksToString(split_tasks("1) task one. 2) task two. 3) task three.", eliminate_empty=True))
+        now = datetime.now()
+        SDate = datetime.strptime("10.05.21 11:12",'%d.%m.%y %H:%M')
+        EDate = now + timedelta(days=10) # EDate = now + 10 days
+        Programmer = "Gaico070"
+
+        uStory = remove_white_spaces_SE(uStory)
+        tasks = remove_white_spaces_SE(tasks)
+
+        sDate = datetime.strptime(c.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+        eDate = datetime.strptime(d.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+        c = sDate.strftime('%d.%m.%y %H:%M')  # format change
+        d = eDate.strftime('%d.%m.%y %H:%M')  # format change
+        task = {
+            "ProjectName": projectName,
+            "USERSTORY": uStory,
+            "Tasks": tasks,
+            "SDate": SDate,
+            "EDate": EDate,
+            "Programmer": Programmer,
+            "status": "TODO"
+        }
+        SV = db.tasks
+        SV.insert_one(task)
+        is_task_inserted = SV.find_one(task) != None
+        client.close()
+
+        US_from_db = SV.find_one(task)  # tasks in US_from_db is a legit string of tasks
+        is_task_inserted = US_from_db != None
+
+        if not is_task_inserted:
+            self.assertTrue(is_task_inserted)
+        else:
+            self.assertEqual(US_from_db, "1) task one.\n2) task two.\n3) task three.")  # chack that the string is ready fot display after insert to DB
 
     #12 - integration - update start/end time for task + time meeting
     def test_meet_times(self):
@@ -426,7 +466,81 @@ class Test(SimpleTestCase):
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
         self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
 
-    #44
+    # integration - edit task with smart edit and getting the string of the tasks for display
+    ''' 
+    def test_EditTasks_smart(self):
+        projectName = " Test_project  "
+        uStory = " testUSERSTORY "
+
+        uStory = remove_white_spaces_SE(uStory)
+        projectName = remove_white_spaces_SE(projectName)
+        
+        DB = db.tasks
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
+        DB.update_one(myquery,newvalues)
+
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
+
+
+
+
+
+    if is_connected(response):
+        return is_connected(response)
+    elif 'beckToP' in response.POST:
+        return ADDTASKS(response)
+
+    SV = db.tasks
+    projectName = response.COOKIES['Project']
+
+    if 'Delete' in response.POST:
+        SV.delete_many({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    else:
+        uStory = response.POST.get('USERSTORY')
+        tasks = response.POST.get('TASKS')
+        s = response.POST.get('startDate')
+        e = response.POST.get('endDate')
+        p = response.POST.get('programmer')
+
+        uStory = remove_white_spaces_SE(uStory)
+        tasks = remove_white_spaces_SE(tasks)
+
+        myquery = db.tasks.find_one({"ProjectName": projectName, "USERSTORY": response.COOKIES['Task']})
+        newvalues = {"$set": {"ProjectName": projectName}}
+        if uStory:
+            newvalues["$set"]["USERSTORY"] = uStory
+        if tasks:
+            tasks = get_edit_tasks_string(myquery["Tasks"], tasks)
+            newvalues["$set"]["Tasks"] = tasks
+        if uStory:
+            newvalues["$set"]["USERSTORY"] = uStory
+        if s:
+            sDate = datetime.strptime(s.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            s = sDate.strftime('%d.%m.%y %H:%M')  # format change
+            if not e:
+                eDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
+            else:
+                eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+                e = eDate.strftime('%d.%m.%y %H:%M')  # format change
+            if sDate < eDate:
+                newvalues["$set"]["EDate"] = e
+        elif e:
+            eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
+            e = eDate.strftime('%d.%m.%y %H:%M')  # format change
+            sDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
+            if eDate > sDate:
+                newvalues["$set"]["EDate"] = e
+        if p != 'programmer':
+            newvalues["$set"]["Programmer"] = p
+        SV.update_one(myquery, newvalues)
+    result = ProjectPage(response)
+    result.set_cookie('Project', projectName, 3000)
+    '''
+
+    # 44
     def test_rate_add(self):
         db.tasks.find_one_and_update({"USERSTORY" : "testUSERSTORY"},{"$set": {"RATE":"3"}},upsert=True)
         is_rated = db.tasks.find_one({"USERSTORY": "testUSERSTORY", "RATE": "3"}) == None
