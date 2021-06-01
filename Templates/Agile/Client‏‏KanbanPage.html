@@ -75,9 +75,9 @@
         {% for obj,color in todo %}
         <form action="updateRate" method='POST'>{% csrf_token %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% endif %}
         </form>
         </br>
@@ -86,11 +86,11 @@
     <td>
         <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
-        {% if color == "red" %}
-          <input type="submit" id="TASKNAME1" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
-        {% else %}
-          <input type="submit" id="TASKNAME1" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
-        {% endif %}
+          {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+          {% else %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+          {% endif %}
       </br>
         {% endfor %}
         </form>
@@ -99,9 +99,9 @@
          <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME2" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
-            <input type="submit" id="TASKNAME2" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% endif %}
         </br>
         {% endfor %}
@@ -142,8 +142,8 @@
             {% endif %}
             <label for={{obj}}1 title="text">1 star</label>
           </div>
-          <input type="submit" id="TASKNAME3" name="TASKNAME3" value={{obj}} style="border: none;margin:10px;">
-          <button type="submit" id="rateBut" name="rateBut" value={{obj}} style="margin:10px;" onclick="myFunction()">Rate</button>
+          <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
+          <button type="submit" id="rateBut" name="rateBut" value={{obj}} style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Rate</button>
           <script>
             function myFunction() {
                 alert("Rate changed successfully");

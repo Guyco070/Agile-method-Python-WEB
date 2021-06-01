@@ -90,8 +90,8 @@
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
-        <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
-        {% if color == "red" %}
+          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+          {% if color == "red" %}
             <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
           {% else %}
             <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">

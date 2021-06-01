@@ -146,7 +146,7 @@ class Test(SimpleTestCase):
         SV = db.projects
         Programmer_list = get_emails(["Guyco070"])
         Clients_list = get_emails(["Guyco070"])
-        SV.delete_one({"ProjectName" : "Test_project"})
+        SV.delete_many({"ProjectName" : "Test_project"})
         project = {
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
@@ -577,7 +577,7 @@ class Test(SimpleTestCase):
         SV = db.projects
         Programmer_list = get_emails(["Guyco070"])
         Clients_list = get_emails(["Guyco070"])
-        SV.delete_one({"ProjectName" : "Test_project"})
+        SV.delete_many({"ProjectName" : "Test_project"})
         project = {
             "ProjectName" : "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",

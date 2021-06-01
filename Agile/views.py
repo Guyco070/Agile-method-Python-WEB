@@ -313,16 +313,12 @@ def taskpage(response):  # pragma: no cover
     TDetails = {'PDetails': []}
     if MailEmsg:
         TDetails["MailEmsg"] = MailEmsg
+
     if response.POST.get('TASKNAME') is not None:
         taskname = response.POST.get('TASKNAME')
     elif "Task" in response.COOKIES:
         taskname = response.COOKIES['Task']
-    if response.POST.get('TASKNAME1') is not None:
-        taskname = response.POST.get('TASKNAME1')
-    elif response.POST.get('TASKNAME2') is not None:
-        taskname = response.POST.get('TASKNAME2')
-    elif response.POST.get('TASKNAME3') is not None:
-        taskname = response.POST.get('TASKNAME3')
+
     tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": taskname})
     if (tempPs is not None):
         USERSTORY = tempPs['USERSTORY']
@@ -539,6 +535,7 @@ def ClientKanbanPage(response):  # pragma: no cover
         tasks1 = {'tasks': []}
         tasks2 = {'tasks': []}
         tasks3 = {'tasks': []}
+        
         todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO"}))
         inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS"}))
         intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
@@ -569,7 +566,7 @@ def ClientKanbanPage(response):  # pragma: no cover
 def updateRate(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
-    if 'TASKNAME' or 'TASKNAME1' or 'TASKNAME2' or 'TASKNAME3' in response.POST:
+    if 'TASKNAME' in response.POST and response.POST['TASKNAME']:
         return taskpage(response)
     elif "rate" in response.POST:
         db.tasks.find_one_and_update({"USERSTORY": response.POST["rateBut"]}, {"$set": {"RATE": response.POST['rate']}}, upsert=True)
