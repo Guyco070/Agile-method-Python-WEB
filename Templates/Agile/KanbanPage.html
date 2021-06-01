@@ -149,13 +149,13 @@
               {% else %}
                 <input type="radio" id={{obj}}1 name="rate" value="1"  disabled="true" class="w3-button w3-white w3-border w3-border-black w3-round-large"/>
               {% endif %}
-              <label for={{obj}}1 title="text"class="w3-button w3-white w3-border w3-border-black w3-round-large">1 star</label>
+              <label for={{obj}}1 title="text">1 star</label>
             </div>
           {% else %}
             <label style="color: brown;" >Not rated</label>
           {% endif %}
 
-        <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+        <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">back stage</button>
         <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
         </br>
         {% endfor %}
