@@ -46,12 +46,12 @@
     .logo{
 	position:absolute;
 	top:0;
-	left:250px;
+	left:350px;
 }
 
   </style>
 </head>
-<img src="https://i.ibb.co/3FD9Cb6/2021-05-27-004950.png" class="logo">
+<img src="http://www.up2me.co.il/imgs/21202371.png" class="logo">
 <body>
 <div class="w3-content" style="max-width:1500px">
 <!-- Header -->
@@ -87,9 +87,9 @@
         <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
         {% if color == "red" %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+          <input type="submit" id="TASKNAME1" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
         {% else %}
-          <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+          <input type="submit" id="TASKNAME1" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
         {% endif %}
       </br>
         {% endfor %}
@@ -99,9 +99,9 @@
          <form action="updateRate" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
+            <input type="submit" id="TASKNAME2" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: red;">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
+            <input type="submit" id="TASKNAME2" name="TASKNAME" value={{obj}} style="border: none;margin:10px; color: rgb(25, 196, 25);">
           {% endif %}
         </br>
         {% endfor %}
