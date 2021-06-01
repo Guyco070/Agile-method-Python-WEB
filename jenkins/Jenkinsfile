@@ -50,15 +50,17 @@ pipeline {
     }
     
      post {
-        failure{
-			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
-			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
-			body: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
-		}
-		success{
-			mail to: 'gaico070@gmail.com , yarinaf1@gmail.com',
+        success{
+            echo 'SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']:\n Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']'
+			mail to: 'gaico070@gmail.com, yarinaf1@gmail.com, Navesh@ac.sce.ac.il, Koralmo@ac.sce.ac.il',
 			subject: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
-			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']: Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
+			body: "SUCCESS: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']:\n Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
+		}
+        failure{
+            echo 'Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']:\n Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']'
+			mail to: 'gaico070@gmail.com, yarinaf1@gmail.com, Navesh@ac.sce.ac.il, Koralmo@ac.sce.ac.il',
+			subject: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']",
+			body: "Failed: Job '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']:\n Check console output at '${env.BUILD_URL}' '${env.JOB_NAME}' ['${env.BUILD_NUMBER}']"
 		}
     }
 }
