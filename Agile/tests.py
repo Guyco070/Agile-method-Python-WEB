@@ -51,11 +51,11 @@ class Test(SimpleTestCase):
     def test_tasks_bubbleSort(self):
         self.assertEquals(tasks_bubbleSort(['2) task two.', '3) task three.', '1) task one.']), ['1) task one.', '2) task two.', '3) task three.'])
 
-
+    # integration test - tasks_edit_acts is using as a pipeline with: switch_tasks, add_tasks, remove_tasks, tasks_bubbleSort, set_numbers
     def test_tasks_tasks_edit_acts(self):
         self.assertEquals(tasks_edit_acts(['1) task one.', '2) task two.', '3) task three.'], '2) new task two. 4) new task four. 3) '), ['1) task one.', '2) new task two.', '3) new task four.'])
 
-
+    # integration test - get_edit_tasks_string is using as a pipeline with: split_tasks, tasks_edit_acts
     def test_get_edit_tasks_string(self):
         self.assertEquals(get_edit_tasks_string('1) task one. 2) task two. 3) task three.', '2) new task two. 4) new task four. 3) '), '1) task one.\n2) new task two.\n3) new task four.')
 
@@ -75,6 +75,32 @@ class Test(SimpleTestCase):
         SV.insert_one(user)
         client.close()
         is_user_inserted = SV.find_one(user) != None
+        self.assertTrue(is_user_inserted)
+
+
+    def test_sendmail(self):
+        self.assertTrue(sendmail("test mail - subject", "test mail - body", [EMAIL_HOST_USER]))
+
+    # integration - sign in and send an registration mail
+    def test_SignUp_DBInsert_with_conformation(self):
+        SV = db.users
+        SV.delete_many({"ID" : "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID" : "", "EMAIL": ""})
+        user = {
+            "ID": "Guyco070",
+            "PASSWORD": "123456",
+            "EMAIL": "gaico070@gmail.com",
+            "TYPE" : "Programmer",
+            "FName": "Guy",
+            "LName": "Cohen"
+        }
+        SV.insert_one(user)
+        client.close()
+        user_from_db = SV.find_one(user)
+        is_user_inserted = user_from_db != None
+
+        if is_user_inserted:
+            is_user_inserted = sendmail("test confirmation mail - subject", "test mail confurmation - body" , [user_from_db["EMAIL"]])
         self.assertTrue(is_user_inserted)
 
 
@@ -485,8 +511,6 @@ class Test(SimpleTestCase):
         DB.update_one(myquery, newvalues)
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
         self.assertEqual(myquery['Tasks'], '1) task one.\n2) new task two.\n3) new task four.')
-
-        # SV.delete_many({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
 
     # 44
     def test_rate_add(self):

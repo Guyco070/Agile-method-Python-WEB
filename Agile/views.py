@@ -109,6 +109,7 @@ def SignUpDone(response):  # pragma: no cover
             return result
         SV.insert_one(user)
         client.close()
+        sendmail("Welcome to our site.","Hi " + response.POST.get('FName') + " " + response.POST.get('LName') + ",\nCongratulations on registering for our site.", [response.POST.get('EMAIL')])
     return render(response, 'Agile/SignupDone.html')
 
 
@@ -794,3 +795,11 @@ def switch_tasks(tasks_arr, tasks_to_replace):
         j = 0
         i += 1
     return tasks_arr
+
+
+def sendmail(subject, body, send_to):
+    try:
+        send_mail(subject, body, EMAIL_HOST_USER, send_to, fail_silently=True)
+    except Exception:
+        return False
+    return True
