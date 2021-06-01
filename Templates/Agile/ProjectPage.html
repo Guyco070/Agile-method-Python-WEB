@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <title>ProjectPage</title>
-</head>
+ <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+h1 {letter-spacing: 6px}
+.w3-row-padding img {margin-bottom: 12px}
+.logo{
+	position:absolute;
+	top:0;
+	left:350px;
+}
+</style>
+<img src="https://i.ibb.co/zrLh3G1/LOGO-removebg-preview-1.png" class="logo">
 <body>
-
+<div class="w3-content" style="max-width:1500px">
+<!-- Header -->
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+  <div class="w3-padding-32">
+    <div class="w3-bar w3-border">
 <h1>Project view</h1>
 <form action="ChangeDetailsPage" method="POST">{% csrf_token %}
     {% for key,value in PDetails %}
@@ -13,16 +31,28 @@
     <lable> {{value}}</lable>
     </li></br>
     {% endfor %}
-    <button type="submit" name='Project' value="">Change project details</button>
-</form>
+    <button class="w3-button w3-white w3-border w3-border-black w3-round-large" type="submit" name='Project' value="">Change project details</button>
+</form> <br>
 <form action="KanbanPage" method="POST">{% csrf_token %}
-    <button type="submit" name='Project' value="">KANBAN BOARD</button>
-</form>
+    <button class="w3-button w3-white w3-border w3-border-black w3-round-large" type="submit" name='Project' value="">KANBAN BOARD</button>
+</form><br>
 <form action="AddTasks" method="POST">{% csrf_token %}
-    <button type="submit" name='Project' value="">Add Tasks</button>
-</form>
+    <button class="w3-button w3-white w3-border w3-border-black w3-round-large" type="submit" name='Project' value="">Add Tasks</button>
+</form><br>
 <form action="LoginStatus" method="POST">{% csrf_token %}
-    <button type="submit" name='bTuser' value="">Back to user page</button>
+    <button class="w3-button w3-white w3-border w3-border-black w3-round-large"  type="submit" name='bTuser' value="">Back to user page</button>
 </form>
+                               </div>
+  </div>
+</header>
+</div>
+<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+</footer>
 </body>
 </html>
