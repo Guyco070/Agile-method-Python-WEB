@@ -14,7 +14,6 @@ from_edit = False
 
 
 def HomePage(request):  # pragma: no cover
-    print(sendmail("Welcome to our site.","Hi Guy cohen\nCongratulations on registering for our site.", ["gaico070@gmail.com"]))
     return render(request, 'Agile/HomePage.html')
 
 
