@@ -456,85 +456,37 @@ class Test(SimpleTestCase):
         DB = db.tasks
 
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
+        newvalues = {"$set": {"Tasks": "1) task one.\n2) task two.\n3) task three." }}
         DB.update_one(myquery,newvalues)
 
         myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
+        self.assertEqual("1) task one.\n2) task two.\n3) task three.", myquery['Tasks'])
 
     # integration - edit task with smart edit and getting the string of the tasks for display
-    ''' 
     def test_EditTasks_smart(self):
         projectName = " Test_project  "
         uStory = " testUSERSTORY "
 
         uStory = remove_white_spaces_SE(uStory)
         projectName = remove_white_spaces_SE(projectName)
-        
+
+        tasks = '   2) new task two. 4) new task four. 3) '
+
+        tasks = remove_white_spaces_SE(tasks) + " "
+                
         DB = db.tasks
 
-        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        newvalues = {"$set": {"Tasks": "test_Tasks_after_change" }}
-        DB.update_one(myquery,newvalues)
-
-        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
-        self.assertEqual("test_Tasks_after_change", myquery['Tasks'])
-
-
-
-
-
-    if is_connected(response):
-        return is_connected(response)
-    elif 'beckToP' in response.POST:
-        return ADDTASKS(response)
-
-    SV = db.tasks
-    projectName = response.COOKIES['Project']
-
-    if 'Delete' in response.POST:
-        SV.delete_many({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
-    else:
-        uStory = response.POST.get('USERSTORY')
-        tasks = response.POST.get('TASKS')
-        s = response.POST.get('startDate')
-        e = response.POST.get('endDate')
-        p = response.POST.get('programmer')
-
-        uStory = remove_white_spaces_SE(uStory)
-        tasks = remove_white_spaces_SE(tasks)
-
-        myquery = db.tasks.find_one({"ProjectName": projectName, "USERSTORY": response.COOKIES['Task']})
+        myquery = DB.find_one({"ProjectName": projectName, "USERSTORY": uStory})
         newvalues = {"$set": {"ProjectName": projectName}}
-        if uStory:
-            newvalues["$set"]["USERSTORY"] = uStory
-        if tasks:
+        if myquery:
             tasks = get_edit_tasks_string(myquery["Tasks"], tasks)
             newvalues["$set"]["Tasks"] = tasks
-        if uStory:
-            newvalues["$set"]["USERSTORY"] = uStory
-        if s:
-            sDate = datetime.strptime(s.replace("T", " ")[2:], '%y-%m-%d %H:%M')
-            s = sDate.strftime('%d.%m.%y %H:%M')  # format change
-            if not e:
-                eDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
-            else:
-                eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
-                e = eDate.strftime('%d.%m.%y %H:%M')  # format change
-            if sDate < eDate:
-                newvalues["$set"]["EDate"] = e
-        elif e:
-            eDate = datetime.strptime(e.replace("T", " ")[2:], '%y-%m-%d %H:%M')
-            e = eDate.strftime('%d.%m.%y %H:%M')  # format change
-            sDate = datetime.strptime(myquery["SDate"], '%d.%m.%y %H:%M')
-            if eDate > sDate:
-                newvalues["$set"]["EDate"] = e
-        if p != 'programmer':
-            newvalues["$set"]["Programmer"] = p
-        SV.update_one(myquery, newvalues)
-    result = ProjectPage(response)
-    result.set_cookie('Project', projectName, 3000)
-    '''
+
+        DB.update_one(myquery, newvalues)
+        myquery = DB.find_one({"ProjectName":projectName,"USERSTORY": uStory})
+        self.assertEqual(myquery['Tasks'], '1) task one.\n2) new task two.\n3) new task four.')
+
+        # SV.delete_many({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
 
     # 44
     def test_rate_add(self):

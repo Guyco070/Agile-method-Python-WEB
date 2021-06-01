@@ -380,7 +380,7 @@ def EditTasks(response):  # pragma: no cover
         p = response.POST.get('programmer')
 
         uStory = remove_white_spaces_SE(uStory)
-        tasks = remove_white_spaces_SE(tasks)
+        tasks = remove_white_spaces_SE(tasks) + " "  # fix a problem of deleting task at the end of edit tasks box (example - "1) one edit. 2)")
 
         myquery = db.tasks.find_one({"ProjectName": projectName, "USERSTORY": response.COOKIES['Task']})
         newvalues = {"$set": {"ProjectName": projectName}}
