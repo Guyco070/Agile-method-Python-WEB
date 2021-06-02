@@ -50,6 +50,10 @@ h1 {letter-spacing: 6px}
     <button type="submit" name='Project' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Add Tasks</button>
 </form>
 </br>
+<form action="sendMailPage" method="POST">{% csrf_token %}
+    <button type="submit" name='sendMailPage' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Send mail</button>
+</form>
+</br>
 <form action="LoginStatus" method="POST">{% csrf_token %}
     <button type="submit" name='bTuser' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Back to user page</button>
 </form>
