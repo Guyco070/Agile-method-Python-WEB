@@ -11,10 +11,10 @@ class Test(SimpleTestCase):
         self.assertEquals(remove_white_spaces_SE("   str_to_update    "), "str_to_update")
 
     def test_get_emails(self):
-        self.assertEquals(get_emails(["Guyco070"]), ["gaico070@gmail.com"])
+        self.assertEquals(get_emails(["Guyco070"]), ["gaico10@walla.com"])
 
     def test_get_id(self):
-        self.assertEquals(get_id("gaico070@gmail.com"), "Guyco070")
+        self.assertEquals(get_id("gaico10@walla.com"), "Guyco070")
 
     def test_split_tasks_EliminateFalse(self):
         self.assertEquals(split_tasks("1) task one. 2) task two. 3) task three.", eliminate_empty=False), ['1) task one.', '2) task two.', '3) task three.'])
@@ -53,12 +53,12 @@ class Test(SimpleTestCase):
 
     def test_SignUp_DBInsert(self):
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
             "ID": "Guyco070",
             "PASSWORD": "123456",
-            "EMAIL": "gaico070@gmail.com",
+            "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
@@ -74,12 +74,12 @@ class Test(SimpleTestCase):
     # integration - sign in and send an registration mail
     def test_SignUp_DBInsert_with_conformation(self):
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
             "ID": "Guyco070",
             "PASSWORD": "123456",
-            "EMAIL": "gaico070@gmail.com",
+            "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
@@ -97,7 +97,7 @@ class Test(SimpleTestCase):
         is_user_Exist = db.users.find_one({
             "ID": "Guyco070",
             "PASSWORD": "123456",
-            "EMAIL": "gaico070@gmail.com",
+            "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
@@ -526,12 +526,12 @@ class Test(SimpleTestCase):
     def test_signup_and_login(self):
         # signup
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico070@gmail.com"})
+        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
             "ID": "Guyco070",
             "PASSWORD": "123456",
-            "EMAIL": "gaico070@gmail.com",
+            "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
@@ -541,7 +541,7 @@ class Test(SimpleTestCase):
         is_user_Exist = db.users.find_one({
             "ID": "Guyco070",
             "PASSWORD": "123456",
-            "EMAIL": "gaico070@gmail.com",
+            "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
             "FName": "Guy",
             "LName": "Cohen"
