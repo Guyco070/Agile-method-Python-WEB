@@ -9,11 +9,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        table, th, td {
-        border: 1px solid black;
-        }
+table, th, td {
+      border: 1px solid black;
+      }
 
-        *{
+    *{
       margin: 0;
       padding: 0;
     }
@@ -31,6 +31,7 @@
         width:1em;
         overflow:hidden;
         white-space:nowrap;
+        cursor:pointer;
         font-size:30px;
         color:#ccc;
     }
@@ -38,127 +39,130 @@
         content: '★ ';
     }
     .rate > input:checked ~ label {
-        color: #ffc700;
+        color: #ffc700;    
     }
-    .body,h1 {font-family: "Raleway", Arial, sans-serif}
-    h1 {letter-spacing: 6px}
-    .w3-row-padding img {margin-bottom: 12px}
-    .logo{
-	position:absolute;
-	top:0;
-	left:350px;
-}
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;  
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
 
   </style>
 </head>
 <img src="http://www.up2me.co.il/imgs/21202371.png" class="logo">
 <body>
 <div class="w3-content" style="max-width:1500px">
-<!-- Header -->
-<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
-  <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
-    <form action="LoginStatus" method="POST">{% csrf_token %}
-        <button type="submit" name='bTuser' value="" class="w3-left w3-button w3-white w3-border w3-border-black w3-round-large">HomePage</button>
-    </form>
+  <!-- Header -->
+  <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+    <div class="w3-padding-32">
+      <div class="w3-bar w3-border">
+        <form action="LoginStatus" method="POST">{% csrf_token %}
+            <button type="submit" name='bTuser' value="" class="w3-left w3-button w3-white w3-border w3-border-black w3-round-large">HomePage</button>
+        </form>
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
         <br>
-<table style="width:100%;text-align:center;" >
-  <tr>
-    <th>To Do : </th>
-    <th>In Progress : </th>
-    <th>In Test : </th>
-    <th>Done : </th>
-  </tr>
-  <tr>
-    <td>
-        {% for obj,color in todo %}
-        <form action="updateRate" method='POST'>{% csrf_token %}
-          {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% endif %}
-        </form>
-        </br>
-        {% endfor %}
-    </td>
-    <td>
-        <form action="updateRate" method='POST'>{% csrf_token %}
-        {% for obj,color in inprogress %}
-          {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% endif %}
-      </br>
-        {% endfor %}
-        </form>
-    </td>
-    <td>
-         <form action="updateRate" method='POST'>{% csrf_token %}
-        {% for obj,color in intest %}
-          {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
-          {% endif %}
-        </br>
-        {% endfor %}
-        </form>
-    </td>
-    <td>
-        <form action="updateRate" method='POST'>{% csrf_token %}
-          {% for obj,rate in done %}
-          <div class="rate">
-            {% if rate == '5' %}
-              <input type="radio" id={{obj}}5 name="rate" value="5"  checked="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}5 name="rate" value="5"/>
-            {% endif %}
-            <label for={{obj}}5 title="text">5 stars</label>
-            {% if rate == '4' %}
-              <input type="radio" id={{obj}}4 name="rate" value="4"  checked="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}4 name="rate" value="4"/>
-            {% endif %}
-            <label for={{obj}}4 title="text">4 stars</label>
-            {% if rate == '3' %}
-              <input type="radio" id={{obj}}3 name="rate" value="3"  checked="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}3 name="rate" value="3"/>
-            {% endif %}
-            <label for={{obj}}3 title="text">3 stars</label>
-            {% if rate == '2' %}
-              <input type="radio" id={{obj}}2 name="rate" value="2"  checked="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}2 name="rate" value="2"/>
-            {% endif %}
-            <label for={{obj}}2 title="text">2 stars</label>
-            {% if rate == '1' %}
-              <input type="radio" id={{obj}}1 name="rate" value="1"  checked="true"/>
-            {% else %}
-              <input type="radio" id={{obj}}1 name="rate" value="1"/>
-            {% endif %}
-            <label for={{obj}}1 title="text">1 star</label>
-          </div>
-          <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
-          <button type="submit" id="rateBut" name="rateBut" value="{{obj}}" style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Rate</button>
-          <script>
-            function myFunction() {
-                alert("Rate changed successfully");
-            }
-          </script>
-          </br>
-          {% endfor %}
-        </form>
-    </td>
-  </tr>
-</table>
-                 </div>
+        <table style="width:100%;text-align:center;" >
+          <tr>
+            <th>To Do : </th>
+            <th>In Progress : </th>
+            <th>In Test : </th>
+            <th>Done : </th>
+          </tr>
+          <tr>
+            <td>
+                {% for obj,color in todo %}
+                <form action="updateRate" method='POST'>{% csrf_token %}
+                  {% if color == "red" %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% else %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% endif %}
+                </form>
+                </br>
+                {% endfor %}
+            </td>
+            <td>
+                <form action="updateRate" method='POST'>{% csrf_token %}
+                {% for obj,color in inprogress %}
+                  {% if color == "red" %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% else %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% endif %}
+              </br>
+                {% endfor %}
+                </form>
+            </td>
+            <td>
+                <form action="updateRate" method='POST'>{% csrf_token %}
+                {% for obj,color in intest %}
+                  {% if color == "red" %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% else %}
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                  {% endif %}
+                </br>
+                {% endfor %}
+                </form>
+            </td>
+            <td>
+                <form action="updateRate" method='POST'>{% csrf_token %}
+                  {% for obj,rate in done %}
+                  <div class="rate">
+                    {% if rate == '5' %}
+                      <input type="radio" id="{{obj}}5" name="rate" value="5"  checked="true"/>
+                    {% else %}
+                      <input type="radio" id="{{obj}}5" name="rate" value="5"/>
+                    {% endif %}
+                    <label for="{{obj}}5" title="5">5 stars</label>
+                    {% if rate == '4' %}
+                      <input type="radio" id="{{obj}}4" name="rate" value="4"  checked="true"/>
+                    {% else %}
+                      <input type="radio" id="{{obj}}4" name="rate" value="4"/>
+                    {% endif %}
+                    <label for="{{obj}}4" title="4">4 stars</label>
+                    {% if rate == '3' %}
+                      <input type="radio" id="{{obj}}3" name="rate" value="3"  checked="true"/>
+                    {% else %}
+                      <input type="radio" id="{{obj}}3" name="rate" value="3"/>
+                    {% endif %}
+                    <label for="{{obj}}3" title="3">3 stars</label>
+                    {% if rate == '2' %}
+                      <input type="radio" id="{{obj}}2" name="rate" value="2"  checked="true"/>
+                    {% else %}
+                      <input type="radio" id="{{obj}}2" name="rate" value="2"/>
+                    {% endif %}
+                    <label for="{{obj}}2" title="2">2 stars</label>
+                    {% if rate == '1' %}
+                      <input type="radio" id="{{obj}}1" name="rate" value="1"  checked="true" />
+                    {% else %}
+                      <input type="radio" id="{{obj}}1" name="rate" value="1"/>
+                    {% endif %}
+                    <label for="{{obj}}1" title="1">1 star</label>
+                  </div>
+                  <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
+                  <button type="submit" id="rateBut" name="rateBut" value="{{obj}}" style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Rate</button>
+                  <script>
+                    function myFunction() {
+                        alert("Rate changed successfully");
+                    }
+                  </script>
+                  </br>
+                  {% endfor %}
+                </form>
+            </td>
+          </tr>
+        </table>
+        </div>
+      </div>
+    </header>
   </div>
-</header>
-</div>
 <footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">
   <i class="fa fa-facebook-official w3-hover-opacity"></i>
   <i class="fa fa-instagram w3-hover-opacity"></i>
