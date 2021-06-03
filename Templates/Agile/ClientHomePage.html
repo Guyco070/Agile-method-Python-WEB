@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body,h1 {font-family: "Raleway", Arial, sans-serif }
-h1 {letter-spacing: 6px}
+h1 {letter-spacing: 6px; width: 1000px;}
 .w3-row-padding img {margin-bottom: 12px}
 .logo{
 	position:absolute;
@@ -30,9 +30,13 @@ h1 {letter-spacing: 6px}
     <br>
     <br>
     {%if FName == "" or FName == None%}
+       </br>
         <h1>Client user</h1>
+        </br>
     {% else %}
+        </br>
         <h1>Hello {{FName}} {{LName}} (client)</h1>
+        </br>
     {% endif %}
     </br>
     <button class="w3-button w3-white w3-border w3-border-black w3-round-large">Show My Projects</button>

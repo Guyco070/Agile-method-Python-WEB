@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
 body,h1 {font-family: "Raleway", Arial, sans-serif}
-h1 {letter-spacing: 6px}
+h1 {letter-spacing: 6px; width: 1000px;}
 .w3-row-padding img {margin-bottom: 12px}
 .logo{
 	position:absolute;
@@ -27,9 +27,13 @@ h1 {letter-spacing: 6px}
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
 <form action="showMyProjects" method="POST">{% csrf_token %}
     {%if FName == "" or FName == None%}
+        </br>
         <h1>Programmer user</h1>
+        </br>
     {% else %}
+        </br>
         <h1>Hello {{FName}} {{LName}} (programmer)</h1>
+        </br>
     {% endif %}
     
     </br>

@@ -11,10 +11,10 @@ class Test(SimpleTestCase):
         self.assertEquals(remove_white_spaces_SE("   str_to_update    "), "str_to_update")
 
     def test_get_emails(self):
-        self.assertEquals(get_emails(["Guyco070"]), ["gaico10@walla.com"])
+        self.assertEquals(get_emails(["Gaico10"]), ["gaico10@walla.com"])
 
     def test_get_id(self):
-        self.assertEquals(get_id("gaico10@walla.com"), "Guyco070")
+        self.assertEquals(get_id("gaico10@walla.com"), "Gaico10")
 
     def test_split_tasks_EliminateFalse(self):
         self.assertEquals(split_tasks("1) task one. 2) task two. 3) task three.", eliminate_empty=False), ['1) task one.', '2) task two.', '3) task three.'])
@@ -53,10 +53,10 @@ class Test(SimpleTestCase):
 
     def test_SignUp_DBInsert(self):
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
+        SV.delete_many({"ID": "Gaico10", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
-            "ID": "Guyco070",
+            "ID": "Gaico10",
             "PASSWORD": "123456",
             "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
@@ -74,10 +74,10 @@ class Test(SimpleTestCase):
     # integration - sign in and send an registration mail
     def test_SignUp_DBInsert_with_conformation(self):
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
+        SV.delete_many({"ID": "Gaico10", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
-            "ID": "Guyco070",
+            "ID": "Gaico10",
             "PASSWORD": "123456",
             "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
@@ -95,7 +95,7 @@ class Test(SimpleTestCase):
 
     def test_LOGIN_DBFind_true(self):
         is_user_Exist = db.users.find_one({
-            "ID": "Guyco070",
+            "ID": "Gaico10",
             "PASSWORD": "123456",
             "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
@@ -117,13 +117,13 @@ class Test(SimpleTestCase):
 
     # 5,21,37
     def test_Project_DBFind_true(self):
-        Programmer_list = get_emails(["Guyco070"])
-        Clients_list = get_emails(["Guyco070"])
+        Programmer_list = get_emails(["Gaico10"])
+        Clients_list = get_emails(["Gaico10"])
 
         is_project_Exist = db.projects.find_one({
             "ProjectName": "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "gaico070@gmai.com",
+            "PManager": "gaico10@walla.com",
             "Cilents": Clients_list,
             "Programmer": Programmer_list
         }) is not None
@@ -131,13 +131,13 @@ class Test(SimpleTestCase):
 
     def test_CreateProjDone_DBInsert(self):
         SV = db.projects
-        Programmer_list = get_emails(["Guyco070"])
-        Clients_list = get_emails(["Guyco070"])
+        Programmer_list = get_emails(["Gaico10"])
+        Clients_list = get_emails(["Gaico10"])
         SV.delete_many({"ProjectName": "Test_project"})
         project = {
             "ProjectName": "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "gaico070@gmai.com",
+            "PManager": "gaico10@walla.com",
             "Cilents": Clients_list,
             "Programmer": Programmer_list
         }
@@ -150,7 +150,7 @@ class Test(SimpleTestCase):
         is_project_Exist = db.projects.find_one({
             "ProjectName": "abcdefg123456789 ",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "Guyco070",
+            "PManager": "Gaico10",
             "Cilents": None,
             "Programmer": None
         }) is not None
@@ -226,7 +226,7 @@ class Test(SimpleTestCase):
             "Tasks": "test_Tasks",
             "SDate": "test_SDate",
             "EDate": "test_EDate",
-            "Programmer": "Gaico070",
+            "Programmer": "Gaico10",
             "status": "test_Status"
         }
 
@@ -244,7 +244,7 @@ class Test(SimpleTestCase):
         now = datetime.now()
         SDate = datetime.strptime("10.05.21 10:12", '%d.%m.%y %H:%M')
         EDate = now + timedelta(days=10)  # EDate = now + 10 days
-        Programmer = "Gaico070"
+        Programmer = "Gaico10"
 
         uStory = remove_white_spaces_SE(uStory)
         tasks = remove_white_spaces_SE(tasks)
@@ -397,7 +397,7 @@ class Test(SimpleTestCase):
             "Tasks": "test_Tasks",
             "SDate": "test_SDate",
             "EDate": "test_EDate",
-            "Programmer": "Gaico070",
+            "Programmer": "Gaico10",
             "status": "test_Status",
         })
         SV.find_one_and_update(
@@ -526,10 +526,10 @@ class Test(SimpleTestCase):
     def test_signup_and_login(self):
         # signup
         SV = db.users
-        SV.delete_many({"ID": "Guyco070", "EMAIL": "gaico10@walla.com"})
+        SV.delete_many({"ID": "Gaico10", "EMAIL": "gaico10@walla.com"})
         SV.delete_many({"ID": "", "EMAIL": ""})
         user = {
-            "ID": "Guyco070",
+            "ID": "Gaico10",
             "PASSWORD": "123456",
             "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
@@ -539,7 +539,7 @@ class Test(SimpleTestCase):
         # login
         SV.insert_one(user)
         is_user_Exist = db.users.find_one({
-            "ID": "Guyco070",
+            "ID": "Gaico10",
             "PASSWORD": "123456",
             "EMAIL": "gaico10@walla.com",
             "TYPE": "Programmer",
@@ -552,25 +552,25 @@ class Test(SimpleTestCase):
     def test_createproj_and_edit(self):
         # create Project
         SV = db.projects
-        Programmer_list = get_emails(["Guyco070"])
-        Clients_list = get_emails(["Guyco070"])
+        Programmer_list = get_emails(["Gaico10"])
+        Clients_list = get_emails(["Gaico10"])
         SV.delete_many({"ProjectName": "Test_project"})
         project = {
             "ProjectName": "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "gaico070@gmai.com",
+            "PManager": "gaico10@walla.com",
             "Cilents": Clients_list,
             "Programmer": Programmer_list
         }
         SV.insert_one(project)
         # update project
-        Programmer_list = get_emails(["Guyco070"])
-        Clients_list = get_emails(["Guyco070"])
+        Programmer_list = get_emails(["Gaico10"])
+        Clients_list = get_emails(["Gaico10"])
 
         is_project_Exist = db.projects.find_one({
             "ProjectName": "Test_project",
             "Description": "This is a test project.\n Created in a single test function called - test_CreateProjDone_DBInsert.",
-            "PManager": "gaico070@gmai.com",
+            "PManager": "gaico10@walla.com",
             "Cilents": Clients_list,
             "Programmer": Programmer_list
         }) is not None
@@ -591,7 +591,7 @@ class Test(SimpleTestCase):
             "Tasks": "test_Tasks",
             "SDate": "test_SDate",
             "EDate": "test_EDate",
-            "Programmer": "Gaico070",
+            "Programmer": "Gaico10",
             "status": "test_Status"
         }
 
