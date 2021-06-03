@@ -109,7 +109,7 @@ def SignUpDone(response):  # pragma: no cover
             return result
         SV.insert_one(user)
         client.close()
-        sendmail("Welcome to our site.","Hi " + response.POST.get('FName') + " " + response.POST.get('LName') + ",\nCongratulations on registering for our site.", [response.POST.get('EMAIL')])
+        sendmail("Welcome to our site.", "Hi " + response.POST.get('FName') + " " + response.POST.get('LName') + ",\nCongratulations on registering for our site.", [response.POST.get('EMAIL')])
     return render(response, 'Agile/SignupDone.html')
 
 
@@ -535,7 +535,7 @@ def ClientKanbanPage(response):  # pragma: no cover
         tasks1 = {'tasks': []}
         tasks2 = {'tasks': []}
         tasks3 = {'tasks': []}
-        
+
         todo = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "TODO"}))
         inprogress = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INPROGRESS"}))
         intest = list(db.tasks.find({"ProjectName": response.COOKIES['Project'], "status": "INTEST"}))
