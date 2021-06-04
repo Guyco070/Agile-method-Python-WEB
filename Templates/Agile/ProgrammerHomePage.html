@@ -42,7 +42,7 @@ h1 {letter-spacing: 6px; width: 1000px;}
  </br>
 <form action="ProjectPage" method='POST'>{% csrf_token %}
     {% for obj in projects %}
-    <input type="submit" id="ProjectName" name="Project" value={{obj}} class="w3-button w3-animate-left w3-border w3-border-red w3-round-large" >
+    <input type="submit" id="ProjectName" name="Project" value="{{obj}}" class="w3-button w3-animate-left w3-border w3-border-red w3-round-large" >
 
     {% endfor %}
 </form>

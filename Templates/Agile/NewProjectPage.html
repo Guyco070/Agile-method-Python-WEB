@@ -25,10 +25,10 @@ h1 {letter-spacing: 6px}
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
-    <div class="w3-bar w3-border-0">
-   <form action="AdminHomePage" method="POST">{% csrf_token %}</br>
-        <button onclick="location.href='http://127.0.0.1:8000/LoginStatus';" class=" w3-left w3-button w3-white w3-border w3-border-black w3-round-large" >HomePage </button>
-    </form>
+    <div class="w3-bar w3-borde-0" style="width: 500px;">
+        <form action="AdminHomePage" method="POST">{% csrf_token %}</br>
+            <button onclick="location.href='http://127.0.0.1:8000/LoginStatus';" class=" w3-left w3-button w3-white w3-border w3-border-black w3-round-large" >HomePage </button>
+        </form>
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
     </br></br></br><h1 id="myId"></h1>
 <script>
@@ -57,7 +57,7 @@ function listCookies() {
                 <table style="width:50%;text-align:left;" >
                             <tr>
                 <th>Programmers : </th>
-                <th>clients : </th>
+                <th>Clients : </th>
             </tr>
             <tr>
                 <td>

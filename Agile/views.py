@@ -180,7 +180,7 @@ def ProjectPage(response):  # pragma: no cover
     PDetails = {'PDetails': []}
     if MailEmsg:
         PDetails["MailEmsg"] = MailEmsg
-    if 'Project' in response.POST:
+    if 'Project' in response.POST and response.POST.get('Project') != "":
         tempPs = db.projects.find_one({"ProjectName": response.POST.get('Project')})
     else:
         tempPs = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
@@ -435,7 +435,8 @@ def updateProjectDetails(response):  # pragma: no cover
             PDetails['PDetails'].append(['Project name', name])
         if (des is not None):
             PDetails['PDetails'].append(['Description', des])
-    return render(response, "Agile/ChangeDetailsPage.html", PDetails)
+    return ProjectPage(response)
+
 
 
 def AddTasks(request):  # pragma: no cover
