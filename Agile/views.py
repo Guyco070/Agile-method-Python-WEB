@@ -356,8 +356,37 @@ def taskpage(response):  # pragma: no cover
 def TaskPageEdit(response):  # pragma: no cover
     if is_connected(response):
         return is_connected(response)
-    PQuery = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
-    return render(response, "Agile/TaskPageEdit.html", PQuery)
+    tempPs = db.tasks.find_one({"ProjectName": response.COOKIES['Project'], "USERSTORY": response.COOKIES['Task']})
+    TDetails = {'PDetails': []}
+    if (tempPs is not None):
+        USERSTORY = tempPs['USERSTORY']
+        Tasks = tempPs['Tasks']
+        Programmer = tempPs['Programmer']
+
+        if (USERSTORY is not None):
+            TDetails['PDetails'].append(['User story', USERSTORY])
+        if (Tasks is not None):
+            TDetails['PDetails'].append(['Tasks', split_tasks(Tasks)])
+        if "SDate" in tempPs:
+            sDate = tempPs['SDate']
+            eDate = tempPs['EDate']
+            TDetails['PDetails'].append(['Estimated start', sDate])
+            if (eDate is not None):
+                TDetails['PDetails'].append(['Estimated end', eDate])
+        if "done_time" in tempPs:
+            done_time = tempPs['done_time']
+            if (done_time is not None and done_time != ""):
+                TDetails['PDetails'].append(['Actual end', done_time])
+        if (Programmer is not None):
+            TDetails['PDetails'].append(['Programmer', Programmer])
+    if(response.COOKIES['TYPE'] == 'Admin'):
+        result = render(response, "Agile/TaskPageManager.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Programmer'):
+        result = render(response, "Agile/TaskPageProgrammer.html", TDetails)
+    if (response.COOKIES['TYPE'] == 'Client'):
+        result = render(response, "Agile/TaskPageClient.html", TDetails)
+    result.set_cookie('Task', response.POST.get('TASKNAME'), 3000)
+    return render(response, "Agile/TaskPageEdit.html", TDetails)
 
 
 def EditTasks(response):  # pragma: no cover
@@ -387,7 +416,8 @@ def EditTasks(response):  # pragma: no cover
         newvalues = {"$set": {"ProjectName": projectName}}
         if uStory:
             newvalues["$set"]["USERSTORY"] = uStory
-        if tasks:
+        if tasks and tasks != " ":
+            print("-"+tasks + "-")
             tasks = get_edit_tasks_string(myquery["Tasks"], tasks)
             newvalues["$set"]["Tasks"] = tasks
         if uStory:
@@ -411,7 +441,7 @@ def EditTasks(response):  # pragma: no cover
         if p != 'programmer':
             newvalues["$set"]["Programmer"] = p
         SV.update_one(myquery, newvalues)
-    result = ProjectPage(response)
+    result = KanbanPage(response)
     result.set_cookie('Project', projectName, 3000)
     return result
 

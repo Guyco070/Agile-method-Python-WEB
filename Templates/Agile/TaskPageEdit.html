@@ -24,25 +24,44 @@ h1 {letter-spacing: 6px}
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
+    <div class="w3-bar w3-border-0" style="width: 1000px;">
 <form action="EditTasks" method="POST">{% csrf_token %}
+  <br>
   <h2>Fill in the fields you want to change:</h2>
+    <div class="a">
+      
+  {% for key,value in PDetails %}
+  <li><b>{{key}}: </b>
+  {% if key == "Tasks"%}
+      </br>
+      {% for x in value %}
+          <lable>&emsp;&ensp;&ensp; {{x}}</lable>
+          </br>
+      {% endfor %}
+      {% else %}
+      <lable> {{value}}</lable>
+      {% endif %}
+  </li></br>
+  {% endfor %}
+      
+    </li></br>
+    </div></br>
     <table style="text-align:center;" >
       <br><br>
       <tr>
         <td>
          <label for="USERSTORY">USER STORY:</label></br>
-         <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" ></textarea>
+         <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" class="w3-button w3-white w3-border w3-border-black w3-round-large" style= "cursor:text;"></textarea>
          </br></br>
         </td>
         <td>
           <label for="startDate" style="padding: 80px;" >Estimated start:</label></br>
-          <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
+          <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()" class="w3-button w3-white w3-border w3-border-black w3-round-large"><br><br>
         </td>
         <td>
           </br>
-          <select id="programmer" name="programmer" property="true">
-            <option value="programmer" aria-placeholder="true">Choose programmer</option>
+          <select id="programmer" name="programmer" property="true" class="w3-button w3-white w3-border w3-border-black w3-round-large" style= "cursor:text;">
+            <option value="programmer" aria-placeholder="true" >Choose programmer</option>
             {% for obj in Programmer %}
               <option value="{{obj}}">{{obj}}</option>
             {% endfor %}
@@ -52,12 +71,12 @@ h1 {letter-spacing: 6px}
       <tr>
         <td>
           <label for="TASKS">Tasks:</label></br>
-          <textarea id="TASKS" name="TASKS" rows="4" cols="50" ></textarea>
+          <textarea id="TASKS" name="TASKS" rows="4" cols="50"  class="w3-button w3-white w3-border w3-border-black w3-round-large" style= "cursor:text;"></textarea>
           <br></br>
         </td>
         <td>
           <label for="endDate">Estimated end:</label></br>
-          <input class="w3-button w3-white w3-border w3-border-black w3-round-large" type="datetime-local" id="endDate" name="endDate" ><br><br>
+          <input class="w3-button w3-white w3-border w3-border-black w3-round-large" type="datetime-local" id="endDate" name="endDate"class="w3-button w3-white w3-border w3-border-black w3-round-large" ><br><br>
         </td>
       </tr>
     <tr>
@@ -104,6 +123,10 @@ h1 {letter-spacing: 6px}
     <td>
     </br>
       <input class="w3-button w3-white w3-border w3-border-black w3-round-large"  type="submit" value="Back to project" id="beckToP" name="beckToP">
+      <br>
+      <br>
+      <input class="w3-button w3-white w3-border w3-border-black w3-round-large" type="submit" value="Back to Kanban board" id="beckToKanban" name="beckToKanban">
+
   </td>
     </table>
   </form>

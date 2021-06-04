@@ -47,11 +47,11 @@ h1 {letter-spacing: 6px}
       </td>
       <td>
         <label for="startDate" style="padding: 80px;" required>Estimated start:</label></br>
-        <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()"><br><br>
+        <input type="datetime-local" id="startDate" name="startDate" onchange="setMinDate()" class="w3-button w3-white w3-border w3-border-black w3-round-large"><br><br>
       </td>
       <td>
         <label for="programmer" style="padding: 50px;">Programmer:</label>      </br>
-        <select id="programmer" name="programmer" property="true">
+        <select id="programmer" name="programmer" property="true" class="w3-button w3-white w3-border w3-border-black w3-round-large">
           {% for obj in Programmer %}
             <option value="{{obj}}">{{obj}}</option>
           {% endfor %}
@@ -66,7 +66,7 @@ h1 {letter-spacing: 6px}
       </td>
       <td>
         <label for="endDate">Estimated end:</label></br>
-        <input type="datetime-local" id="endDate" name="endDate" required><br><br>
+        <input type="datetime-local" id="endDate" name="endDate" required class="w3-button w3-white w3-border w3-border-black w3-round-large"><br><br>
       </td>
     </tr>
   <tr>
