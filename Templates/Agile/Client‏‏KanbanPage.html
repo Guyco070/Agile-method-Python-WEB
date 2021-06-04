@@ -52,6 +52,11 @@ table, th, td {
     .rate > label:hover ~ input:checked ~ label {
         color: #c59b08;
     }
+    .logo{
+      position:absolute;
+      top:0;
+      left:350px;
+    }
 
   </style>
 </head>
@@ -79,9 +84,9 @@ table, th, td {
                 {% for obj,color in todo %}
                 <form action="updateRate" method='POST'>{% csrf_token %}
                   {% if color == "red" %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-red w3-border w3-border-black w3-round-large">
                   {% else %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-Green w3-border w3-border-black w3-round-large">
                   {% endif %}
                 </form>
                 </br>
@@ -91,9 +96,9 @@ table, th, td {
                 <form action="updateRate" method='POST'>{% csrf_token %}
                 {% for obj,color in inprogress %}
                   {% if color == "red" %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-red w3-border w3-border-black w3-round-large">
                   {% else %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-Green w3-border w3-border-black w3-round-large">
                   {% endif %}
               </br>
                 {% endfor %}
@@ -103,9 +108,9 @@ table, th, td {
                 <form action="updateRate" method='POST'>{% csrf_token %}
                 {% for obj,color in intest %}
                   {% if color == "red" %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-red w3-border w3-border-black w3-round-large">
                   {% else %}
-                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+                    <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;" class="w3-button w3-Green w3-border w3-border-black w3-round-large">
                   {% endif %}
                 </br>
                 {% endfor %}

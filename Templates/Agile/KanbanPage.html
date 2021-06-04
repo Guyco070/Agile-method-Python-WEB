@@ -78,40 +78,47 @@
         {% for obj,color in todo %}
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;"class="w3-button w3-red w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}"  style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;"class="w3-button w3-Green w3-border w3-border-black w3-round-large">
           {% endif %}
           <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
         </form>
-        </br>
         {% endfor %}
     </td>
     <td>
         <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in inprogress %}
-          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
-          {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">back stage</button>
+            <br>
+            <br>
+            {% if color == "red" %}
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;"class="w3-button w3-red w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;"class="w3-button w3-Green w3-border w3-border-black w3-round-large">
           {% endif %}
+          <br>
+           <br>
           <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;" class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
-          </br>
-        {% endfor %}
+            <br>
+            {% endfor %}
         </form>
     </td>
     <td>
          <form action="TaskPageProgrammer" method='POST'>{% csrf_token %}
         {% for obj,color in intest %}
-          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">beck stage</button>
+          <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">back stage</button>
+             <br>
+            <br>
           {% if color == "red" %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: red; max-width: 40%; overflow-y: auto; overflow-wrap: break-word; "class="w3-button w3-red w3-border w3-border-black w3-round-large">
           {% else %}
-            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;">
+            <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px; color: rgb(25, 196, 25); max-width: 40%; overflow-y: auto; overflow-wrap: break-word;"class="w3-button w3-Green w3-border w3-border-black w3-round-large">
           {% endif %}
+          <br>
+            <br>
           <button type="submit" id="passNext" name="passNext" value="{{obj}}" style="margin:10px;"  class="w3-button w3-white w3-border w3-border-black w3-round-large">next stage</button>
-          </br>
+          <br>
         {% endfor %}
         </form>
     </td>
@@ -154,6 +161,9 @@
           {% else %}
             <label style="color: brown;" >Not rated</label>
           {% endif %}
+            <br>
+            <br>
+            <br>
 
         <button type="submit" id="returnStage" name="returnStage" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">back stage</button>
         <input type="submit" id="TASKNAME" name="TASKNAME" value="{{obj}}" style="margin:10px;"class="w3-button w3-white w3-border w3-border-black w3-round-large">
@@ -164,7 +174,9 @@
   </tr>
 </table>
 <form action="ADDTASKS" method="POST">{% csrf_token %}
-  </br></br>
+  <br>
+    <br>
+    <br>
   <input type="submit" value="back To project" id="beckToP" name="beckToP"class="w3-button w3-white w3-border w3-border-black w3-round-large">
 </form>
          </div>
