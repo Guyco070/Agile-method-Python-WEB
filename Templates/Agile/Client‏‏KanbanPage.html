@@ -117,9 +117,9 @@ table, th, td {
                 </form>
             </td>
             <td>
+              {% for obj,rate in done %}
                 <form action="updateRate" method='POST'>{% csrf_token %}
-                  {% for obj,rate in done %}
-                  <div class="rate">
+                  <div class="rate" id="{{obj}}rate">
                     {% if rate == '5' %}
                       <input type="radio" id="{{obj}}5" name="rate" value="5"  checked="true"/>
                     {% else %}
@@ -159,8 +159,8 @@ table, th, td {
                     }
                   </script>
                   </br>
-                  {% endfor %}
                 </form>
+                {% endfor %}
             </td>
           </tr>
         </table>
