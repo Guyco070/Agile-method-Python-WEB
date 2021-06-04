@@ -24,15 +24,17 @@ h1 {letter-spacing: 6px}
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
     <div class="w3-bar w3-borde-0">
+      <br>
+
       <form action="AdminHomePage" method="POST">{% csrf_token %}
         <button onclick="location.href='http://127.0.0.1:8000/LoginStatus';" class=" w3-left w3-button w3-white w3-border w3-border-black w3-round-large" >HomePage </button>
     </form>
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
       <form action="ADDTASKS" method="POST">{% csrf_token %}
   <td>
-    <br>
     <input type="submit" value="back To project"  class="w3-button w3-white w3-border w3-border-black w3-round-large" id="beckToP" name="beckToP">
   </td>
+  
 </form>
 <form action="ADDTASKS" method="POST" name="newtask" id="newtask">{% csrf_token %}
   <table style="text-align:center;" >
@@ -40,7 +42,7 @@ h1 {letter-spacing: 6px}
     <tr>
       <td>
        <label for="USERSTORY">USER STORY:</label></br>
-       <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" required></textarea>
+       <textarea id="USERSTORY" name="USERSTORY" rows="4" cols="50" required style="cursor:text;" class="w3-button w3-white w3-border w3-border-black w3-round-large"></textarea>
        </br></br>
       </td>
       <td>
@@ -59,7 +61,7 @@ h1 {letter-spacing: 6px}
     <tr>
       <td>
         <label for="TASKS">Tasks:</label></br>
-        <textarea id="TASKS" name="TASKS" rows="4" cols="50" required></textarea>
+        <textarea id="TASKS" name="TASKS" rows="4" cols="50" style="cursor:text;" required class="w3-button w3-white w3-border w3-border-black w3-round-large"></textarea>
         <br></br>
       </td>
       <td>

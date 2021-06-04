@@ -219,6 +219,8 @@ def sendMailPage(response):  # pragma: no cover
         elif 'beckToP' in response.POST:
             MailEmsg = None
             return ProjectPage(response)
+        elif 'beckToKanban' in response.POST:
+            return KanbanPage(response)
 
         project = db.projects.find_one({"ProjectName": response.COOKIES['Project']})
         sender = db.users.find_one({"EMAIL": response.COOKIES['Email']})
@@ -363,6 +365,8 @@ def EditTasks(response):  # pragma: no cover
         return is_connected(response)
     elif 'beckToP' in response.POST:
         return ADDTASKS(response)
+    elif 'beckToKanban' in response.POST:
+            return KanbanPage(response)
 
     SV = db.tasks
     projectName = response.COOKIES['Project']
@@ -455,6 +459,8 @@ def ADDTASKS(response):  # pragma: no cover
             global MailEmsg
             MailEmsg = None
             result = ProjectPage(response)
+        elif 'beckToKanban' in response.POST:
+            return KanbanPage(response)
         else:
             a = response.POST.get('USERSTORY')
             b = array_tasksToString(split_tasks(response.POST.get('TASKS'), eliminate_empty=True))
