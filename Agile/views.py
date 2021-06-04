@@ -395,7 +395,7 @@ def EditTasks(response):  # pragma: no cover
     elif 'beckToP' in response.POST:
         return ADDTASKS(response)
     elif 'beckToKanban' in response.POST:
-            return KanbanPage(response)
+        return KanbanPage(response)
 
     SV = db.tasks
     projectName = response.COOKIES['Project']
@@ -417,7 +417,6 @@ def EditTasks(response):  # pragma: no cover
         if uStory:
             newvalues["$set"]["USERSTORY"] = uStory
         if tasks and tasks != " ":
-            print("-"+tasks + "-")
             tasks = get_edit_tasks_string(myquery["Tasks"], tasks)
             newvalues["$set"]["Tasks"] = tasks
         if uStory:
@@ -441,7 +440,7 @@ def EditTasks(response):  # pragma: no cover
         if p != 'programmer':
             newvalues["$set"]["Programmer"] = p
         SV.update_one(myquery, newvalues)
-    result = taskpage(response)
+    result = KanbanPage(response)
     result.set_cookie('Project', projectName, 3000)
     return result
 
@@ -470,7 +469,6 @@ def updateProjectDetails(response):  # pragma: no cover
         if (des is not None):
             PDetails['PDetails'].append(['Description', des])
     return ProjectPage(response)
-
 
 
 def AddTasks(request):  # pragma: no cover
