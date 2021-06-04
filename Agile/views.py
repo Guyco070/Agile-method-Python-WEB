@@ -441,7 +441,7 @@ def EditTasks(response):  # pragma: no cover
         if p != 'programmer':
             newvalues["$set"]["Programmer"] = p
         SV.update_one(myquery, newvalues)
-    result = KanbanPage(response)
+    result = taskpage(response)
     result.set_cookie('Project', projectName, 3000)
     return result
 

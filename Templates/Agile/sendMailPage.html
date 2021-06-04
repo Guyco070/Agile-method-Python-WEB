@@ -40,7 +40,7 @@ h1 {letter-spacing: 6px}
             <label for="mailDesc">Mail description:</label></br>
         </td>
         <td style="text-align:left;">
-            <textarea rows="1" cols="40" class="form-control" id="mailDesc" name="mailDesc" required data-validation-required-message="Escriba su mensaje" maxlength="100" requir></textarea>
+            <textarea rows="1" cols="40" class="form-control" id="mailDesc" name="mailDesc" required data-validation-required-message="Escriba su mensaje" maxlength="100" requir class="w3-button w3-white w3-border w3-border-black w3-round-large"></textarea>
         </td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@ h1 {letter-spacing: 6px}
         </td>
         <td>
             <br>
-            <textarea rows="10" cols="100" class="form-control" id="mailInput" name="mailInput" required data-validation-required-message="Escriba su mensaje" maxlength="999" style="resize:none" requir></textarea>
+            <textarea rows="10" cols="100" class="form-control" id="mailInput" name="mailInput" required data-validation-required-message="Escriba su mensaje" maxlength="999" style="resize:none" requir class="w3-button w3-white w3-border w3-border-black w3-round-large"></textarea>
         </td>
     </tr>
 
@@ -62,25 +62,25 @@ h1 {letter-spacing: 6px}
         <td style="text-align:left;">
                 {% if type == "Client" or type == "Programmer" %}
                     <br></br>
-                    <button type="submit" name='sendMailPM' value="">Send to project manager</button>
+                    <button type="submit" name='sendMailPM' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Send to project manager</button>
                 {% endif %}
                 {% if type == "Admin" %}
                     <br></br>
                     {% if from_task == True %}
                         <form action="sendMailPage" method="POST">{% csrf_token %}
-                            <button type="submit" name='sendMailProg' value="">send to programmer</button>
+                            <button type="submit" name='sendMailProg' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">send to programmer</button>
                         </form>
                     {% else %}
-                        <button type="submit" name='sendMailProgs' value="">Send to project programmers</button>
+                        <button type="submit" name='sendMailProgs' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Send to project programmers</button>
                         <br></br>
-                        <button type="submit" name='sendMailCli' value="">Send to project clients</button>
+                        <button type="submit" name='sendMailCli' value="" class="w3-button w3-white w3-border w3-border-black w3-round-large">Send to project clients</button>
                     {% endif %}
                 {% endif %}
             </form>
         </br>
         </br>
             <form action="sendMailPage" method="POST">{% csrf_token %}
-                <input type="submit" value="Back to project" id="beckToP" name="beckToP">
+                <input type="submit" value="Back to project" id="beckToP" name="beckToP" class="w3-button w3-white w3-border w3-border-black w3-round-large">
             </form>
             </br>
         </td>
