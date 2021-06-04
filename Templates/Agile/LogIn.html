@@ -23,14 +23,15 @@ h1 {letter-spacing: 6px}
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
     <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
+    <div class="w3-bar w3-borde-0">
+    </br>
       <button onclick="location.href ='LOGIN'" class="w3-button w3-white w3-border w3-border-black w3-round-large">Login</button>
       <button onclick="location.href ='SIGNUP'" class="w3-button w3-white w3-border w3-border-black w3-round-large">Sign Up</button>
       <button onclick="location.href ='HowToUse'" class="w3-button w3-white w3-border w3-border-black w3-round-large">How to use</button>
    </div>
   </div>
     <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
+    <div class="w3-bar w3-borde-0">
 <form action="LoginStatus" method="POST">{% csrf_token %}
   <label for="Email">Enter Email:</label>
   <input type="text" id="EMAIL" name="EMAIL" style = "cursor:text;" class="w3-button w3-white w3-border w3-border-black w3-round-large"><br><br>

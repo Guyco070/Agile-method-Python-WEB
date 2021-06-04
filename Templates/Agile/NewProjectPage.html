@@ -25,13 +25,14 @@ h1 {letter-spacing: 6px}
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
-   <form action="AdminHomePage" method="POST">{% csrf_token %}
+    <div class="w3-bar w3-border-0">
+   <form action="AdminHomePage" method="POST">{% csrf_token %}</br>
         <button onclick="location.href='http://127.0.0.1:8000/LoginStatus';" class=" w3-left w3-button w3-white w3-border w3-border-black w3-round-large" >HomePage </button>
     </form>
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
-            <h1 id="myId"></h1>
+    </br></br></br><h1 id="myId"></h1>
 <script>
+
 document.getElementById('myId').innerHTML=listCookies()
 function listCookies() {
     if (document.cookie.indexOf('STATE') > -1 ) {
@@ -42,16 +43,17 @@ function listCookies() {
 </script>
 </script>
 <form action="CreateProjDone" method="POST">{% csrf_token %}
+            </br></br>
             <label>Project Name : </label>
             </br>
             <input type="text" placeholder="Enter Project name" name="ProjectName" class="w3-button w3-white w3-border w3-border-black w3-round-large" id="ProjectName" required >
-            </br>
+            </br></br></br>
             <label for="projectDescription">Description:</label> </br>
-            <textarea id="projectDescription"  class="w3-button w3-white w3-border w3-border-black w3-round-large" name="projectDescription" placeholder="Tell us about you" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
+            <textarea id="projectDescription"  class="w3-button w3-white w3-border w3-border-black w3-round-large" name="projectDescription" placeholder="Tell us about youre project" rows="4" cols="50" style="margin: 0px;width: 363px;height: 60px;"> </textarea>
             </br>
 
-            <div>
-                <label><b>Choose Team </b> : </label>
+            <div></br></br>
+                <label>Choose Team: </label></br></br>
                 <table style="width:50%;text-align:left;" >
                             <tr>
                 <th>Programmers : </th>
@@ -75,14 +77,13 @@ function listCookies() {
                 </td>
             </tr>
                 </table>
-                <div>
+                <div></br></br></br>
             <button type="submit" class="w3-button w3-white w3-border w3-border-black w3-round-large" onclick="myFunction()">Creat Project</button>
             <script>
                 function myFunction() {
                     alert("Project successfully created");
                 }
             </script>
-            <button type="button" class="w3-button w3-white w3-border w3-border-black w3-round-large" class="cancelbtn" > Cancel</button>
         </div>
             </div>
 </form>
