@@ -23,7 +23,7 @@ h1 {letter-spacing: 6px; width: 1000px;}
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
   <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
+    <div class="w3-bar">
         <button onclick="location.href='http://127.0.0.1:8000/';" class="w3-right w3-button w3-white w3-border w3-border-black w3-round-large" >Logout </button>
 <form action="showMyProjects" method="POST">{% csrf_token %}
     {%if FName == "" or FName == None%}
@@ -42,12 +42,12 @@ h1 {letter-spacing: 6px; width: 1000px;}
  </br>
 <form action="ProjectPage" method='POST'>{% csrf_token %}
     {% for obj in projects %}
-    <input type="submit" class="w3-button w3-white w3-border w3-border-black w3-round-large" id="ProjectName" name="Project" value={{obj}} style="border: none;">
+    <input type="submit" id="ProjectName" name="Project" value={{obj}} class="w3-button w3-animate-left w3-border w3-border-red w3-round-large" >
 
     {% endfor %}
 </form>
 
-                       </div>
+    </div>
   </div>
 </header>
 </div>
